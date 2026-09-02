@@ -1,0 +1,45 @@
+name: Update AI Bubble Monitor Data
+
+on:
+  schedule:
+    # 11:15 UTC, Tue-Sat — after the US market close plus Yahoo Finance's
+    # end-of-day settle, covering each Mon-Fri session.
+    - cron: "15 11 * * 2-6"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "ai-bubble-data-${{ github.ref_name }}"
+  cancel-in-progress: false
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch data and compute indicators
+        run: node scripts/fetch-ai-bubble-data.mjs
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- data/ai-bubble; then
+            echo "No data changes."
+            exit 0
+          fi
+          git add data/ai-bubble
+          git commit -m "chore: update AI bubble monitor data"
+          git push origin HEAD:${{ github.ref_name }}
+          # Vercel's GitHub integration deploys on its own push webhook,
+          # independent of Actions — no extra deploy-trigger step needed here
+          # (unlike GitHub Pages, which ignores GITHUB_TOKEN-authored pushes).

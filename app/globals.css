@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C15A;
+  --gold-lighter: #F0D080;
+  --gold-glow: rgba(201, 168, 76, 0.15);
+  --gold-border: rgba(201, 168, 76, 0.25);
+  --bg: #0A0A0A;
+  --surface: #141414;
+  --surface-card: #1A1A1A;
+  --surface-elevated: #222222;
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --text-muted: rgba(255, 255, 255, 0.3);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #0A0A0A;
+  color: white;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: #0A0A0A; }
+::-webkit-scrollbar-thumb { background: #C9A84C; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #E8C15A; }
+
+/* Utilities */
+.gold-gradient {
+  background: linear-gradient(135deg, #C9A84C 0%, #F0D080 50%, #C9A84C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass-card {
+  background: rgba(26, 26, 26, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.gold-glow-hover {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.gold-glow-hover:hover {
+  box-shadow: 0 0 30px rgba(201, 168, 76, 0.12), 0 0 60px rgba(201, 168, 76, 0.04);
+  border-color: rgba(201, 168, 76, 0.4);
+}
+
+.section-label {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.section-divider::before {
+  content: '';
+  width: 1.5rem;
+  height: 1px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.05);
+}

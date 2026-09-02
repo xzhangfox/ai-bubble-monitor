@@ -1,0 +1,87 @@
+{
+  "asOf": "2026-09-01",
+  "generatedAt": "2026-09-01T15:27:47.420Z",
+  "compositeScore": 33.6,
+  "category": "Moderate",
+  "categoryColor": "#C9A84C",
+  "indicators": [
+    {
+      "id": "momentum",
+      "name": "AI Basket Momentum Extension",
+      "framework": "Minsky / Dalio",
+      "description": "Trailing 12-month return of an equal-weighted basket of major AI-capex-linked stocks (NVDA, MSFT, GOOGL, AMZN, META, AVGO, ORCL). Large, persistent gains reflect prices \"discounting future rapid appreciation from today's already-high levels\" — Dalio's second bubble hallmark, and the euphoric phase of Minsky's financial instability cycle.",
+      "score": 27.7,
+      "rawValue": 0.20492861321229072,
+      "rawFormatted": "+20.5% (1yr)"
+    },
+    {
+      "id": "trendExtension",
+      "name": "Valuation Stretch vs 200-Day Trend",
+      "framework": "Dalio",
+      "description": "How far the AI basket trades above its own 200-day moving average, a free daily proxy for Dalio's first hallmark — \"prices high relative to traditional measures\" — in the absence of a live free earnings feed.",
+      "score": 32.2,
+      "rawValue": 0.08402620345815337,
+      "rawFormatted": "+8.4% above 200D MA"
+    },
+    {
+      "id": "concentration",
+      "name": "Narrow Leadership vs Small Caps",
+      "framework": "Minsky / market breadth",
+      "description": "6-month return of the AI basket minus the Russell 2000. Bubbles concentrate gains in a small set of leaders while the broader market lags — a breadth-divergence warning flagged by Shiller and Grantham alike.",
+      "score": 38.2,
+      "rawValue": 0.06372737560429331,
+      "rawFormatted": "+6.4 pts vs Russell 2000"
+    },
+    {
+      "id": "complacency",
+      "name": "Volatility Complacency (VIX)",
+      "framework": "Dalio",
+      "description": "Inverted VIX level. A historically low VIX signals the \"broad bullish sentiment\" that is Dalio's third bubble hallmark — investors pricing in little downside risk.",
+      "score": 62.6,
+      "rawValue": -15.470000267028809,
+      "rawFormatted": "VIX 15.5"
+    },
+    {
+      "id": "creditAppetite",
+      "name": "Credit Risk Appetite (HY vs Treasuries)",
+      "framework": "Dalio",
+      "description": "Trailing 3-month return of a high-yield corporate bond ETF (HYG) minus a duration-matched Treasury ETF (IEF), a market-based proxy for credit spread direction. Junk debt outperforming Treasuries means credit spreads are tightening and risk premia are compressed — Dalio's fourth hallmark, \"purchases financed by high leverage.\"",
+      "score": 62.6,
+      "rawValue": 0.01278384473070282,
+      "rawFormatted": "+1.3 pts (HYG vs IEF, 3mo)"
+    },
+    {
+      "id": "monetaryStimulus",
+      "name": "Monetary Backdrop (10Y Yield)",
+      "framework": "Dalio",
+      "description": "Inverted 10-year Treasury yield. Lower long-term rates ease the discount-rate math that justifies speculative valuations — Dalio's hallmark that \"stimulative monetary policy threatens to inflate the bubble further.\"",
+      "score": 0.7,
+      "rawValue": -4.769999980926514,
+      "rawFormatted": "10Y 4.77%"
+    },
+    {
+      "id": "volumeSurge",
+      "name": "Speculative Volume Surge",
+      "framework": "Dalio / Minsky",
+      "description": "20-day average trading volume in the AI basket relative to its own 252-day average. A sustained surge suggests \"new buyers, who were formerly not in the market, being drawn in\" — Dalio's sixth hallmark, and the Ponzi-finance stage of Minsky's cycle.",
+      "score": 11.1,
+      "rawValue": 0.7356133589649493,
+      "rawFormatted": "0.74x normal volume"
+    }
+  ],
+  "basket": [
+    "NVDA",
+    "MSFT",
+    "GOOGL",
+    "AMZN",
+    "META",
+    "AVGO",
+    "ORCL"
+  ],
+  "methodologyNote": "Composite score is the equal-weighted average of the percentile ranks below, each computed against its own trailing history up to that day (no lookahead). It is a simplified, transparent proxy inspired by Ray Dalio's six classic bubble hallmarks, Robert Shiller's work on valuation extremes and market narratives, and Hyman Minsky's financial instability hypothesis — it is not Dalio's proprietary bubble gauge, not a trading signal, and not investment advice. One hallmark Dalio names — buyers making unusually extended forward purchases for speculation or hedging, e.g. hyperscaler AI-capex commitments running far ahead of current revenue — has no free daily data feed and is intentionally left out of the composite; track it via quarterly hyperscaler earnings instead.",
+  "dataSources": [
+    "Yahoo Finance daily prices: NVDA, MSFT, GOOGL, AMZN, META, AVGO, ORCL (AI basket)",
+    "Yahoo Finance daily levels: VIX, Russell 2000 (^RUT), 10-Year Treasury Yield Index (^TNX)",
+    "Yahoo Finance daily prices: HYG / IEF (high-yield vs Treasury bond ETFs, credit spread proxy)"
+  ]
+}
