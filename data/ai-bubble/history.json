@@ -1,19 +1,6 @@
 {
   "series": [
     {
-      "date": "2022-04-25",
-      "compositeScore": 31.9,
-      "indicatorScores": {
-        "momentum": 20.5,
-        "trendExtension": 1.7,
-        "concentration": 24.3,
-        "complacency": 12.3,
-        "creditAppetite": 74.2,
-        "monetaryStimulus": 14.5,
-        "volumeSurge": 75.8
-      }
-    },
-    {
       "date": "2022-04-26",
       "compositeScore": 28.5,
       "indicatorScores": {
@@ -14172,14 +14159,14 @@
     },
     {
       "date": "2026-08-28",
-      "compositeScore": 35.6,
+      "compositeScore": 36.6,
       "indicatorScores": {
         "momentum": 25.6,
         "trendExtension": 33.3,
-        "concentration": 37.4,
-        "complacency": 70,
-        "creditAppetite": 57.4,
-        "monetaryStimulus": 1.6,
+        "concentration": 40.4,
+        "complacency": 70.8,
+        "creditAppetite": 61.2,
+        "monetaryStimulus": 0.9,
         "volumeSurge": 23.9
       }
     },
@@ -14215,24 +14202,37 @@
       "indicatorScores": {
         "momentum": 30,
         "trendExtension": 38.2,
-        "concentration": 40.5,
+        "concentration": 40.4,
         "complacency": 64.8,
         "creditAppetite": 61.7,
         "monetaryStimulus": 0.6,
-        "volumeSurge": 14.1
+        "volumeSurge": 14.2
       }
     },
     {
       "date": "2026-09-03",
-      "compositeScore": 34.4,
+      "compositeScore": 36.9,
       "indicatorScores": {
-        "momentum": 29.8,
-        "trendExtension": 38.8,
-        "concentration": 34.2,
-        "complacency": 66.6,
-        "creditAppetite": 60.1,
+        "momentum": 30.6,
+        "trendExtension": 41.8,
+        "concentration": 36.8,
+        "complacency": 71.5,
+        "creditAppetite": 60.6,
         "monetaryStimulus": 0.8,
-        "volumeSurge": 10.8
+        "volumeSurge": 16.4
+      }
+    },
+    {
+      "date": "2026-09-04",
+      "compositeScore": 37.1,
+      "indicatorScores": {
+        "momentum": 30.8,
+        "trendExtension": 44.4,
+        "concentration": 39.7,
+        "complacency": 72.5,
+        "creditAppetite": 59.5,
+        "monetaryStimulus": 0.8,
+        "volumeSurge": 12.3
       }
     }
   ]
