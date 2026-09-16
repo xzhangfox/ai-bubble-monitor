@@ -1,8 +1,10 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState, type MouseEvent } from 'react'
 import { motion } from 'framer-motion'
 import FadeIn from './FadeIn'
+import IndicatorIcon from './IndicatorIcon'
+import { getScoreColor } from '@/lib/scoreColor'
 
 export interface Indicator {
   id: string
@@ -59,6 +61,7 @@ const STRINGS = {
     dataSourcesLabel: 'Data sources',
     disclaimer:
       'Educational tool only. This is a simplified proxy inspired by public bubble frameworks — it is not Dalio’s proprietary gauge, not a trading signal, and not investment advice.',
+    footerNote: 'Data refreshes daily via an automated GitHub Actions workflow, sourced entirely from free Yahoo Finance endpoints.',
     basketLabel: 'AI basket',
     langToggle: '中文',
     categories: {
@@ -90,6 +93,7 @@ const STRINGS = {
     dataSourcesLabel: '数据来源',
     disclaimer:
       '本工具仅供学习参考。这是受公开泡沫理论启发的简化替代指标，并非达里欧本人的专有模型，不构成交易信号，也不构成投资建议。',
+    footerNote: '数据通过 GitHub Actions 自动化流程每日刷新，全部来自免费的 Yahoo Finance 接口。',
     basketLabel: 'AI 篮子成分股',
     langToggle: 'EN',
     categories: {
@@ -100,14 +104,6 @@ const STRINGS = {
       Extreme: '极端',
     } as Record<string, string>,
   },
-}
-
-function scoreColor(score: number): string {
-  if (score <= 24) return '#4ADE80'
-  if (score <= 44) return '#C9A84C'
-  if (score <= 64) return '#E8934A'
-  if (score <= 84) return '#E8623C'
-  return '#E23C4E'
 }
 
 function Gauge({ score, category, color }: { score: number; category: string; color: string }) {
@@ -151,13 +147,21 @@ function Gauge({ score, category, color }: { score: number; category: string; co
 function IndicatorCard({ indicator, index, lang }: { indicator: Indicator; index: number; lang: 'en' | 'zh' }) {
   const s = STRINGS[lang]
   const score = indicator.score ?? 0
-  const color = scoreColor(score)
+  const color = getScoreColor(score)
 
   return (
     <FadeIn delay={0.05 * index}>
       <div className="rounded-2xl bg-surface-card border border-white/5 p-5 flex flex-col h-full gold-glow-hover">
         <div className="flex items-start justify-between gap-3 mb-2">
-          <h3 className="text-white font-semibold text-sm leading-snug">{indicator.name}</h3>
+          <div className="flex items-center gap-2">
+            <span
+              className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center"
+              style={{ backgroundColor: `${color}1A` }}
+            >
+              <IndicatorIcon id={indicator.id} color={color} />
+            </span>
+            <h3 className="text-white font-semibold text-sm leading-snug">{indicator.name}</h3>
+          </div>
           <span className="flex-shrink-0 px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-white/40 text-[0.65rem] font-mono uppercase tracking-wide">
             {indicator.framework}
           </span>
@@ -187,6 +191,8 @@ function IndicatorCard({ indicator, index, lang }: { indicator: Indicator; index
 function TrendChart({ series, lang }: { series: HistoryPoint[]; lang: 'en' | 'zh' }) {
   const s = STRINGS[lang]
   const points = series.filter((p) => p.compositeScore !== null) as (HistoryPoint & { compositeScore: number })[]
+  const [hoverIdx, setHoverIdx] = useState<number | null>(null)
+  const svgRef = useRef<SVGSVGElement>(null)
 
   if (points.length < 2) {
     return <p className="text-white/30 text-sm font-mono py-12 text-center">{s.trendEmpty}</p>
@@ -196,31 +202,48 @@ function TrendChart({ series, lang }: { series: HistoryPoint[]; lang: 'en' | 'zh
   const height = 220
   const padX = 8
   const padY = 16
+  const padLeft = 30
   const n = points.length
-  const xFor = (i: number) => padX + (i / (n - 1)) * (width - padX * 2)
+  const xFor = (i: number) => padLeft + (i / (n - 1)) * (width - padLeft - padX)
   const yFor = (v: number) => height - padY - (v / 100) * (height - padY * 2)
 
   const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${xFor(i).toFixed(1)} ${yFor(p.compositeScore).toFixed(1)}`).join(' ')
   const areaPath = `${linePath} L ${xFor(n - 1).toFixed(1)} ${height - padY} L ${xFor(0).toFixed(1)} ${height - padY} Z`
 
   const latest = points[n - 1]
-  const latestColor = scoreColor(latest.compositeScore)
+  const latestColor = getScoreColor(latest.compositeScore)
 
   const tickIdxs = [0, Math.floor((n - 1) / 2), n - 1]
+  const active = hoverIdx !== null ? points[hoverIdx] : null
+  const activeColor = active ? getScoreColor(active.compositeScore) : latestColor
+
+  const handleMove = (e: MouseEvent<SVGSVGElement>) => {
+    const svg = svgRef.current
+    if (!svg) return
+    const rect = svg.getBoundingClientRect()
+    const relX = ((e.clientX - rect.left) / rect.width) * width
+    const t = (relX - padLeft) / (width - padLeft - padX)
+    const idx = Math.round(t * (n - 1))
+    setHoverIdx(Math.max(0, Math.min(n - 1, idx)))
+  }
 
   return (
     <div className="w-full overflow-x-auto">
-      <svg viewBox={`0 0 ${width} ${height + 24}`} className="w-full min-w-[480px]" preserveAspectRatio="none">
+      <svg
+        ref={svgRef}
+        viewBox={`0 0 ${width} ${height + 24}`}
+        className="w-full min-w-[480px] cursor-crosshair"
+        preserveAspectRatio="none"
+        onMouseMove={handleMove}
+        onMouseLeave={() => setHoverIdx(null)}
+      >
         {[0, 25, 50, 75, 100].map((g) => (
-          <line
-            key={g}
-            x1={padX}
-            x2={width - padX}
-            y1={yFor(g)}
-            y2={yFor(g)}
-            stroke="rgba(255,255,255,0.06)"
-            strokeWidth="1"
-          />
+          <g key={g}>
+            <line x1={padLeft} x2={width - padX} y1={yFor(g)} y2={yFor(g)} stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+            <text x={padLeft - 8} y={yFor(g) + 3} textAnchor="end" fill="rgba(255,255,255,0.25)" fontSize="9" fontFamily="var(--font-mono, monospace)">
+              {g}
+            </text>
+          </g>
         ))}
         <defs>
           <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
@@ -231,12 +254,42 @@ function TrendChart({ series, lang }: { series: HistoryPoint[]; lang: 'en' | 'zh
         <path d={areaPath} fill="url(#trendFill)" stroke="none" />
         <path d={linePath} fill="none" stroke={latestColor} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
         <circle cx={xFor(n - 1)} cy={yFor(latest.compositeScore)} r="3.5" fill={latestColor} />
+
+        {active && (
+          <>
+            <line
+              x1={xFor(hoverIdx!)}
+              x2={xFor(hoverIdx!)}
+              y1={padY}
+              y2={height - padY}
+              stroke="rgba(255,255,255,0.15)"
+              strokeWidth="1"
+              strokeDasharray="3 3"
+            />
+            <circle cx={xFor(hoverIdx!)} cy={yFor(active.compositeScore)} r="4.5" fill={activeColor} stroke="#0A0A0A" strokeWidth="1.5" />
+          </>
+        )}
+
         {tickIdxs.map((i) => (
           <text key={i} x={xFor(i)} y={height + 18} textAnchor={i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle'} fill="rgba(255,255,255,0.3)" fontSize="10" fontFamily="var(--font-mono, monospace)">
             {points[i].date}
           </text>
         ))}
       </svg>
+
+      {active && (
+        <div className="pointer-events-none -mt-2 flex justify-center">
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0E0E0E] border text-xs font-mono"
+            style={{ borderColor: `${activeColor}55` }}
+          >
+            <span className="text-white/40">{active.date}</span>
+            <span className="font-semibold" style={{ color: activeColor }}>
+              {active.compositeScore.toFixed(0)}
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -285,7 +338,24 @@ export default function AiBubbleMonitor({ latest, history }: { latest: LatestDat
           <FadeIn delay={0.1}>
             <div className="mt-10 rounded-2xl bg-surface-card border border-gold/15 p-8 text-center">
               <p className="text-gold text-sm font-mono uppercase tracking-widest mb-2">{s.pendingTitle}</p>
-              <p className="text-white/40 text-sm leading-relaxed max-w-lg mx-auto">{s.pendingBody}</p>
+              <p className="text-white/40 text-sm leading-relaxed max-w-lg mx-auto mb-8">{s.pendingBody}</p>
+            </div>
+            <div className="mt-6 rounded-2xl bg-surface-card border border-white/5 p-8 animate-pulse">
+              <div className="h-3 w-40 bg-white/10 rounded mx-auto mb-6" />
+              <div className="w-full max-w-[280px] mx-auto h-[130px] bg-white/5 rounded-t-full" />
+            </div>
+            <div className="mt-8 grid sm:grid-cols-2 gap-5 animate-pulse">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="rounded-2xl bg-surface-card border border-white/5 p-5 h-[140px] space-y-3">
+                  <div className="h-4 w-2/3 bg-white/10 rounded" />
+                  <div className="h-6 w-1/3 bg-white/10 rounded" />
+                  <div className="h-1.5 w-full bg-white/5 rounded-full" />
+                  <div className="h-3 w-full bg-white/5 rounded" />
+                </div>
+              ))}
+            </div>
+            <div className="mt-8 rounded-2xl bg-surface-card border border-white/5 p-6 animate-pulse">
+              <div className="h-[220px] w-full bg-white/5 rounded-lg" />
             </div>
           </FadeIn>
         ) : (
@@ -324,21 +394,37 @@ export default function AiBubbleMonitor({ latest, history }: { latest: LatestDat
             <div className="section-divider">
               <span className="section-label">{s.methodologyLabel}</span>
             </div>
-            <p className="text-white/45 text-sm leading-relaxed mb-4">{s.methodologyIntro}</p>
-            <p className="text-white/45 text-sm leading-relaxed mb-6">{s.methodologyHow}</p>
+            <div className="glass-card rounded-2xl p-6 md:p-8">
+              <p className="text-white/45 text-sm leading-relaxed mb-4">{s.methodologyIntro}</p>
+              <p className="text-white/45 text-sm leading-relaxed mb-6">{s.methodologyHow}</p>
 
-            <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-2">{s.dataSourcesLabel}</p>
-            <ul className="space-y-1 mb-8">
-              {latest.dataSources.map((src) => (
-                <li key={src} className="text-white/35 text-xs font-mono flex items-start gap-2">
-                  <span className="w-1 h-1 rounded-full bg-gold/70 mt-1.5 flex-shrink-0" />
-                  {src}
-                </li>
-              ))}
-            </ul>
+              <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-2">{s.dataSourcesLabel}</p>
+              <ul className="space-y-1">
+                {latest.dataSources.map((src) => (
+                  <li key={src} className="text-white/35 text-xs font-mono flex items-start gap-2">
+                    <span className="w-1 h-1 rounded-full bg-gold/70 mt-1.5 flex-shrink-0" />
+                    {src}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-            <p className="text-white/25 text-xs leading-relaxed border-t border-white/5 pt-6">{s.disclaimer}</p>
+            <p className="text-white/25 text-xs leading-relaxed border-t border-white/5 mt-8 pt-6">{s.disclaimer}</p>
           </div>
+        </FadeIn>
+
+        <FadeIn delay={0.1}>
+          <footer className="mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+            <p className="text-white/25 text-xs font-mono">{s.footerNote}</p>
+            {latest.generatedAt && (
+              <p className="text-white/20 text-xs font-mono">
+                {new Date(latest.generatedAt).toLocaleString(lang === 'zh' ? 'zh-CN' : 'en-US', {
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                })}
+              </p>
+            )}
+          </footer>
         </FadeIn>
       </div>
     </main>
