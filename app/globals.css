@@ -41,6 +41,9 @@ body {
 ::-webkit-scrollbar-thumb { background: #C9A84C; border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: #E8C15A; }
 
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
 /* Utilities */
 .gold-gradient {
   background: linear-gradient(135deg, #C9A84C 0%, #F0D080 50%, #C9A84C 100%);

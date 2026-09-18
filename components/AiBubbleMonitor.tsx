@@ -4,6 +4,7 @@ import { useMemo, useRef, useState, type MouseEvent } from 'react'
 import { motion } from 'framer-motion'
 import FadeIn from './FadeIn'
 import IndicatorIcon from './IndicatorIcon'
+import EcosystemTicker from './EcosystemTicker'
 import { getScoreColor } from '@/lib/scoreColor'
 
 export interface Indicator {
@@ -414,6 +415,7 @@ export default function AiBubbleMonitor({ latest, history }: { latest: LatestDat
         </FadeIn>
 
         <FadeIn delay={0.1}>
+          <EcosystemTicker />
           <footer className="mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
             <p className="text-white/25 text-xs font-mono">{s.footerNote}</p>
             {latest.generatedAt && (
