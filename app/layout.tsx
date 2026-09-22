@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { JetBrains_Mono } from 'next/font/google'
 import './globals.css'
@@ -19,6 +19,14 @@ export const metadata: Metadata = {
   title: 'AI Bubble Monitor',
   description:
     "A daily, rules-based AI bubble risk gauge built on Ray Dalio's bubble framework, Robert Shiller's valuation research, and Hyman Minsky's financial instability hypothesis.",
+  appleWebApp: {
+    title: 'Bubble Monitor',
+    statusBarStyle: 'black-translucent',
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#0A0A0A',
 }
 
 export default function RootLayout({

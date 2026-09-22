@@ -65,6 +65,9 @@ const STRINGS = {
     footerNote: 'Data refreshes daily via an automated GitHub Actions workflow, sourced entirely from free Yahoo Finance endpoints.',
     basketLabel: 'AI basket',
     langToggle: '中文',
+    flipHint: 'Tap for methodology',
+    flipBackHint: 'Tap to go back',
+    flipAriaLabel: 'Show indicator methodology',
     categories: {
       Low: 'Low',
       Moderate: 'Moderate',
@@ -97,6 +100,9 @@ const STRINGS = {
     footerNote: '数据通过 GitHub Actions 自动化流程每日刷新，全部来自免费的 Yahoo Finance 接口。',
     basketLabel: 'AI 篮子成分股',
     langToggle: 'EN',
+    flipHint: '点击查看方法说明',
+    flipBackHint: '点击返回',
+    flipAriaLabel: '查看该指标的方法说明',
     categories: {
       Low: '低',
       Moderate: '中等',
@@ -105,6 +111,29 @@ const STRINGS = {
       Extreme: '极端',
     } as Record<string, string>,
   },
+}
+
+// The English description for each indicator comes straight from the
+// daily-regenerated data file (see scripts/fetch-ai-bubble-data.mjs), so
+// it always matches whatever wording that script emits. There's no
+// Chinese counterpart in that pipeline, so it's hand-maintained here,
+// keyed by the same indicator id — falls back to the English copy for
+// any id this hasn't been translated for yet.
+const INDICATOR_DESCRIPTIONS_ZH: Record<string, string> = {
+  momentum:
+    '过去12个月内，一篮子主要AI资本支出相关股票（NVDA、MSFT、GOOGL、AMZN、META、AVGO、ORCL）的等权重回报率。持续的大幅上涨反映出价格"已经计入了从当前高位继续快速上涨的预期"——这是达里欧提出的第二个泡沫特征，也对应明斯基金融不稳定性周期中的亢奋阶段。',
+  trendExtension:
+    'AI 篮子股价相对其自身200日均线的偏离幅度——在缺乏免费实时盈利数据的情况下，这是衡量达里欧第一个泡沫特征"价格相对传统估值指标偏高"的免费日度替代指标。',
+  concentration:
+    'AI 篮子相对罗素2000指数的6个月回报率之差。泡沫往往使涨幅集中在少数领涨股上，而大盘整体表现落后——这是席勒和格兰瑟姆都曾警示过的市场广度背离信号。',
+  complacency:
+    'VIX 波动率指数的反向读数。历史低位的 VIX 代表着达里欧提出的第三个泡沫特征"市场情绪普遍乐观"——投资者对下行风险的定价极低。',
+  creditAppetite:
+    '高收益公司债 ETF（HYG）相对久期匹配的国债 ETF（IEF）的3个月滚动回报率之差，作为信用利差走向的市场化替代指标。垃圾债跑赢国债意味着信用利差正在收窄、风险溢价被压缩——这是达里欧第四个泡沫特征"购买行为由高杠杆融资支撑"的体现。',
+  monetaryStimulus:
+    '10年期美债收益率的反向读数。长端利率走低会缓解为投机性估值提供支撑所需的贴现率测算——对应达里欧提出的"宽松货币政策可能进一步吹大泡沫"这一特征。',
+  volumeSurge:
+    'AI 篮子20日平均成交量相对其自身252日平均成交量的比值。成交量的持续激增意味着"此前未曾入场的新买家正被不断吸引进场"——这是达里欧提出的第六个泡沫特征，也对应明斯基周期中的庞氏融资阶段。',
 }
 
 function Gauge({ score, category, color }: { score: number; category: string; color: string }) {
@@ -149,41 +178,83 @@ function IndicatorCard({ indicator, index, lang }: { indicator: Indicator; index
   const s = STRINGS[lang]
   const score = indicator.score ?? 0
   const color = getScoreColor(score)
+  const [flipped, setFlipped] = useState(false)
+  const description = lang === 'zh' ? INDICATOR_DESCRIPTIONS_ZH[indicator.id] ?? indicator.description : indicator.description
+
+  const header = (
+    <div className="flex items-start justify-between gap-3 mb-2">
+      <div className="flex items-center gap-2">
+        <span className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${color}1A` }}>
+          <IndicatorIcon id={indicator.id} color={color} />
+        </span>
+        <h3 className="text-white font-semibold text-sm leading-snug">{indicator.name}</h3>
+      </div>
+      <span className="flex-shrink-0 px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-white/40 text-[0.65rem] font-mono uppercase tracking-wide">
+        {indicator.framework}
+      </span>
+    </div>
+  )
 
   return (
     <FadeIn delay={0.05 * index}>
-      <div className="rounded-2xl bg-surface-card border border-white/5 p-5 flex flex-col h-full gold-glow-hover">
-        <div className="flex items-start justify-between gap-3 mb-2">
-          <div className="flex items-center gap-2">
-            <span
-              className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center"
-              style={{ backgroundColor: `${color}1A` }}
-            >
-              <IndicatorIcon id={indicator.id} color={color} />
-            </span>
-            <h3 className="text-white font-semibold text-sm leading-snug">{indicator.name}</h3>
-          </div>
-          <span className="flex-shrink-0 px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-white/40 text-[0.65rem] font-mono uppercase tracking-wide">
-            {indicator.framework}
-          </span>
-        </div>
-
-        <div className="flex items-baseline gap-2 mb-2">
-          <span className="text-2xl font-bold font-mono" style={{ color }}>
-            {indicator.score === null ? '—' : indicator.score.toFixed(0)}
-          </span>
-          <span className="text-white/30 text-xs font-mono">{s.scoreOutOf}</span>
-          <span className="ml-auto text-white/50 text-xs font-mono">{indicator.rawFormatted}</span>
-        </div>
-
-        <div className="h-1.5 rounded-full bg-white/5 overflow-hidden mb-3">
+      {/* The methodology text lives on the back — click/tap either face
+          to flip, a plain rotateY on a preserve-3d wrapper (no extra
+          libraries) with both faces backface-hidden and the back
+          absolutely stacked on the front so the card's height is
+          always driven by the (denser) front face. */}
+      <div
+        className="relative h-full cursor-pointer"
+        style={{ perspective: 1200 }}
+        onClick={() => setFlipped((f) => !f)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            setFlipped((f) => !f)
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-label={s.flipAriaLabel}
+      >
+        <motion.div
+          className="relative h-full"
+          style={{ transformStyle: 'preserve-3d' }}
+          animate={{ rotateY: flipped ? 180 : 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
           <div
-            className="h-full rounded-full transition-all duration-700"
-            style={{ width: `${Math.max(0, Math.min(100, score))}%`, backgroundColor: color }}
-          />
-        </div>
+            className="rounded-2xl bg-surface-card border border-white/5 p-5 flex flex-col h-full gold-glow-hover"
+            style={{ backfaceVisibility: 'hidden' }}
+          >
+            {header}
 
-        <p className="text-white/40 text-xs leading-relaxed flex-1">{indicator.description}</p>
+            <div className="flex items-baseline gap-2 mb-2">
+              <span className="text-2xl font-bold font-mono" style={{ color }}>
+                {indicator.score === null ? '—' : indicator.score.toFixed(0)}
+              </span>
+              <span className="text-white/30 text-xs font-mono">{s.scoreOutOf}</span>
+              <span className="ml-auto text-white/50 text-xs font-mono">{indicator.rawFormatted}</span>
+            </div>
+
+            <div className="h-1.5 rounded-full bg-white/5 overflow-hidden mb-3">
+              <div
+                className="h-full rounded-full transition-all duration-700"
+                style={{ width: `${Math.max(0, Math.min(100, score))}%`, backgroundColor: color }}
+              />
+            </div>
+
+            <span className="mt-auto text-white/25 text-[0.65rem] font-mono uppercase tracking-wide">{s.flipHint} →</span>
+          </div>
+
+          <div
+            className="absolute inset-0 rounded-2xl bg-surface-card border border-white/5 p-5 flex flex-col h-full"
+            style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+          >
+            {header}
+            <p className="text-white/50 text-xs leading-relaxed flex-1 overflow-y-auto">{description}</p>
+            <span className="mt-2 text-white/25 text-[0.65rem] font-mono uppercase tracking-wide self-end">← {s.flipBackHint}</span>
+          </div>
+        </motion.div>
       </div>
     </FadeIn>
   )
