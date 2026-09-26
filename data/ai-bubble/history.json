@@ -14219,20 +14219,20 @@
         "complacency": 61.6,
         "creditAppetite": 82,
         "monetaryStimulus": 0,
-        "volumeSurge": 36.9
+        "volumeSurge": 37
       }
     },
     {
       "date": "2026-09-25",
-      "compositeScore": 41.6,
+      "compositeScore": 42.6,
       "indicatorScores": {
-        "momentum": 26.3,
-        "trendExtension": 35.8,
-        "concentration": 56,
-        "complacency": 64.4,
-        "creditAppetite": 82.8,
+        "momentum": 26.6,
+        "trendExtension": 36.6,
+        "concentration": 56.4,
+        "complacency": 67.4,
+        "creditAppetite": 81.8,
         "monetaryStimulus": 0,
-        "volumeSurge": 25.9
+        "volumeSurge": 29.2
       }
     }
   ]
