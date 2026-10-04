@@ -83,6 +83,38 @@ const ECOSYSTEM_APPS = [
       </svg>
     ),
   },
+  {
+    id: 'glow',
+    name: 'Flux Glow',
+    url: 'https://flux-glow-f60xl28cu-fox-1121.vercel.app/',
+    logo: (
+      <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_15px_rgba(191,149,63,0.4)]" fill="none">
+        <EcosystemGoldDefs id="eco_glow" />
+        <circle cx="50" cy="50" r="38" stroke="url(#eco_glow)" strokeWidth="6" />
+        <path d="M50 20c-13.5 0-21.8 9.8-21.8 23.6 0 7.5 1.9 15 5.6 20.9 3.4 5.6 9 9.5 16.2 9.5s12.8-3.9 16.2-9.5c3.7-5.9 5.6-13.4 5.6-20.9C71.8 29.8 63.5 20 50 20z" fill="url(#eco_glow)" />
+        <path d="M74 22l2.8 7.6L84.5 32.5l-7.7 2.9L74 43l-2.8-7.6-7.7-2.9 7.7-2.9L74 22z" stroke="url(#eco_glow)" strokeWidth="3" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    id: 'scribe',
+    name: 'Flux Scribe',
+    // Not deployed yet — an empty url renders the tile but doesn't navigate.
+    url: '',
+    logo: (
+      <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_15px_rgba(191,149,63,0.4)]" fill="none">
+        <EcosystemGoldDefs id="eco_scribe" />
+        <circle cx="50" cy="50" r="40" stroke="url(#eco_scribe)" strokeWidth="7" />
+        <g stroke="url(#eco_scribe)" strokeWidth="7.5" strokeLinecap="round">
+          <line x1="29" y1="45" x2="29" y2="55" />
+          <line x1="39.5" y1="37" x2="39.5" y2="63" />
+          <line x1="50" y1="29" x2="50" y2="71" />
+          <line x1="60.5" y1="39" x2="60.5" y2="61" />
+          <line x1="71" y1="46" x2="71" y2="54" />
+        </g>
+      </svg>
+    ),
+  },
 ] as const
 
 export default function EcosystemTicker() {
@@ -119,6 +151,7 @@ export default function EcosystemTicker() {
       e.stopPropagation()
       return
     }
+    if (!url) return
     window.open(url, '_blank', 'noopener,noreferrer')
   }
 
