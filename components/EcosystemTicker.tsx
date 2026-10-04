@@ -99,8 +99,7 @@ const ECOSYSTEM_APPS = [
   {
     id: 'scribe',
     name: 'Flux Scribe',
-    // Not deployed yet — an empty url renders the tile but doesn't navigate.
-    url: '',
+    url: 'https://flux-scribe-otzr.vercel.app/',
     logo: (
       <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_15px_rgba(191,149,63,0.4)]" fill="none">
         <EcosystemGoldDefs id="eco_scribe" />
