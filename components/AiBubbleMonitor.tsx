@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import FadeIn from './FadeIn'
 import IndicatorIcon from './IndicatorIcon'
 import EcosystemTicker from './EcosystemTicker'
+import ShareAppButton from './ShareAppButton'
 import { getScoreColor } from '@/lib/scoreColor'
 
 export interface Indicator {
@@ -65,6 +66,9 @@ const STRINGS = {
     footerNote: 'Data refreshes daily via an automated GitHub Actions workflow, sourced entirely from free Yahoo Finance endpoints.',
     basketLabel: 'AI basket',
     langToggle: '中文',
+    shareApp: 'Share',
+    linkCopied: 'Copied',
+    shareText: 'Flux AI Bubble Monitor — is AI in a bubble? A live composite of market indicators.',
     flipHint: 'Tap for methodology',
     flipBackHint: 'Tap to go back',
     flipAriaLabel: 'Show indicator methodology',
@@ -100,6 +104,9 @@ const STRINGS = {
     footerNote: '数据通过 GitHub Actions 自动化流程每日刷新，全部来自免费的 Yahoo Finance 接口。',
     basketLabel: 'AI 篮子成分股',
     langToggle: 'EN',
+    shareApp: '分享',
+    linkCopied: '已复制',
+    shareText: 'Flux AI 泡沫监测 —— AI 是否处于泡沫？市场指标实时合成。',
     flipHint: '点击查看方法说明',
     flipBackHint: '点击返回',
     flipAriaLabel: '查看该指标的方法说明',
@@ -391,6 +398,7 @@ export default function AiBubbleMonitor({ latest, history }: { latest: LatestDat
             >
               {s.langToggle}
             </button>
+            <ShareAppButton label={s.shareApp} copiedLabel={s.linkCopied} text={s.shareText} />
           </div>
         </FadeIn>
 
