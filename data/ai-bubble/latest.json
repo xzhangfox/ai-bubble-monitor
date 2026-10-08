@@ -1,7 +1,7 @@
 {
-  "asOf": "2026-10-07",
-  "generatedAt": "2026-10-07T17:50:15.186Z",
-  "compositeScore": 42,
+  "asOf": "2026-10-08",
+  "generatedAt": "2026-10-08T17:53:27.601Z",
+  "compositeScore": 37.8,
   "category": "Moderate",
   "categoryColor": "#C9A84C",
   "indicators": [
@@ -10,62 +10,62 @@
       "name": "AI Basket Momentum Extension",
       "framework": "Minsky / Dalio",
       "description": "Trailing 12-month return of an equal-weighted basket of major AI-capex-linked stocks (NVDA, MSFT, GOOGL, AMZN, META, AVGO, ORCL). Large, persistent gains reflect prices \"discounting future rapid appreciation from today's already-high levels\" — Dalio's second bubble hallmark, and the euphoric phase of Minsky's financial instability cycle.",
-      "score": 28.2,
-      "rawValue": 0.19816800935510437,
-      "rawFormatted": "+19.8% (1yr)"
+      "score": 25.9,
+      "rawValue": 0.17082044355074855,
+      "rawFormatted": "+17.1% (1yr)"
     },
     {
       "id": "trendExtension",
       "name": "Valuation Stretch vs 200-Day Trend",
       "framework": "Dalio",
       "description": "How far the AI basket trades above its own 200-day moving average, a free daily proxy for Dalio's first hallmark — \"prices high relative to traditional measures\" — in the absence of a live free earnings feed.",
-      "score": 48,
-      "rawValue": 0.13847267711096412,
-      "rawFormatted": "+13.8% above 200D MA"
+      "score": 40.3,
+      "rawValue": 0.10742052902158661,
+      "rawFormatted": "+10.7% above 200D MA"
     },
     {
       "id": "concentration",
       "name": "Narrow Leadership vs Small Caps",
       "framework": "Minsky / market breadth",
       "description": "6-month return of the AI basket minus the Russell 2000. Bubbles concentrate gains in a small set of leaders while the broader market lags — a breadth-divergence warning flagged by Shiller and Grantham alike.",
-      "score": 61.5,
-      "rawValue": 0.18223793777907127,
-      "rawFormatted": "+18.2 pts vs Russell 2000"
+      "score": 56.8,
+      "rawValue": 0.14826849105466078,
+      "rawFormatted": "+14.8 pts vs Russell 2000"
     },
     {
       "id": "complacency",
       "name": "Volatility Complacency (VIX)",
       "framework": "Dalio",
       "description": "Inverted VIX level. A historically low VIX signals the \"broad bullish sentiment\" that is Dalio's third bubble hallmark — investors pricing in little downside risk.",
-      "score": 65.6,
-      "rawValue": -15.140000343322754,
-      "rawFormatted": "VIX 15.1"
+      "score": 59.6,
+      "rawValue": -15.899999618530273,
+      "rawFormatted": "VIX 15.9"
     },
     {
       "id": "creditAppetite",
       "name": "Credit Risk Appetite (HY vs Treasuries)",
       "framework": "Dalio",
       "description": "Trailing 3-month return of a high-yield corporate bond ETF (HYG) minus a duration-matched Treasury ETF (IEF), a market-based proxy for credit spread direction. Junk debt outperforming Treasuries means credit spreads are tightening and risk premia are compressed — Dalio's fourth hallmark, \"purchases financed by high leverage.\"",
-      "score": 69.1,
-      "rawValue": 0.016560453481331505,
-      "rawFormatted": "+1.7 pts (HYG vs IEF, 3mo)"
+      "score": 60.8,
+      "rawValue": 0.011809442495297917,
+      "rawFormatted": "+1.2 pts (HYG vs IEF, 3mo)"
     },
     {
       "id": "monetaryStimulus",
       "name": "Monetary Backdrop (10Y Yield)",
       "framework": "Dalio",
       "description": "Inverted 10-year Treasury yield. Lower long-term rates ease the discount-rate math that justifies speculative valuations — Dalio's hallmark that \"stimulative monetary policy threatens to inflate the bubble further.\"",
-      "score": 0.1,
-      "rawValue": -5.2820000648498535,
-      "rawFormatted": "10Y 5.28%"
+      "score": 0.3,
+      "rawValue": -5.2330002784729,
+      "rawFormatted": "10Y 5.23%"
     },
     {
       "id": "volumeSurge",
       "name": "Speculative Volume Surge",
       "framework": "Dalio / Minsky",
       "description": "20-day average trading volume in the AI basket relative to its own 252-day average. A sustained surge suggests \"new buyers, who were formerly not in the market, being drawn in\" — Dalio's sixth hallmark, and the Ponzi-finance stage of Minsky's cycle.",
-      "score": 21.6,
-      "rawValue": 0.7846169746627065,
+      "score": 20.8,
+      "rawValue": 0.7810154911937657,
       "rawFormatted": "0.78x normal volume"
     }
   ],
