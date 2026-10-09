@@ -1,19 +1,6 @@
 {
   "series": [
     {
-      "date": "2022-05-27",
-      "compositeScore": 33.5,
-      "indicatorScores": {
-        "momentum": 15,
-        "trendExtension": 1.7,
-        "concentration": 7.7,
-        "complacency": 15.8,
-        "creditAppetite": 81.7,
-        "monetaryStimulus": 18.5,
-        "volumeSurge": 93.9
-      }
-    },
-    {
       "date": "2022-05-31",
       "compositeScore": 33.7,
       "indicatorScores": {
@@ -14224,15 +14211,28 @@
     },
     {
       "date": "2026-10-08",
-      "compositeScore": 37.8,
+      "compositeScore": 39.2,
       "indicatorScores": {
         "momentum": 25.9,
-        "trendExtension": 40.3,
-        "concentration": 56.8,
-        "complacency": 59.6,
-        "creditAppetite": 60.8,
+        "trendExtension": 40.4,
+        "concentration": 56.5,
+        "complacency": 63.6,
+        "creditAppetite": 62.3,
         "monetaryStimulus": 0.3,
-        "volumeSurge": 20.8
+        "volumeSurge": 25.4
+      }
+    },
+    {
+      "date": "2026-10-09",
+      "compositeScore": 38.1,
+      "indicatorScores": {
+        "momentum": 24.7,
+        "trendExtension": 40.5,
+        "concentration": 49.7,
+        "complacency": 67.7,
+        "creditAppetite": 63.3,
+        "monetaryStimulus": 0.2,
+        "volumeSurge": 20.3
       }
     }
   ]
