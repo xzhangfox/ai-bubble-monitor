@@ -74,7 +74,7 @@ const ECOSYSTEM_APPS = [
   {
     id: 'path',
     name: 'Flux Path',
-    url: 'https://parallax-nine-taupe.vercel.app/',
+    url: 'https://flux-path-fox-1121.vercel.app/',
     logo: (
       <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_15px_rgba(191,149,63,0.4)]">
         <EcosystemGoldDefs id="eco_path" />
