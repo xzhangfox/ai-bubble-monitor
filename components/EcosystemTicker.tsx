@@ -86,7 +86,7 @@ const ECOSYSTEM_APPS = [
   {
     id: 'glow',
     name: 'Flux Glow',
-    url: 'https://flux-glow-f60xl28cu-fox-1121.vercel.app/',
+    url: 'https://flux-glow.vercel.app/',
     logo: (
       <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_15px_rgba(191,149,63,0.4)]" fill="none">
         <EcosystemGoldDefs id="eco_glow" />
