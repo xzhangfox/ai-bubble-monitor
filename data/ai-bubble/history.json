@@ -14224,15 +14224,15 @@
     },
     {
       "date": "2026-10-16",
-      "compositeScore": 27.6,
+      "compositeScore": 23.8,
       "indicatorScores": {
-        "momentum": 23.3,
-        "trendExtension": 23.8,
-        "concentration": 33.5,
-        "complacency": 57.9,
-        "creditAppetite": 42.2,
-        "monetaryStimulus": 0.7,
-        "volumeSurge": 12
+        "momentum": 22.6,
+        "trendExtension": 22.1,
+        "concentration": 33.7,
+        "complacency": 31.1,
+        "creditAppetite": 37.5,
+        "monetaryStimulus": 0.6,
+        "volumeSurge": 18.6
       }
     }
   ]
