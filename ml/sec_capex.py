@@ -30,12 +30,12 @@ COMPANIES = {
     "ORCL": 1341439,
 }
 
-# What each files its capital spending and revenue under. Capex is one line
-# per company, never mixed (Amazon tags its "purchases of property and
-# equipment" as productive assets); revenue moved between tags over the years
-# (ASC 606), and any of these is total revenue.
+# What each files its capital spending and revenue under. Capex is the one
+# cash-flow line, "purchases of property and equipment" — which Amazon moved
+# from the PP&E tag to the productive-assets tag around 2017; revenue moved
+# between tags with ASC 606, and any of these is total revenue.
 CAPEX_CONCEPTS = {
-    "AMZN": ["PaymentsToAcquireProductiveAssets"],
+    "AMZN": ["PaymentsToAcquireProductiveAssets", "PaymentsToAcquirePropertyPlantAndEquipment"],
 }
 DEFAULT_CAPEX = ["PaymentsToAcquirePropertyPlantAndEquipment"]
 REVENUE_CONCEPTS = [
