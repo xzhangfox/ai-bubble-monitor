@@ -8,9 +8,11 @@ builds the market indicators.
 
 from __future__ import annotations
 
+import gzip
 import json
 import os
 import time
+import zlib
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -20,7 +22,8 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = Path(os.environ.get("AI_BUBBLE_DATA_DIR", ROOT / "data" / "ai-bubble"))
 
 # SEC asks automated clients to say who they are (https://www.sec.gov/os/accessing-edgar-data).
-SEC_USER_AGENT = os.environ.get("SEC_USER_AGENT", "AI Bubble Monitor xzhangfox@users.noreply.github.com")
+# (an empty repository secret arrives as an empty string: fall back then too)
+SEC_USER_AGENT = os.environ.get("SEC_USER_AGENT") or "AI Bubble Monitor xzhangfox@users.noreply.github.com"
 
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3-flash-preview")
 GEMINI_URL = os.environ.get("GEMINI_URL", "https://generativelanguage.googleapis.com/v1beta/models")
@@ -51,9 +54,15 @@ def http_get(url: str, *, headers: dict[str, str] | None = None, retries: int = 
     last: Exception | None = None
     for attempt in range(1, retries + 1):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": SEC_USER_AGENT, "Accept-Encoding": "identity", **(headers or {})})
+            # (SEC's fair-access rules ask for a declared User-Agent and compressed responses)
+            req = urllib.request.Request(url, headers={"User-Agent": SEC_USER_AGENT, "Accept-Encoding": "gzip, deflate", "Accept": "*/*", **(headers or {})})
             with urllib.request.urlopen(req, timeout=timeout) as res:
                 body = res.read()
+                encoding = (res.headers.get("Content-Encoding") or "").lower()
+            if encoding == "gzip":
+                body = gzip.decompress(body)
+            elif encoding == "deflate":
+                body = zlib.decompress(body)
             if not body.strip():
                 raise ValueError(f"empty response from {url}")
             return body

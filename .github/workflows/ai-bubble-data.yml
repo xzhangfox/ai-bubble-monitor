@@ -46,6 +46,8 @@ jobs:
       # the files it would have written keep their last good version.
       - name: Hyperscaler capex from SEC filings
         continue-on-error: true
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: python -m ml.sec_capex
 
       - name: Fetch data and compute indicators
@@ -59,6 +61,7 @@ jobs:
         continue-on-error: true
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: python -m ml.filings_llm
 
       - name: Daily briefing (LLM)

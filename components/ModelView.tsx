@@ -38,7 +38,7 @@ const T = {
     notYet: 'Not reliably better than the base rate yet',
     similar: (n: number, x: string) => `Of the ${n} most similar past days, ${x} were followed by a 10%+ fall within 3 months.`,
     baseHead: 'of all days were followed by a 10%+ fall within 3 months — the base rate',
-    noneBeats: (lo: string, hi: string) => `No model beat that out of sample. Today the four say ${lo} to ${hi}; none is more reliable than the base rate.`,
+    noneBeats: (lo: string, hi: string) => `No model beat that out of sample. Today’s estimates run from ${lo} to ${hi}; none is more reliable than the base rate.`,
     finding: (auc: string, lo: string, hi: string, verdict: string) => `The composite’s out-of-sample AUC was ${auc} (95% range ${lo}–${hi}): ${verdict} It measures how stretched AI markets are, not when they turn.`,
     verdictFlip: 'indistinguishable from a coin flip — a higher score has not meant a higher chance of a fall.',
     verdictInverse: 'falls came more often after low readings than after high ones.',
@@ -68,7 +68,8 @@ const T = {
     colSkill: 'Brier skill',
     colToday: 'Today',
     driversTitle: 'What moves today’s estimate',
-    driversNote: 'From the logistic model: how many points each indicator adds or takes away, against that indicator at its average.',
+    driversNote: 'From the logistic model: how many percentage points each indicator adds or takes away, against that indicator at its average.',
+    pts: 'pts',
     raises: 'raises it',
     lowers: 'lowers it',
     rank: 'rank',
@@ -94,7 +95,7 @@ const T = {
     notYet: '目前还不能稳定胜过基准',
     similar: (n: number, x: string) => `与今天最相似的 ${n} 个历史交易日中，有 ${x} 在之后 3 个月内下跌了 10% 以上。`,
     baseHead: '的交易日之后 3 个月内出现过 10% 以上的下跌 —— 这是基准',
-    noneBeats: (lo: string, hi: string) => `样本外没有一个模型胜过这个基准。今天四个模型给出 ${lo} 到 ${hi}，但都不比基准更可靠。`,
+    noneBeats: (lo: string, hi: string) => `样本外没有一个模型胜过这个基准。今天各模型的估计在 ${lo} 到 ${hi} 之间，但都不比基准更可靠。`,
     finding: (auc: string, lo: string, hi: string, verdict: string) => `综合指数的样本外 AUC 为 ${auc}（95% 区间 ${lo}–${hi}）：${verdict}它衡量的是 AI 市场被拉伸的程度，而不是何时转向。`,
     verdictFlip: '与抛硬币无法区分——分数更高并不意味着下跌概率更高。',
     verdictInverse: '下跌更多出现在低读数之后，而不是高读数之后。',
@@ -124,6 +125,7 @@ const T = {
     colToday: '今天',
     driversTitle: '是什么在推动今天的估计',
     driversNote: '来自逻辑回归模型：与该指标处于平均水平相比，每个指标让概率增加或减少了多少个百分点。',
+    pts: '个百分点',
     raises: '推高',
     lowers: '拉低',
     rank: '排名',
@@ -142,6 +144,7 @@ const T = {
 
 const pct = (x: number) => `${Math.round(x * 100)}%`
 const signedPct = (x: number, d = 1) => `${x > 0 ? '+' : x < 0 ? '−' : ''}${Math.abs(x * 100).toFixed(d)}%`
+const signedPts = (x: number) => `${x > 0 ? '+' : x < 0 ? '−' : ''}${Math.abs(x * 100).toFixed(1)}`
 const ci = (r: (number | null)[], fmt: (x: number) => string) => (r[0] === null || r[1] === null ? '' : `[${fmt(r[0] as number)}, ${fmt(r[1] as number)}]`)
 const num = (x: number, d = 2) => (x < 0 ? '−' : '') + Math.abs(x).toFixed(d)
 
@@ -339,8 +342,8 @@ export default function ModelView({ model, names, lang }: { model: ModelData; na
                 <tr className="text-white/40">
                   <th className="pb-2 font-medium">{t.colModel}</th>
                   <th className="pb-2 text-right font-medium">{t.colAuc}</th>
-                  <th className="pb-2 text-right font-medium">{t.colSkill}</th>
-                  <th className="pb-2 text-right font-medium">{t.colToday}</th>
+                  <th className="pb-2 pl-2 text-right font-medium">{t.colSkill}</th>
+                  <th className="pb-2 pl-3 text-right font-medium">{t.colToday}</th>
                 </tr>
               </thead>
               <tbody>
@@ -356,11 +359,11 @@ export default function ModelView({ model, names, lang }: { model: ModelData; na
                         <span className="text-white/85">{m.auc.toFixed(2)}</span>
                         <span className="block text-[0.65rem] text-white/35">{ci(m.aucCi, (v) => v.toFixed(2))}</span>
                       </td>
-                      <td className="py-2.5 text-right font-mono">
+                      <td className="py-2.5 pl-2 text-right font-mono">
                         <span className="text-white/85">{num(m.brierSkill)}</span>
                         <span className="block text-[0.65rem] text-white/35">{ci(m.brierSkillCi, (v) => num(v))}</span>
                       </td>
-                      <td className="py-2.5 text-right font-mono text-white/85">{pct(m.today)}</td>
+                      <td className="py-2.5 pl-3 text-right font-mono text-white/85">{pct(m.today)}</td>
                     </tr>
                   )
                 })}
@@ -384,7 +387,7 @@ export default function ModelView({ model, names, lang }: { model: ModelData; na
                       <div className="mb-1 flex items-baseline justify-between gap-3 text-xs">
                         <span className="min-w-0 truncate text-white/75">{names[d.id] ?? d.id}</span>
                         <span className="flex-shrink-0 font-mono text-white/85">
-                          {signedPct(d.effect)} <span className="text-white/35">{up ? t.raises : t.lowers}</span>
+                          {signedPts(d.effect)} {t.pts} <span className="hidden text-white/35 sm:inline">{up ? t.raises : t.lowers}</span>
                         </span>
                       </div>
                       <div className="relative h-1.5 rounded-full bg-white/5" title={`${t.rank} ${d.rank.toFixed(0)}`}>
@@ -418,14 +421,14 @@ export default function ModelView({ model, names, lang }: { model: ModelData; na
           <div className="mt-5 rounded-2xl border border-white/5 bg-surface-card p-5 md:p-6">
             <p className="mb-3 text-sm font-semibold text-white">{t.horizonsTitle}</p>
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[420px] text-left text-xs">
+              <table className="w-full text-left text-xs">
                 <thead>
                   <tr className="text-white/40">
                     <th className="pb-2 font-medium">{t.colHorizon}</th>
                     <th className="pb-2 text-right font-medium">{t.colBase}</th>
                     <th className="pb-2 text-right font-medium">{t.colComposite}</th>
-                    <th className="pb-2 text-right font-medium">{t.colLogistic}</th>
-                    <th className="pb-2 text-right font-medium">{t.colEpisodes}</th>
+                    <th className="hidden pb-2 text-right font-medium sm:table-cell">{t.colLogistic}</th>
+                    <th className="pb-2 pl-2 text-right font-medium">{t.colEpisodes}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -436,7 +439,7 @@ export default function ModelView({ model, names, lang }: { model: ModelData; na
                       {['composite', 'logistic'].map((id) => {
                         const m = aucOf(h.models, id)
                         return (
-                          <td key={id} className="py-2.5 text-right font-mono">
+                          <td key={id} className={`py-2.5 pl-2 text-right font-mono ${id === 'logistic' ? 'hidden sm:table-cell' : ''}`}>
                             <span className="text-white/85">{m ? m.auc.toFixed(2) : '—'}</span>
                             <span className="block text-[0.65rem] text-white/35">{m ? ci(m.aucCi, (v) => v.toFixed(2)) : ''}</span>
                           </td>
