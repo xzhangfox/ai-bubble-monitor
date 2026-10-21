@@ -1,3 +1,5723 @@
 {
-  "series": []
+  "generatedAt": "2026-10-21T21:41:02+00:00",
+  "companies": [
+    "MSFT",
+    "GOOGL",
+    "AMZN",
+    "META",
+    "ORCL"
+  ],
+  "definition": "Trailing-twelve-month capital expenditures (purchases of property and equipment) divided by trailing-twelve-month revenue, summed over the companies, as of each filing date.",
+  "source": "SEC EDGAR XBRL company facts (10-Q and 10-K filings)",
+  "latest": {
+    "date": "2026-09-11",
+    "intensity": 0.31637,
+    "capexTtmBn": 586.4,
+    "revenueTtmBn": 1853.4,
+    "members": {
+      "AMZN": {
+        "periodEnd": "2026-06-30",
+        "capexTtmBn": 173.0,
+        "revenueTtmBn": 775.7
+      },
+      "GOOGL": {
+        "periodEnd": "2026-06-30",
+        "capexTtmBn": 132.4,
+        "revenueTtmBn": 445.9
+      },
+      "META": {
+        "periodEnd": "2026-06-30",
+        "capexTtmBn": 89.3,
+        "revenueTtmBn": 228.2
+      },
+      "MSFT": {
+        "periodEnd": "2026-06-30",
+        "capexTtmBn": 115.9,
+        "revenueTtmBn": 331.8
+      },
+      "ORCL": {
+        "periodEnd": "2026-08-31",
+        "capexTtmBn": 75.7,
+        "revenueTtmBn": 71.8
+      }
+    }
+  },
+  "yearAgo": {
+    "date": "2025-09-10",
+    "intensity": 0.20421,
+    "capexTtmBn": 318.8,
+    "revenueTtmBn": 1561.0,
+    "members": {
+      "AMZN": {
+        "periodEnd": "2025-06-30",
+        "capexTtmBn": 107.7,
+        "revenueTtmBn": 670.0
+      },
+      "GOOGL": {
+        "periodEnd": "2025-06-30",
+        "capexTtmBn": 67.0,
+        "revenueTtmBn": 371.4
+      },
+      "META": {
+        "periodEnd": "2025-06-30",
+        "capexTtmBn": 52.2,
+        "revenueTtmBn": 178.8
+      },
+      "MSFT": {
+        "periodEnd": "2025-06-30",
+        "capexTtmBn": 64.6,
+        "revenueTtmBn": 281.7
+      },
+      "ORCL": {
+        "periodEnd": "2025-08-31",
+        "capexTtmBn": 27.4,
+        "revenueTtmBn": 59.0
+      }
+    }
+  },
+  "series": [
+    {
+      "date": "2016-02-11",
+      "intensity": 0.07737,
+      "capexTtmBn": 25.2,
+      "revenueTtmBn": 325.5,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2015-12-31",
+          "capexTtmBn": 4.6,
+          "revenueTtmBn": 107.0
+        },
+        "GOOGL": {
+          "periodEnd": "2015-12-31",
+          "capexTtmBn": 9.9,
+          "revenueTtmBn": 75.0
+        },
+        "META": {
+          "periodEnd": "2015-12-31",
+          "capexTtmBn": 2.5,
+          "revenueTtmBn": 17.9
+        },
+        "MSFT": {
+          "periodEnd": "2015-12-31",
+          "capexTtmBn": 6.6,
+          "revenueTtmBn": 88.1
+        },
+        "ORCL": {
+          "periodEnd": "2015-11-30",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 37.5
+        }
+      }
+    },
+    {
+      "date": "2016-03-18",
+      "intensity": 0.07745,
+      "capexTtmBn": 25.2,
+      "revenueTtmBn": 325.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2015-12-31",
+          "capexTtmBn": 4.6,
+          "revenueTtmBn": 107.0
+        },
+        "GOOGL": {
+          "periodEnd": "2015-12-31",
+          "capexTtmBn": 9.9,
+          "revenueTtmBn": 75.0
+        },
+        "META": {
+          "periodEnd": "2015-12-31",
+          "capexTtmBn": 2.5,
+          "revenueTtmBn": 17.9
+        },
+        "MSFT": {
+          "periodEnd": "2015-12-31",
+          "capexTtmBn": 6.6,
+          "revenueTtmBn": 88.1
+        },
+        "ORCL": {
+          "periodEnd": "2016-02-29",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 37.2
+        }
+      }
+    },
+    {
+      "date": "2016-04-21",
+      "intensity": 0.08057,
+      "capexTtmBn": 26.1,
+      "revenueTtmBn": 324.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2015-12-31",
+          "capexTtmBn": 4.6,
+          "revenueTtmBn": 107.0
+        },
+        "GOOGL": {
+          "periodEnd": "2015-12-31",
+          "capexTtmBn": 9.9,
+          "revenueTtmBn": 75.0
+        },
+        "META": {
+          "periodEnd": "2015-12-31",
+          "capexTtmBn": 2.5,
+          "revenueTtmBn": 17.9
+        },
+        "MSFT": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 7.5,
+          "revenueTtmBn": 86.9
+        },
+        "ORCL": {
+          "periodEnd": "2016-02-29",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 37.2
+        }
+      }
+    },
+    {
+      "date": "2016-04-28",
+      "intensity": 0.08205,
+      "capexTtmBn": 26.7,
+      "revenueTtmBn": 325.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2015-12-31",
+          "capexTtmBn": 4.6,
+          "revenueTtmBn": 107.0
+        },
+        "GOOGL": {
+          "periodEnd": "2015-12-31",
+          "capexTtmBn": 9.9,
+          "revenueTtmBn": 75.0
+        },
+        "META": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 3.2,
+          "revenueTtmBn": 19.8
+        },
+        "MSFT": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 7.5,
+          "revenueTtmBn": 86.9
+        },
+        "ORCL": {
+          "periodEnd": "2016-02-29",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 37.2
+        }
+      }
+    },
+    {
+      "date": "2016-04-29",
+      "intensity": 0.08139,
+      "capexTtmBn": 27.0,
+      "revenueTtmBn": 332.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 4.9,
+          "revenueTtmBn": 113.4
+        },
+        "GOOGL": {
+          "periodEnd": "2015-12-31",
+          "capexTtmBn": 9.9,
+          "revenueTtmBn": 75.0
+        },
+        "META": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 3.2,
+          "revenueTtmBn": 19.8
+        },
+        "MSFT": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 7.5,
+          "revenueTtmBn": 86.9
+        },
+        "ORCL": {
+          "periodEnd": "2016-02-29",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 37.2
+        }
+      }
+    },
+    {
+      "date": "2016-05-03",
+      "intensity": 0.07917,
+      "capexTtmBn": 26.5,
+      "revenueTtmBn": 335.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 4.9,
+          "revenueTtmBn": 113.4
+        },
+        "GOOGL": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 9.4,
+          "revenueTtmBn": 78.0
+        },
+        "META": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 3.2,
+          "revenueTtmBn": 19.8
+        },
+        "MSFT": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 7.5,
+          "revenueTtmBn": 86.9
+        },
+        "ORCL": {
+          "periodEnd": "2016-02-29",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 37.2
+        }
+      }
+    },
+    {
+      "date": "2016-06-22",
+      "intensity": 0.07795,
+      "capexTtmBn": 26.1,
+      "revenueTtmBn": 335.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 4.9,
+          "revenueTtmBn": 113.4
+        },
+        "GOOGL": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 9.4,
+          "revenueTtmBn": 78.0
+        },
+        "META": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 3.2,
+          "revenueTtmBn": 19.8
+        },
+        "MSFT": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 7.5,
+          "revenueTtmBn": 86.9
+        },
+        "ORCL": {
+          "periodEnd": "2016-05-31",
+          "capexTtmBn": 1.2,
+          "revenueTtmBn": 37.0
+        }
+      }
+    },
+    {
+      "date": "2016-07-28",
+      "intensity": 0.08169,
+      "capexTtmBn": 27.4,
+      "revenueTtmBn": 335.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 4.9,
+          "revenueTtmBn": 113.4
+        },
+        "GOOGL": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 9.4,
+          "revenueTtmBn": 78.0
+        },
+        "META": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 3.6,
+          "revenueTtmBn": 22.2
+        },
+        "MSFT": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 8.3,
+          "revenueTtmBn": 85.3
+        },
+        "ORCL": {
+          "periodEnd": "2016-05-31",
+          "capexTtmBn": 1.2,
+          "revenueTtmBn": 37.0
+        }
+      }
+    },
+    {
+      "date": "2016-07-29",
+      "intensity": 0.08142,
+      "capexTtmBn": 27.9,
+      "revenueTtmBn": 343.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 5.4,
+          "revenueTtmBn": 120.6
+        },
+        "GOOGL": {
+          "periodEnd": "2016-03-31",
+          "capexTtmBn": 9.4,
+          "revenueTtmBn": 78.0
+        },
+        "META": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 3.6,
+          "revenueTtmBn": 22.2
+        },
+        "MSFT": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 8.3,
+          "revenueTtmBn": 85.3
+        },
+        "ORCL": {
+          "periodEnd": "2016-05-31",
+          "capexTtmBn": 1.2,
+          "revenueTtmBn": 37.0
+        }
+      }
+    },
+    {
+      "date": "2016-08-04",
+      "intensity": 0.07941,
+      "capexTtmBn": 27.5,
+      "revenueTtmBn": 346.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 5.4,
+          "revenueTtmBn": 120.6
+        },
+        "GOOGL": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 9.0,
+          "revenueTtmBn": 81.8
+        },
+        "META": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 3.6,
+          "revenueTtmBn": 22.2
+        },
+        "MSFT": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 8.3,
+          "revenueTtmBn": 85.3
+        },
+        "ORCL": {
+          "periodEnd": "2016-05-31",
+          "capexTtmBn": 1.2,
+          "revenueTtmBn": 37.0
+        }
+      }
+    },
+    {
+      "date": "2016-09-19",
+      "intensity": 0.07895,
+      "capexTtmBn": 27.4,
+      "revenueTtmBn": 347.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 5.4,
+          "revenueTtmBn": 120.6
+        },
+        "GOOGL": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 9.0,
+          "revenueTtmBn": 81.8
+        },
+        "META": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 3.6,
+          "revenueTtmBn": 22.2
+        },
+        "MSFT": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 8.3,
+          "revenueTtmBn": 85.3
+        },
+        "ORCL": {
+          "periodEnd": "2016-08-31",
+          "capexTtmBn": 1.0,
+          "revenueTtmBn": 37.2
+        }
+      }
+    },
+    {
+      "date": "2016-10-20",
+      "intensity": 0.08126,
+      "capexTtmBn": 28.2,
+      "revenueTtmBn": 347.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 5.4,
+          "revenueTtmBn": 120.6
+        },
+        "GOOGL": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 9.0,
+          "revenueTtmBn": 81.8
+        },
+        "META": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 3.6,
+          "revenueTtmBn": 22.2
+        },
+        "MSFT": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 9.2,
+          "revenueTtmBn": 85.4
+        },
+        "ORCL": {
+          "periodEnd": "2016-08-31",
+          "capexTtmBn": 1.0,
+          "revenueTtmBn": 37.2
+        }
+      }
+    },
+    {
+      "date": "2016-10-28",
+      "intensity": 0.0814,
+      "capexTtmBn": 28.9,
+      "revenueTtmBn": 354.5,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 6.0,
+          "revenueTtmBn": 128.0
+        },
+        "GOOGL": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 9.0,
+          "revenueTtmBn": 81.8
+        },
+        "META": {
+          "periodEnd": "2016-06-30",
+          "capexTtmBn": 3.6,
+          "revenueTtmBn": 22.2
+        },
+        "MSFT": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 9.2,
+          "revenueTtmBn": 85.4
+        },
+        "ORCL": {
+          "periodEnd": "2016-08-31",
+          "capexTtmBn": 1.0,
+          "revenueTtmBn": 37.2
+        }
+      }
+    },
+    {
+      "date": "2016-11-03",
+      "intensity": 0.08135,
+      "capexTtmBn": 29.4,
+      "revenueTtmBn": 360.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 6.0,
+          "revenueTtmBn": 128.0
+        },
+        "GOOGL": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 9.2,
+          "revenueTtmBn": 85.5
+        },
+        "META": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 3.9,
+          "revenueTtmBn": 24.7
+        },
+        "MSFT": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 9.2,
+          "revenueTtmBn": 85.4
+        },
+        "ORCL": {
+          "periodEnd": "2016-08-31",
+          "capexTtmBn": 1.0,
+          "revenueTtmBn": 37.2
+        }
+      }
+    },
+    {
+      "date": "2016-12-19",
+      "intensity": 0.0829,
+      "capexTtmBn": 29.9,
+      "revenueTtmBn": 360.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 6.0,
+          "revenueTtmBn": 128.0
+        },
+        "GOOGL": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 9.2,
+          "revenueTtmBn": 85.5
+        },
+        "META": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 3.9,
+          "revenueTtmBn": 24.7
+        },
+        "MSFT": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 9.2,
+          "revenueTtmBn": 85.4
+        },
+        "ORCL": {
+          "periodEnd": "2016-11-30",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 37.2
+        }
+      }
+    },
+    {
+      "date": "2017-01-26",
+      "intensity": 0.08273,
+      "capexTtmBn": 29.9,
+      "revenueTtmBn": 361.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 6.0,
+          "revenueTtmBn": 128.0
+        },
+        "GOOGL": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 9.2,
+          "revenueTtmBn": 85.5
+        },
+        "META": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 3.9,
+          "revenueTtmBn": 24.7
+        },
+        "MSFT": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 9.1,
+          "revenueTtmBn": 85.7
+        },
+        "ORCL": {
+          "periodEnd": "2016-11-30",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 37.2
+        }
+      }
+    },
+    {
+      "date": "2017-02-03",
+      "intensity": 0.08522,
+      "capexTtmBn": 31.4,
+      "revenueTtmBn": 368.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-09-30",
+          "capexTtmBn": 6.0,
+          "revenueTtmBn": 128.0
+        },
+        "GOOGL": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 10.2,
+          "revenueTtmBn": 90.3
+        },
+        "META": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 4.5,
+          "revenueTtmBn": 27.6
+        },
+        "MSFT": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 9.1,
+          "revenueTtmBn": 85.7
+        },
+        "ORCL": {
+          "periodEnd": "2016-11-30",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 37.2
+        }
+      }
+    },
+    {
+      "date": "2017-02-10",
+      "intensity": 0.08526,
+      "capexTtmBn": 32.1,
+      "revenueTtmBn": 376.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 6.7,
+          "revenueTtmBn": 136.0
+        },
+        "GOOGL": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 10.2,
+          "revenueTtmBn": 90.3
+        },
+        "META": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 4.5,
+          "revenueTtmBn": 27.6
+        },
+        "MSFT": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 9.1,
+          "revenueTtmBn": 85.7
+        },
+        "ORCL": {
+          "periodEnd": "2016-11-30",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 37.2
+        }
+      }
+    },
+    {
+      "date": "2017-03-17",
+      "intensity": 0.08541,
+      "capexTtmBn": 32.2,
+      "revenueTtmBn": 377.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 6.7,
+          "revenueTtmBn": 136.0
+        },
+        "GOOGL": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 10.2,
+          "revenueTtmBn": 90.3
+        },
+        "META": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 4.5,
+          "revenueTtmBn": 27.6
+        },
+        "MSFT": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 9.1,
+          "revenueTtmBn": 85.7
+        },
+        "ORCL": {
+          "periodEnd": "2017-02-28",
+          "capexTtmBn": 1.7,
+          "revenueTtmBn": 37.4
+        }
+      }
+    },
+    {
+      "date": "2017-04-27",
+      "intensity": 0.08344,
+      "capexTtmBn": 31.6,
+      "revenueTtmBn": 378.6,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 6.7,
+          "revenueTtmBn": 136.0
+        },
+        "GOOGL": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 10.2,
+          "revenueTtmBn": 90.3
+        },
+        "META": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 4.5,
+          "revenueTtmBn": 27.6
+        },
+        "MSFT": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 8.5,
+          "revenueTtmBn": 87.2
+        },
+        "ORCL": {
+          "periodEnd": "2017-02-28",
+          "capexTtmBn": 1.7,
+          "revenueTtmBn": 37.4
+        }
+      }
+    },
+    {
+      "date": "2017-04-28",
+      "intensity": 0.08378,
+      "capexTtmBn": 32.3,
+      "revenueTtmBn": 385.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 7.4,
+          "revenueTtmBn": 142.6
+        },
+        "GOOGL": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 10.2,
+          "revenueTtmBn": 90.3
+        },
+        "META": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 4.5,
+          "revenueTtmBn": 27.6
+        },
+        "MSFT": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 8.5,
+          "revenueTtmBn": 87.2
+        },
+        "ORCL": {
+          "periodEnd": "2017-02-28",
+          "capexTtmBn": 1.7,
+          "revenueTtmBn": 37.4
+        }
+      }
+    },
+    {
+      "date": "2017-05-02",
+      "intensity": 0.08302,
+      "capexTtmBn": 32.4,
+      "revenueTtmBn": 389.7,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 7.4,
+          "revenueTtmBn": 142.6
+        },
+        "GOOGL": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 10.3,
+          "revenueTtmBn": 94.8
+        },
+        "META": {
+          "periodEnd": "2016-12-31",
+          "capexTtmBn": 4.5,
+          "revenueTtmBn": 27.6
+        },
+        "MSFT": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 8.5,
+          "revenueTtmBn": 87.2
+        },
+        "ORCL": {
+          "periodEnd": "2017-02-28",
+          "capexTtmBn": 1.7,
+          "revenueTtmBn": 37.4
+        }
+      }
+    },
+    {
+      "date": "2017-05-04",
+      "intensity": 0.08282,
+      "capexTtmBn": 32.5,
+      "revenueTtmBn": 392.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 7.4,
+          "revenueTtmBn": 142.6
+        },
+        "GOOGL": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 10.3,
+          "revenueTtmBn": 94.8
+        },
+        "META": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 4.6,
+          "revenueTtmBn": 30.3
+        },
+        "MSFT": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 8.5,
+          "revenueTtmBn": 87.2
+        },
+        "ORCL": {
+          "periodEnd": "2017-02-28",
+          "capexTtmBn": 1.7,
+          "revenueTtmBn": 37.4
+        }
+      }
+    },
+    {
+      "date": "2017-06-27",
+      "intensity": 0.08363,
+      "capexTtmBn": 32.8,
+      "revenueTtmBn": 392.6,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 7.4,
+          "revenueTtmBn": 142.6
+        },
+        "GOOGL": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 10.3,
+          "revenueTtmBn": 94.8
+        },
+        "META": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 4.6,
+          "revenueTtmBn": 30.3
+        },
+        "MSFT": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 8.5,
+          "revenueTtmBn": 87.2
+        },
+        "ORCL": {
+          "periodEnd": "2017-05-31",
+          "capexTtmBn": 2.0,
+          "revenueTtmBn": 37.7
+        }
+      }
+    },
+    {
+      "date": "2017-07-25",
+      "intensity": 0.08447,
+      "capexTtmBn": 33.5,
+      "revenueTtmBn": 397.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 7.4,
+          "revenueTtmBn": 142.6
+        },
+        "GOOGL": {
+          "periodEnd": "2017-06-30",
+          "capexTtmBn": 11.0,
+          "revenueTtmBn": 99.3
+        },
+        "META": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 4.6,
+          "revenueTtmBn": 30.3
+        },
+        "MSFT": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 8.5,
+          "revenueTtmBn": 87.2
+        },
+        "ORCL": {
+          "periodEnd": "2017-05-31",
+          "capexTtmBn": 2.0,
+          "revenueTtmBn": 37.7
+        }
+      }
+    },
+    {
+      "date": "2017-07-27",
+      "intensity": 0.08498,
+      "capexTtmBn": 34.0,
+      "revenueTtmBn": 400.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 7.4,
+          "revenueTtmBn": 142.6
+        },
+        "GOOGL": {
+          "periodEnd": "2017-06-30",
+          "capexTtmBn": 11.0,
+          "revenueTtmBn": 99.3
+        },
+        "META": {
+          "periodEnd": "2017-06-30",
+          "capexTtmBn": 5.1,
+          "revenueTtmBn": 33.2
+        },
+        "MSFT": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 8.5,
+          "revenueTtmBn": 87.2
+        },
+        "ORCL": {
+          "periodEnd": "2017-05-31",
+          "capexTtmBn": 2.0,
+          "revenueTtmBn": 37.7
+        }
+      }
+    },
+    {
+      "date": "2017-08-02",
+      "intensity": 0.08348,
+      "capexTtmBn": 33.6,
+      "revenueTtmBn": 402.7,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 7.4,
+          "revenueTtmBn": 142.6
+        },
+        "GOOGL": {
+          "periodEnd": "2017-06-30",
+          "capexTtmBn": 11.0,
+          "revenueTtmBn": 99.3
+        },
+        "META": {
+          "periodEnd": "2017-06-30",
+          "capexTtmBn": 5.1,
+          "revenueTtmBn": 33.2
+        },
+        "MSFT": {
+          "periodEnd": "2017-06-30",
+          "capexTtmBn": 8.1,
+          "revenueTtmBn": 90.0
+        },
+        "ORCL": {
+          "periodEnd": "2017-05-31",
+          "capexTtmBn": 2.0,
+          "revenueTtmBn": 37.7
+        }
+      }
+    },
+    {
+      "date": "2017-09-18",
+      "intensity": 0.08379,
+      "capexTtmBn": 33.8,
+      "revenueTtmBn": 403.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 7.4,
+          "revenueTtmBn": 142.6
+        },
+        "GOOGL": {
+          "periodEnd": "2017-06-30",
+          "capexTtmBn": 11.0,
+          "revenueTtmBn": 99.3
+        },
+        "META": {
+          "periodEnd": "2017-06-30",
+          "capexTtmBn": 5.1,
+          "revenueTtmBn": 33.2
+        },
+        "MSFT": {
+          "periodEnd": "2017-06-30",
+          "capexTtmBn": 8.1,
+          "revenueTtmBn": 90.0
+        },
+        "ORCL": {
+          "periodEnd": "2017-08-31",
+          "capexTtmBn": 2.2,
+          "revenueTtmBn": 38.3
+        }
+      }
+    },
+    {
+      "date": "2017-10-26",
+      "intensity": 0.08288,
+      "capexTtmBn": 33.8,
+      "revenueTtmBn": 407.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 7.4,
+          "revenueTtmBn": 142.6
+        },
+        "GOOGL": {
+          "periodEnd": "2017-06-30",
+          "capexTtmBn": 11.0,
+          "revenueTtmBn": 99.3
+        },
+        "META": {
+          "periodEnd": "2017-06-30",
+          "capexTtmBn": 5.1,
+          "revenueTtmBn": 33.2
+        },
+        "MSFT": {
+          "periodEnd": "2017-09-30",
+          "capexTtmBn": 8.1,
+          "revenueTtmBn": 94.0
+        },
+        "ORCL": {
+          "periodEnd": "2017-08-31",
+          "capexTtmBn": 2.2,
+          "revenueTtmBn": 38.3
+        }
+      }
+    },
+    {
+      "date": "2017-10-27",
+      "intensity": 0.08419,
+      "capexTtmBn": 34.7,
+      "revenueTtmBn": 412.7,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 7.4,
+          "revenueTtmBn": 142.6
+        },
+        "GOOGL": {
+          "periodEnd": "2017-09-30",
+          "capexTtmBn": 12.0,
+          "revenueTtmBn": 104.6
+        },
+        "META": {
+          "periodEnd": "2017-06-30",
+          "capexTtmBn": 5.1,
+          "revenueTtmBn": 33.2
+        },
+        "MSFT": {
+          "periodEnd": "2017-09-30",
+          "capexTtmBn": 8.1,
+          "revenueTtmBn": 94.0
+        },
+        "ORCL": {
+          "periodEnd": "2017-08-31",
+          "capexTtmBn": 2.2,
+          "revenueTtmBn": 38.3
+        }
+      }
+    },
+    {
+      "date": "2017-11-02",
+      "intensity": 0.08511,
+      "capexTtmBn": 35.4,
+      "revenueTtmBn": 416.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2017-03-31",
+          "capexTtmBn": 7.4,
+          "revenueTtmBn": 142.6
+        },
+        "GOOGL": {
+          "periodEnd": "2017-09-30",
+          "capexTtmBn": 12.0,
+          "revenueTtmBn": 104.6
+        },
+        "META": {
+          "periodEnd": "2017-09-30",
+          "capexTtmBn": 5.7,
+          "revenueTtmBn": 36.5
+        },
+        "MSFT": {
+          "periodEnd": "2017-09-30",
+          "capexTtmBn": 8.1,
+          "revenueTtmBn": 94.0
+        },
+        "ORCL": {
+          "periodEnd": "2017-08-31",
+          "capexTtmBn": 2.2,
+          "revenueTtmBn": 38.3
+        }
+      }
+    },
+    {
+      "date": "2018-10-26",
+      "intensity": 0.10958,
+      "capexTtmBn": 60.7,
+      "revenueTtmBn": 554.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 13.3,
+          "revenueTtmBn": 221.0
+        },
+        "GOOGL": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 22.4,
+          "revenueTtmBn": 129.9
+        },
+        "META": {
+          "periodEnd": "2018-06-30",
+          "capexTtmBn": 10.3,
+          "revenueTtmBn": 48.5
+        },
+        "MSFT": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 13.1,
+          "revenueTtmBn": 114.9
+        },
+        "ORCL": {
+          "periodEnd": "2018-08-31",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 39.8
+        }
+      }
+    },
+    {
+      "date": "2018-10-31",
+      "intensity": 0.11176,
+      "capexTtmBn": 62.3,
+      "revenueTtmBn": 557.5,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 13.3,
+          "revenueTtmBn": 221.0
+        },
+        "GOOGL": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 22.4,
+          "revenueTtmBn": 129.9
+        },
+        "META": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 11.9,
+          "revenueTtmBn": 51.9
+        },
+        "MSFT": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 13.1,
+          "revenueTtmBn": 114.9
+        },
+        "ORCL": {
+          "periodEnd": "2018-08-31",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 39.8
+        }
+      }
+    },
+    {
+      "date": "2018-12-19",
+      "intensity": 0.11145,
+      "capexTtmBn": 62.1,
+      "revenueTtmBn": 557.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 13.3,
+          "revenueTtmBn": 221.0
+        },
+        "GOOGL": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 22.4,
+          "revenueTtmBn": 129.9
+        },
+        "META": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 11.9,
+          "revenueTtmBn": 51.9
+        },
+        "MSFT": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 13.1,
+          "revenueTtmBn": 114.9
+        },
+        "ORCL": {
+          "periodEnd": "2018-11-30",
+          "capexTtmBn": 1.5,
+          "revenueTtmBn": 39.8
+        }
+      }
+    },
+    {
+      "date": "2019-01-30",
+      "intensity": 0.11275,
+      "capexTtmBn": 63.2,
+      "revenueTtmBn": 561.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 13.3,
+          "revenueTtmBn": 221.0
+        },
+        "GOOGL": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 22.4,
+          "revenueTtmBn": 129.9
+        },
+        "META": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 11.9,
+          "revenueTtmBn": 51.9
+        },
+        "MSFT": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 14.2,
+          "revenueTtmBn": 118.5
+        },
+        "ORCL": {
+          "periodEnd": "2018-11-30",
+          "capexTtmBn": 1.5,
+          "revenueTtmBn": 39.8
+        }
+      }
+    },
+    {
+      "date": "2019-01-31",
+      "intensity": 0.11557,
+      "capexTtmBn": 65.3,
+      "revenueTtmBn": 564.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 13.3,
+          "revenueTtmBn": 221.0
+        },
+        "GOOGL": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 22.4,
+          "revenueTtmBn": 129.9
+        },
+        "META": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 55.8
+        },
+        "MSFT": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 14.2,
+          "revenueTtmBn": 118.5
+        },
+        "ORCL": {
+          "periodEnd": "2018-11-30",
+          "capexTtmBn": 1.5,
+          "revenueTtmBn": 39.8
+        }
+      }
+    },
+    {
+      "date": "2019-02-01",
+      "intensity": 0.11338,
+      "capexTtmBn": 65.4,
+      "revenueTtmBn": 576.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 13.4,
+          "revenueTtmBn": 232.9
+        },
+        "GOOGL": {
+          "periodEnd": "2018-09-30",
+          "capexTtmBn": 22.4,
+          "revenueTtmBn": 129.9
+        },
+        "META": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 55.8
+        },
+        "MSFT": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 14.2,
+          "revenueTtmBn": 118.5
+        },
+        "ORCL": {
+          "periodEnd": "2018-11-30",
+          "capexTtmBn": 1.5,
+          "revenueTtmBn": 39.8
+        }
+      }
+    },
+    {
+      "date": "2019-02-05",
+      "intensity": 0.11678,
+      "capexTtmBn": 68.2,
+      "revenueTtmBn": 583.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 13.4,
+          "revenueTtmBn": 232.9
+        },
+        "GOOGL": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 25.1,
+          "revenueTtmBn": 136.8
+        },
+        "META": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 55.8
+        },
+        "MSFT": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 14.2,
+          "revenueTtmBn": 118.5
+        },
+        "ORCL": {
+          "periodEnd": "2018-11-30",
+          "capexTtmBn": 1.5,
+          "revenueTtmBn": 39.8
+        }
+      }
+    },
+    {
+      "date": "2019-03-18",
+      "intensity": 0.11708,
+      "capexTtmBn": 68.3,
+      "revenueTtmBn": 583.6,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 13.4,
+          "revenueTtmBn": 232.9
+        },
+        "GOOGL": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 25.1,
+          "revenueTtmBn": 136.8
+        },
+        "META": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 55.8
+        },
+        "MSFT": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 14.2,
+          "revenueTtmBn": 118.5
+        },
+        "ORCL": {
+          "periodEnd": "2019-02-28",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 39.6
+        }
+      }
+    },
+    {
+      "date": "2019-04-24",
+      "intensity": 0.1157,
+      "capexTtmBn": 68.0,
+      "revenueTtmBn": 587.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 13.4,
+          "revenueTtmBn": 232.9
+        },
+        "GOOGL": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 25.1,
+          "revenueTtmBn": 136.8
+        },
+        "META": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 55.8
+        },
+        "MSFT": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 122.2
+        },
+        "ORCL": {
+          "periodEnd": "2019-02-28",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 39.6
+        }
+      }
+    },
+    {
+      "date": "2019-04-25",
+      "intensity": 0.11683,
+      "capexTtmBn": 69.0,
+      "revenueTtmBn": 590.5,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 13.4,
+          "revenueTtmBn": 232.9
+        },
+        "GOOGL": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 25.1,
+          "revenueTtmBn": 136.8
+        },
+        "META": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 14.9,
+          "revenueTtmBn": 58.9
+        },
+        "MSFT": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 122.2
+        },
+        "ORCL": {
+          "periodEnd": "2019-02-28",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 39.6
+        }
+      }
+    },
+    {
+      "date": "2019-04-26",
+      "intensity": 0.11546,
+      "capexTtmBn": 69.2,
+      "revenueTtmBn": 599.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 13.6,
+          "revenueTtmBn": 241.5
+        },
+        "GOOGL": {
+          "periodEnd": "2018-12-31",
+          "capexTtmBn": 25.1,
+          "revenueTtmBn": 136.8
+        },
+        "META": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 14.9,
+          "revenueTtmBn": 58.9
+        },
+        "MSFT": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 122.2
+        },
+        "ORCL": {
+          "periodEnd": "2019-02-28",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 39.6
+        }
+      }
+    },
+    {
+      "date": "2019-04-30",
+      "intensity": 0.11006,
+      "capexTtmBn": 66.5,
+      "revenueTtmBn": 604.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 13.6,
+          "revenueTtmBn": 241.5
+        },
+        "GOOGL": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 22.5,
+          "revenueTtmBn": 142.0
+        },
+        "META": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 14.9,
+          "revenueTtmBn": 58.9
+        },
+        "MSFT": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 122.2
+        },
+        "ORCL": {
+          "periodEnd": "2019-02-28",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 39.6
+        }
+      }
+    },
+    {
+      "date": "2019-06-21",
+      "intensity": 0.11014,
+      "capexTtmBn": 66.6,
+      "revenueTtmBn": 604.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 13.6,
+          "revenueTtmBn": 241.5
+        },
+        "GOOGL": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 22.5,
+          "revenueTtmBn": 142.0
+        },
+        "META": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 14.9,
+          "revenueTtmBn": 58.9
+        },
+        "MSFT": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 122.2
+        },
+        "ORCL": {
+          "periodEnd": "2019-05-31",
+          "capexTtmBn": 1.7,
+          "revenueTtmBn": 39.5
+        }
+      }
+    },
+    {
+      "date": "2019-07-25",
+      "intensity": 0.10977,
+      "capexTtmBn": 66.7,
+      "revenueTtmBn": 607.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 13.6,
+          "revenueTtmBn": 241.5
+        },
+        "GOOGL": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 22.5,
+          "revenueTtmBn": 142.0
+        },
+        "META": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 62.6
+        },
+        "MSFT": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 122.2
+        },
+        "ORCL": {
+          "periodEnd": "2019-05-31",
+          "capexTtmBn": 1.7,
+          "revenueTtmBn": 39.5
+        }
+      }
+    },
+    {
+      "date": "2019-07-26",
+      "intensity": 0.10836,
+      "capexTtmBn": 67.7,
+      "revenueTtmBn": 624.7,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 252.1
+        },
+        "GOOGL": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 23.1,
+          "revenueTtmBn": 148.3
+        },
+        "META": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 62.6
+        },
+        "MSFT": {
+          "periodEnd": "2019-03-31",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 122.2
+        },
+        "ORCL": {
+          "periodEnd": "2019-05-31",
+          "capexTtmBn": 1.7,
+          "revenueTtmBn": 39.5
+        }
+      }
+    },
+    {
+      "date": "2019-08-01",
+      "intensity": 0.10785,
+      "capexTtmBn": 67.8,
+      "revenueTtmBn": 628.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 252.1
+        },
+        "GOOGL": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 23.1,
+          "revenueTtmBn": 148.3
+        },
+        "META": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 62.6
+        },
+        "MSFT": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 125.8
+        },
+        "ORCL": {
+          "periodEnd": "2019-05-31",
+          "capexTtmBn": 1.7,
+          "revenueTtmBn": 39.5
+        }
+      }
+    },
+    {
+      "date": "2019-09-13",
+      "intensity": 0.10785,
+      "capexTtmBn": 67.8,
+      "revenueTtmBn": 628.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 252.1
+        },
+        "GOOGL": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 23.1,
+          "revenueTtmBn": 148.3
+        },
+        "META": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 62.6
+        },
+        "MSFT": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 125.8
+        },
+        "ORCL": {
+          "periodEnd": "2019-08-31",
+          "capexTtmBn": 1.7,
+          "revenueTtmBn": 39.5
+        }
+      }
+    },
+    {
+      "date": "2019-10-23",
+      "intensity": 0.10683,
+      "capexTtmBn": 67.5,
+      "revenueTtmBn": 632.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 13.9,
+          "revenueTtmBn": 252.1
+        },
+        "GOOGL": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 23.1,
+          "revenueTtmBn": 148.3
+        },
+        "META": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 62.6
+        },
+        "MSFT": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 13.7,
+          "revenueTtmBn": 129.8
+        },
+        "ORCL": {
+          "periodEnd": "2019-08-31",
+          "capexTtmBn": 1.7,
+          "revenueTtmBn": 39.5
+        }
+      }
+    },
+    {
+      "date": "2019-10-25",
+      "intensity": 0.10669,
+      "capexTtmBn": 68.9,
+      "revenueTtmBn": 645.7,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 15.3,
+          "revenueTtmBn": 265.5
+        },
+        "GOOGL": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 23.1,
+          "revenueTtmBn": 148.3
+        },
+        "META": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 62.6
+        },
+        "MSFT": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 13.7,
+          "revenueTtmBn": 129.8
+        },
+        "ORCL": {
+          "periodEnd": "2019-08-31",
+          "capexTtmBn": 1.7,
+          "revenueTtmBn": 39.5
+        }
+      }
+    },
+    {
+      "date": "2019-10-29",
+      "intensity": 0.10781,
+      "capexTtmBn": 70.3,
+      "revenueTtmBn": 652.5,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 15.3,
+          "revenueTtmBn": 265.5
+        },
+        "GOOGL": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 24.6,
+          "revenueTtmBn": 155.1
+        },
+        "META": {
+          "periodEnd": "2019-06-30",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 62.6
+        },
+        "MSFT": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 13.7,
+          "revenueTtmBn": 129.8
+        },
+        "ORCL": {
+          "periodEnd": "2019-08-31",
+          "capexTtmBn": 1.7,
+          "revenueTtmBn": 39.5
+        }
+      }
+    },
+    {
+      "date": "2019-10-31",
+      "intensity": 0.10746,
+      "capexTtmBn": 70.5,
+      "revenueTtmBn": 656.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 15.3,
+          "revenueTtmBn": 265.5
+        },
+        "GOOGL": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 24.6,
+          "revenueTtmBn": 155.1
+        },
+        "META": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 15.3,
+          "revenueTtmBn": 66.5
+        },
+        "MSFT": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 13.7,
+          "revenueTtmBn": 129.8
+        },
+        "ORCL": {
+          "periodEnd": "2019-08-31",
+          "capexTtmBn": 1.7,
+          "revenueTtmBn": 39.5
+        }
+      }
+    },
+    {
+      "date": "2019-12-13",
+      "intensity": 0.10734,
+      "capexTtmBn": 70.5,
+      "revenueTtmBn": 656.5,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 15.3,
+          "revenueTtmBn": 265.5
+        },
+        "GOOGL": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 24.6,
+          "revenueTtmBn": 155.1
+        },
+        "META": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 15.3,
+          "revenueTtmBn": 66.5
+        },
+        "MSFT": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 13.7,
+          "revenueTtmBn": 129.8
+        },
+        "ORCL": {
+          "periodEnd": "2019-11-30",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 39.6
+        }
+      }
+    },
+    {
+      "date": "2020-01-29",
+      "intensity": 0.10637,
+      "capexTtmBn": 70.3,
+      "revenueTtmBn": 660.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 15.3,
+          "revenueTtmBn": 265.5
+        },
+        "GOOGL": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 24.6,
+          "revenueTtmBn": 155.1
+        },
+        "META": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 15.3,
+          "revenueTtmBn": 66.5
+        },
+        "MSFT": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 13.5,
+          "revenueTtmBn": 134.2
+        },
+        "ORCL": {
+          "periodEnd": "2019-11-30",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 39.6
+        }
+      }
+    },
+    {
+      "date": "2020-01-30",
+      "intensity": 0.1054,
+      "capexTtmBn": 70.1,
+      "revenueTtmBn": 665.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 15.3,
+          "revenueTtmBn": 265.5
+        },
+        "GOOGL": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 24.6,
+          "revenueTtmBn": 155.1
+        },
+        "META": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 70.7
+        },
+        "MSFT": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 13.5,
+          "revenueTtmBn": 134.2
+        },
+        "ORCL": {
+          "periodEnd": "2019-11-30",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 39.6
+        }
+      }
+    },
+    {
+      "date": "2020-01-31",
+      "intensity": 0.10539,
+      "capexTtmBn": 71.7,
+      "revenueTtmBn": 680.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 16.9,
+          "revenueTtmBn": 280.5
+        },
+        "GOOGL": {
+          "periodEnd": "2019-09-30",
+          "capexTtmBn": 24.6,
+          "revenueTtmBn": 155.1
+        },
+        "META": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 70.7
+        },
+        "MSFT": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 13.5,
+          "revenueTtmBn": 134.2
+        },
+        "ORCL": {
+          "periodEnd": "2019-11-30",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 39.6
+        }
+      }
+    },
+    {
+      "date": "2020-02-04",
+      "intensity": 0.10285,
+      "capexTtmBn": 70.6,
+      "revenueTtmBn": 686.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 16.9,
+          "revenueTtmBn": 280.5
+        },
+        "GOOGL": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 23.5,
+          "revenueTtmBn": 161.9
+        },
+        "META": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 70.7
+        },
+        "MSFT": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 13.5,
+          "revenueTtmBn": 134.2
+        },
+        "ORCL": {
+          "periodEnd": "2019-11-30",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 39.6
+        }
+      }
+    },
+    {
+      "date": "2020-03-13",
+      "intensity": 0.10275,
+      "capexTtmBn": 70.6,
+      "revenueTtmBn": 687.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 16.9,
+          "revenueTtmBn": 280.5
+        },
+        "GOOGL": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 23.5,
+          "revenueTtmBn": 161.9
+        },
+        "META": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 70.7
+        },
+        "MSFT": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 13.5,
+          "revenueTtmBn": 134.2
+        },
+        "ORCL": {
+          "periodEnd": "2020-02-29",
+          "capexTtmBn": 1.5,
+          "revenueTtmBn": 39.8
+        }
+      }
+    },
+    {
+      "date": "2020-04-29",
+      "intensity": 0.10507,
+      "capexTtmBn": 73.2,
+      "revenueTtmBn": 696.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 16.9,
+          "revenueTtmBn": 280.5
+        },
+        "GOOGL": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 24.9,
+          "revenueTtmBn": 166.7
+        },
+        "META": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 70.7
+        },
+        "MSFT": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 14.7,
+          "revenueTtmBn": 138.7
+        },
+        "ORCL": {
+          "periodEnd": "2020-02-29",
+          "capexTtmBn": 1.5,
+          "revenueTtmBn": 39.8
+        }
+      }
+    },
+    {
+      "date": "2020-04-30",
+      "intensity": 0.10428,
+      "capexTtmBn": 72.9,
+      "revenueTtmBn": 699.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2019-12-31",
+          "capexTtmBn": 16.9,
+          "revenueTtmBn": 280.5
+        },
+        "GOOGL": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 24.9,
+          "revenueTtmBn": 166.7
+        },
+        "META": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 14.8,
+          "revenueTtmBn": 73.4
+        },
+        "MSFT": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 14.7,
+          "revenueTtmBn": 138.7
+        },
+        "ORCL": {
+          "periodEnd": "2020-02-29",
+          "capexTtmBn": 1.5,
+          "revenueTtmBn": 39.8
+        }
+      }
+    },
+    {
+      "date": "2020-05-01",
+      "intensity": 0.10688,
+      "capexTtmBn": 76.4,
+      "revenueTtmBn": 714.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 20.4,
+          "revenueTtmBn": 296.3
+        },
+        "GOOGL": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 24.9,
+          "revenueTtmBn": 166.7
+        },
+        "META": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 14.8,
+          "revenueTtmBn": 73.4
+        },
+        "MSFT": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 14.7,
+          "revenueTtmBn": 138.7
+        },
+        "ORCL": {
+          "periodEnd": "2020-02-29",
+          "capexTtmBn": 1.5,
+          "revenueTtmBn": 39.8
+        }
+      }
+    },
+    {
+      "date": "2020-06-22",
+      "intensity": 0.10289,
+      "capexTtmBn": 76.4,
+      "revenueTtmBn": 742.7,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 20.4,
+          "revenueTtmBn": 296.3
+        },
+        "GOOGL": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 24.9,
+          "revenueTtmBn": 166.7
+        },
+        "META": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 14.8,
+          "revenueTtmBn": 73.4
+        },
+        "MSFT": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 14.7,
+          "revenueTtmBn": 138.7
+        },
+        "ORCL": {
+          "periodEnd": "2020-05-31",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 67.7
+        }
+      }
+    },
+    {
+      "date": "2020-07-30",
+      "intensity": 0.10322,
+      "capexTtmBn": 77.1,
+      "revenueTtmBn": 747.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 20.4,
+          "revenueTtmBn": 296.3
+        },
+        "GOOGL": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 24.9,
+          "revenueTtmBn": 166.7
+        },
+        "META": {
+          "periodEnd": "2020-03-31",
+          "capexTtmBn": 14.8,
+          "revenueTtmBn": 73.4
+        },
+        "MSFT": {
+          "periodEnd": "2020-06-30",
+          "capexTtmBn": 15.4,
+          "revenueTtmBn": 143.0
+        },
+        "ORCL": {
+          "periodEnd": "2020-05-31",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 67.7
+        }
+      }
+    },
+    {
+      "date": "2020-07-31",
+      "intensity": 0.10326,
+      "capexTtmBn": 79.9,
+      "revenueTtmBn": 773.7,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-06-30",
+          "capexTtmBn": 24.3,
+          "revenueTtmBn": 321.8
+        },
+        "GOOGL": {
+          "periodEnd": "2020-06-30",
+          "capexTtmBn": 24.2,
+          "revenueTtmBn": 166.0
+        },
+        "META": {
+          "periodEnd": "2020-06-30",
+          "capexTtmBn": 14.4,
+          "revenueTtmBn": 75.2
+        },
+        "MSFT": {
+          "periodEnd": "2020-06-30",
+          "capexTtmBn": 15.4,
+          "revenueTtmBn": 143.0
+        },
+        "ORCL": {
+          "periodEnd": "2020-05-31",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 67.7
+        }
+      }
+    },
+    {
+      "date": "2020-09-15",
+      "intensity": 0.10331,
+      "capexTtmBn": 79.9,
+      "revenueTtmBn": 773.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-06-30",
+          "capexTtmBn": 24.3,
+          "revenueTtmBn": 321.8
+        },
+        "GOOGL": {
+          "periodEnd": "2020-06-30",
+          "capexTtmBn": 24.2,
+          "revenueTtmBn": 166.0
+        },
+        "META": {
+          "periodEnd": "2020-06-30",
+          "capexTtmBn": 14.4,
+          "revenueTtmBn": 75.2
+        },
+        "MSFT": {
+          "periodEnd": "2020-06-30",
+          "capexTtmBn": 15.4,
+          "revenueTtmBn": 143.0
+        },
+        "ORCL": {
+          "periodEnd": "2020-08-31",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 67.8
+        }
+      }
+    },
+    {
+      "date": "2020-10-27",
+      "intensity": 0.10472,
+      "capexTtmBn": 81.5,
+      "revenueTtmBn": 777.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-06-30",
+          "capexTtmBn": 24.3,
+          "revenueTtmBn": 321.8
+        },
+        "GOOGL": {
+          "periodEnd": "2020-06-30",
+          "capexTtmBn": 24.2,
+          "revenueTtmBn": 166.0
+        },
+        "META": {
+          "periodEnd": "2020-06-30",
+          "capexTtmBn": 14.4,
+          "revenueTtmBn": 75.2
+        },
+        "MSFT": {
+          "periodEnd": "2020-09-30",
+          "capexTtmBn": 17.0,
+          "revenueTtmBn": 147.1
+        },
+        "ORCL": {
+          "periodEnd": "2020-08-31",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 67.8
+        }
+      }
+    },
+    {
+      "date": "2020-10-30",
+      "intensity": 0.10652,
+      "capexTtmBn": 86.7,
+      "revenueTtmBn": 813.6,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-09-30",
+          "capexTtmBn": 30.6,
+          "revenueTtmBn": 347.9
+        },
+        "GOOGL": {
+          "periodEnd": "2020-09-30",
+          "capexTtmBn": 22.9,
+          "revenueTtmBn": 171.7
+        },
+        "META": {
+          "periodEnd": "2020-09-30",
+          "capexTtmBn": 14.6,
+          "revenueTtmBn": 79.0
+        },
+        "MSFT": {
+          "periodEnd": "2020-09-30",
+          "capexTtmBn": 17.0,
+          "revenueTtmBn": 147.1
+        },
+        "ORCL": {
+          "periodEnd": "2020-08-31",
+          "capexTtmBn": 1.6,
+          "revenueTtmBn": 67.8
+        }
+      }
+    },
+    {
+      "date": "2020-12-11",
+      "intensity": 0.10676,
+      "capexTtmBn": 86.9,
+      "revenueTtmBn": 813.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-09-30",
+          "capexTtmBn": 30.6,
+          "revenueTtmBn": 347.9
+        },
+        "GOOGL": {
+          "periodEnd": "2020-09-30",
+          "capexTtmBn": 22.9,
+          "revenueTtmBn": 171.7
+        },
+        "META": {
+          "periodEnd": "2020-09-30",
+          "capexTtmBn": 14.6,
+          "revenueTtmBn": 79.0
+        },
+        "MSFT": {
+          "periodEnd": "2020-09-30",
+          "capexTtmBn": 17.0,
+          "revenueTtmBn": 147.1
+        },
+        "ORCL": {
+          "periodEnd": "2020-11-30",
+          "capexTtmBn": 1.8,
+          "revenueTtmBn": 68.0
+        }
+      }
+    },
+    {
+      "date": "2021-01-26",
+      "intensity": 0.10673,
+      "capexTtmBn": 87.5,
+      "revenueTtmBn": 819.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-09-30",
+          "capexTtmBn": 30.6,
+          "revenueTtmBn": 347.9
+        },
+        "GOOGL": {
+          "periodEnd": "2020-09-30",
+          "capexTtmBn": 22.9,
+          "revenueTtmBn": 171.7
+        },
+        "META": {
+          "periodEnd": "2020-09-30",
+          "capexTtmBn": 14.6,
+          "revenueTtmBn": 79.0
+        },
+        "MSFT": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 17.6,
+          "revenueTtmBn": 153.3
+        },
+        "ORCL": {
+          "periodEnd": "2020-11-30",
+          "capexTtmBn": 1.8,
+          "revenueTtmBn": 68.0
+        }
+      }
+    },
+    {
+      "date": "2021-01-28",
+      "intensity": 0.10645,
+      "capexTtmBn": 88.0,
+      "revenueTtmBn": 826.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-09-30",
+          "capexTtmBn": 30.6,
+          "revenueTtmBn": 347.9
+        },
+        "GOOGL": {
+          "periodEnd": "2020-09-30",
+          "capexTtmBn": 22.9,
+          "revenueTtmBn": 171.7
+        },
+        "META": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 86.0
+        },
+        "MSFT": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 17.6,
+          "revenueTtmBn": 153.3
+        },
+        "ORCL": {
+          "periodEnd": "2020-11-30",
+          "capexTtmBn": 1.8,
+          "revenueTtmBn": 68.0
+        }
+      }
+    },
+    {
+      "date": "2021-02-03",
+      "intensity": 0.1107,
+      "capexTtmBn": 97.0,
+      "revenueTtmBn": 875.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 40.1,
+          "revenueTtmBn": 386.1
+        },
+        "GOOGL": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 22.3,
+          "revenueTtmBn": 182.5
+        },
+        "META": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 86.0
+        },
+        "MSFT": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 17.6,
+          "revenueTtmBn": 153.3
+        },
+        "ORCL": {
+          "periodEnd": "2020-11-30",
+          "capexTtmBn": 1.8,
+          "revenueTtmBn": 68.0
+        }
+      }
+    },
+    {
+      "date": "2021-03-11",
+      "intensity": 0.11069,
+      "capexTtmBn": 97.0,
+      "revenueTtmBn": 876.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 40.1,
+          "revenueTtmBn": 386.1
+        },
+        "GOOGL": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 22.3,
+          "revenueTtmBn": 182.5
+        },
+        "META": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 86.0
+        },
+        "MSFT": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 17.6,
+          "revenueTtmBn": 153.3
+        },
+        "ORCL": {
+          "periodEnd": "2021-02-28",
+          "capexTtmBn": 1.9,
+          "revenueTtmBn": 68.3
+        }
+      }
+    },
+    {
+      "date": "2021-04-27",
+      "intensity": 0.11135,
+      "capexTtmBn": 98.3,
+      "revenueTtmBn": 882.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 40.1,
+          "revenueTtmBn": 386.1
+        },
+        "GOOGL": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 22.3,
+          "revenueTtmBn": 182.5
+        },
+        "META": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 86.0
+        },
+        "MSFT": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 18.9,
+          "revenueTtmBn": 160.0
+        },
+        "ORCL": {
+          "periodEnd": "2021-02-28",
+          "capexTtmBn": 1.9,
+          "revenueTtmBn": 68.3
+        }
+      }
+    },
+    {
+      "date": "2021-04-28",
+      "intensity": 0.10952,
+      "capexTtmBn": 98.2,
+      "revenueTtmBn": 897.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 40.1,
+          "revenueTtmBn": 386.1
+        },
+        "GOOGL": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 22.2,
+          "revenueTtmBn": 196.7
+        },
+        "META": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 15.1,
+          "revenueTtmBn": 86.0
+        },
+        "MSFT": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 18.9,
+          "revenueTtmBn": 160.0
+        },
+        "ORCL": {
+          "periodEnd": "2021-02-28",
+          "capexTtmBn": 1.9,
+          "revenueTtmBn": 68.3
+        }
+      }
+    },
+    {
+      "date": "2021-04-29",
+      "intensity": 0.10929,
+      "capexTtmBn": 99.0,
+      "revenueTtmBn": 905.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2020-12-31",
+          "capexTtmBn": 40.1,
+          "revenueTtmBn": 386.1
+        },
+        "GOOGL": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 22.2,
+          "revenueTtmBn": 196.7
+        },
+        "META": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 15.8,
+          "revenueTtmBn": 94.4
+        },
+        "MSFT": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 18.9,
+          "revenueTtmBn": 160.0
+        },
+        "ORCL": {
+          "periodEnd": "2021-02-28",
+          "capexTtmBn": 1.9,
+          "revenueTtmBn": 68.3
+        }
+      }
+    },
+    {
+      "date": "2021-04-30",
+      "intensity": 0.11107,
+      "capexTtmBn": 104.2,
+      "revenueTtmBn": 938.5,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 45.4,
+          "revenueTtmBn": 419.1
+        },
+        "GOOGL": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 22.2,
+          "revenueTtmBn": 196.7
+        },
+        "META": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 15.8,
+          "revenueTtmBn": 94.4
+        },
+        "MSFT": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 18.9,
+          "revenueTtmBn": 160.0
+        },
+        "ORCL": {
+          "periodEnd": "2021-02-28",
+          "capexTtmBn": 1.9,
+          "revenueTtmBn": 68.3
+        }
+      }
+    },
+    {
+      "date": "2021-06-21",
+      "intensity": 0.11121,
+      "capexTtmBn": 104.5,
+      "revenueTtmBn": 939.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 45.4,
+          "revenueTtmBn": 419.1
+        },
+        "GOOGL": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 22.2,
+          "revenueTtmBn": 196.7
+        },
+        "META": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 15.8,
+          "revenueTtmBn": 94.4
+        },
+        "MSFT": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 18.9,
+          "revenueTtmBn": 160.0
+        },
+        "ORCL": {
+          "periodEnd": "2021-05-31",
+          "capexTtmBn": 2.1,
+          "revenueTtmBn": 69.7
+        }
+      }
+    },
+    {
+      "date": "2021-07-28",
+      "intensity": 0.10859,
+      "capexTtmBn": 104.6,
+      "revenueTtmBn": 963.5,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 45.4,
+          "revenueTtmBn": 419.1
+        },
+        "GOOGL": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 22.3,
+          "revenueTtmBn": 220.3
+        },
+        "META": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 15.8,
+          "revenueTtmBn": 94.4
+        },
+        "MSFT": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 18.9,
+          "revenueTtmBn": 160.0
+        },
+        "ORCL": {
+          "periodEnd": "2021-05-31",
+          "capexTtmBn": 2.1,
+          "revenueTtmBn": 69.7
+        }
+      }
+    },
+    {
+      "date": "2021-07-29",
+      "intensity": 0.10967,
+      "capexTtmBn": 107.7,
+      "revenueTtmBn": 982.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-03-31",
+          "capexTtmBn": 45.4,
+          "revenueTtmBn": 419.1
+        },
+        "GOOGL": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 22.3,
+          "revenueTtmBn": 220.3
+        },
+        "META": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 17.2,
+          "revenueTtmBn": 104.8
+        },
+        "MSFT": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 20.6,
+          "revenueTtmBn": 168.1
+        },
+        "ORCL": {
+          "periodEnd": "2021-05-31",
+          "capexTtmBn": 2.1,
+          "revenueTtmBn": 69.7
+        }
+      }
+    },
+    {
+      "date": "2021-07-30",
+      "intensity": 0.11382,
+      "capexTtmBn": 114.5,
+      "revenueTtmBn": 1006.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 52.3,
+          "revenueTtmBn": 443.3
+        },
+        "GOOGL": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 22.3,
+          "revenueTtmBn": 220.3
+        },
+        "META": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 17.2,
+          "revenueTtmBn": 104.8
+        },
+        "MSFT": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 20.6,
+          "revenueTtmBn": 168.1
+        },
+        "ORCL": {
+          "periodEnd": "2021-05-31",
+          "capexTtmBn": 2.1,
+          "revenueTtmBn": 69.7
+        }
+      }
+    },
+    {
+      "date": "2021-09-13",
+      "intensity": 0.1144,
+      "capexTtmBn": 115.1,
+      "revenueTtmBn": 1006.5,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 52.3,
+          "revenueTtmBn": 443.3
+        },
+        "GOOGL": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 22.3,
+          "revenueTtmBn": 220.3
+        },
+        "META": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 17.2,
+          "revenueTtmBn": 104.8
+        },
+        "MSFT": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 20.6,
+          "revenueTtmBn": 168.1
+        },
+        "ORCL": {
+          "periodEnd": "2021-08-31",
+          "capexTtmBn": 2.8,
+          "revenueTtmBn": 70.1
+        }
+      }
+    },
+    {
+      "date": "2021-10-26",
+      "intensity": 0.11414,
+      "capexTtmBn": 116.7,
+      "revenueTtmBn": 1022.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 52.3,
+          "revenueTtmBn": 443.3
+        },
+        "GOOGL": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 22.3,
+          "revenueTtmBn": 220.3
+        },
+        "META": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 17.8,
+          "revenueTtmBn": 112.3
+        },
+        "MSFT": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 21.5,
+          "revenueTtmBn": 176.3
+        },
+        "ORCL": {
+          "periodEnd": "2021-08-31",
+          "capexTtmBn": 2.8,
+          "revenueTtmBn": 70.1
+        }
+      }
+    },
+    {
+      "date": "2021-10-27",
+      "intensity": 0.11342,
+      "capexTtmBn": 118.1,
+      "revenueTtmBn": 1041.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-06-30",
+          "capexTtmBn": 52.3,
+          "revenueTtmBn": 443.3
+        },
+        "GOOGL": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 23.7,
+          "revenueTtmBn": 239.2
+        },
+        "META": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 17.8,
+          "revenueTtmBn": 112.3
+        },
+        "MSFT": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 21.5,
+          "revenueTtmBn": 176.3
+        },
+        "ORCL": {
+          "periodEnd": "2021-08-31",
+          "capexTtmBn": 2.8,
+          "revenueTtmBn": 70.1
+        }
+      }
+    },
+    {
+      "date": "2021-10-29",
+      "intensity": 0.11628,
+      "capexTtmBn": 122.8,
+      "revenueTtmBn": 1055.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 56.9,
+          "revenueTtmBn": 458.0
+        },
+        "GOOGL": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 23.7,
+          "revenueTtmBn": 239.2
+        },
+        "META": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 17.8,
+          "revenueTtmBn": 112.3
+        },
+        "MSFT": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 21.5,
+          "revenueTtmBn": 176.3
+        },
+        "ORCL": {
+          "periodEnd": "2021-08-31",
+          "capexTtmBn": 2.8,
+          "revenueTtmBn": 70.1
+        }
+      }
+    },
+    {
+      "date": "2021-12-10",
+      "intensity": 0.11656,
+      "capexTtmBn": 123.1,
+      "revenueTtmBn": 1056.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 56.9,
+          "revenueTtmBn": 458.0
+        },
+        "GOOGL": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 23.7,
+          "revenueTtmBn": 239.2
+        },
+        "META": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 17.8,
+          "revenueTtmBn": 112.3
+        },
+        "MSFT": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 21.5,
+          "revenueTtmBn": 176.3
+        },
+        "ORCL": {
+          "periodEnd": "2021-11-30",
+          "capexTtmBn": 3.1,
+          "revenueTtmBn": 70.7
+        }
+      }
+    },
+    {
+      "date": "2022-01-25",
+      "intensity": 0.1172,
+      "capexTtmBn": 124.8,
+      "revenueTtmBn": 1065.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 56.9,
+          "revenueTtmBn": 458.0
+        },
+        "GOOGL": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 23.7,
+          "revenueTtmBn": 239.2
+        },
+        "META": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 17.8,
+          "revenueTtmBn": 112.3
+        },
+        "MSFT": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 23.2,
+          "revenueTtmBn": 184.9
+        },
+        "ORCL": {
+          "periodEnd": "2021-11-30",
+          "capexTtmBn": 3.1,
+          "revenueTtmBn": 70.7
+        }
+      }
+    },
+    {
+      "date": "2022-02-02",
+      "intensity": 0.11604,
+      "capexTtmBn": 125.7,
+      "revenueTtmBn": 1083.5,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 56.9,
+          "revenueTtmBn": 458.0
+        },
+        "GOOGL": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 24.6,
+          "revenueTtmBn": 257.6
+        },
+        "META": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 17.8,
+          "revenueTtmBn": 112.3
+        },
+        "MSFT": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 23.2,
+          "revenueTtmBn": 184.9
+        },
+        "ORCL": {
+          "periodEnd": "2021-11-30",
+          "capexTtmBn": 3.1,
+          "revenueTtmBn": 70.7
+        }
+      }
+    },
+    {
+      "date": "2022-02-03",
+      "intensity": 0.11614,
+      "capexTtmBn": 126.5,
+      "revenueTtmBn": 1089.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-09-30",
+          "capexTtmBn": 56.9,
+          "revenueTtmBn": 458.0
+        },
+        "GOOGL": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 24.6,
+          "revenueTtmBn": 257.6
+        },
+        "META": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 18.6,
+          "revenueTtmBn": 117.9
+        },
+        "MSFT": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 23.2,
+          "revenueTtmBn": 184.9
+        },
+        "ORCL": {
+          "periodEnd": "2021-11-30",
+          "capexTtmBn": 3.1,
+          "revenueTtmBn": 70.7
+        }
+      }
+    },
+    {
+      "date": "2022-02-04",
+      "intensity": 0.11862,
+      "capexTtmBn": 130.6,
+      "revenueTtmBn": 1100.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 61.1,
+          "revenueTtmBn": 469.8
+        },
+        "GOOGL": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 24.6,
+          "revenueTtmBn": 257.6
+        },
+        "META": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 18.6,
+          "revenueTtmBn": 117.9
+        },
+        "MSFT": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 23.2,
+          "revenueTtmBn": 184.9
+        },
+        "ORCL": {
+          "periodEnd": "2021-11-30",
+          "capexTtmBn": 3.1,
+          "revenueTtmBn": 70.7
+        }
+      }
+    },
+    {
+      "date": "2022-03-11",
+      "intensity": 0.1192,
+      "capexTtmBn": 131.3,
+      "revenueTtmBn": 1101.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 61.1,
+          "revenueTtmBn": 469.8
+        },
+        "GOOGL": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 24.6,
+          "revenueTtmBn": 257.6
+        },
+        "META": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 18.6,
+          "revenueTtmBn": 117.9
+        },
+        "MSFT": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 23.2,
+          "revenueTtmBn": 184.9
+        },
+        "ORCL": {
+          "periodEnd": "2022-02-28",
+          "capexTtmBn": 3.8,
+          "revenueTtmBn": 71.1
+        }
+      }
+    },
+    {
+      "date": "2022-04-26",
+      "intensity": 0.1186,
+      "capexTtmBn": 131.5,
+      "revenueTtmBn": 1109.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 61.1,
+          "revenueTtmBn": 469.8
+        },
+        "GOOGL": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 24.6,
+          "revenueTtmBn": 257.6
+        },
+        "META": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 18.6,
+          "revenueTtmBn": 117.9
+        },
+        "MSFT": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 23.5,
+          "revenueTtmBn": 192.6
+        },
+        "ORCL": {
+          "periodEnd": "2022-02-28",
+          "capexTtmBn": 3.8,
+          "revenueTtmBn": 71.1
+        }
+      }
+    },
+    {
+      "date": "2022-04-27",
+      "intensity": 0.12069,
+      "capexTtmBn": 135.4,
+      "revenueTtmBn": 1121.7,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 61.1,
+          "revenueTtmBn": 469.8
+        },
+        "GOOGL": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 28.5,
+          "revenueTtmBn": 270.3
+        },
+        "META": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 18.6,
+          "revenueTtmBn": 117.9
+        },
+        "MSFT": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 23.5,
+          "revenueTtmBn": 192.6
+        },
+        "ORCL": {
+          "periodEnd": "2022-02-28",
+          "capexTtmBn": 3.8,
+          "revenueTtmBn": 71.1
+        }
+      }
+    },
+    {
+      "date": "2022-04-28",
+      "intensity": 0.12154,
+      "capexTtmBn": 136.5,
+      "revenueTtmBn": 1123.5,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2021-12-31",
+          "capexTtmBn": 61.1,
+          "revenueTtmBn": 469.8
+        },
+        "GOOGL": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 28.5,
+          "revenueTtmBn": 270.3
+        },
+        "META": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 19.7,
+          "revenueTtmBn": 119.7
+        },
+        "MSFT": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 23.5,
+          "revenueTtmBn": 192.6
+        },
+        "ORCL": {
+          "periodEnd": "2022-02-28",
+          "capexTtmBn": 3.8,
+          "revenueTtmBn": 71.1
+        }
+      }
+    },
+    {
+      "date": "2022-04-29",
+      "intensity": 0.12322,
+      "capexTtmBn": 139.4,
+      "revenueTtmBn": 1131.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 63.9,
+          "revenueTtmBn": 477.7
+        },
+        "GOOGL": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 28.5,
+          "revenueTtmBn": 270.3
+        },
+        "META": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 19.7,
+          "revenueTtmBn": 119.7
+        },
+        "MSFT": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 23.5,
+          "revenueTtmBn": 192.6
+        },
+        "ORCL": {
+          "periodEnd": "2022-02-28",
+          "capexTtmBn": 3.8,
+          "revenueTtmBn": 71.1
+        }
+      }
+    },
+    {
+      "date": "2022-06-21",
+      "intensity": 0.12363,
+      "capexTtmBn": 140.1,
+      "revenueTtmBn": 1133.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 63.9,
+          "revenueTtmBn": 477.7
+        },
+        "GOOGL": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 28.5,
+          "revenueTtmBn": 270.3
+        },
+        "META": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 19.7,
+          "revenueTtmBn": 119.7
+        },
+        "MSFT": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 23.5,
+          "revenueTtmBn": 192.6
+        },
+        "ORCL": {
+          "periodEnd": "2022-05-31",
+          "capexTtmBn": 4.5,
+          "revenueTtmBn": 73.0
+        }
+      }
+    },
+    {
+      "date": "2022-07-27",
+      "intensity": 0.12396,
+      "capexTtmBn": 141.5,
+      "revenueTtmBn": 1141.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 63.9,
+          "revenueTtmBn": 477.7
+        },
+        "GOOGL": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 29.8,
+          "revenueTtmBn": 278.1
+        },
+        "META": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 19.7,
+          "revenueTtmBn": 119.7
+        },
+        "MSFT": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 23.5,
+          "revenueTtmBn": 192.6
+        },
+        "ORCL": {
+          "periodEnd": "2022-05-31",
+          "capexTtmBn": 4.5,
+          "revenueTtmBn": 73.0
+        }
+      }
+    },
+    {
+      "date": "2022-07-28",
+      "intensity": 0.12631,
+      "capexTtmBn": 144.8,
+      "revenueTtmBn": 1146.6,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-03-31",
+          "capexTtmBn": 63.9,
+          "revenueTtmBn": 477.7
+        },
+        "GOOGL": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 29.8,
+          "revenueTtmBn": 278.1
+        },
+        "META": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 22.7,
+          "revenueTtmBn": 119.4
+        },
+        "MSFT": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 23.9,
+          "revenueTtmBn": 198.3
+        },
+        "ORCL": {
+          "periodEnd": "2022-05-31",
+          "capexTtmBn": 4.5,
+          "revenueTtmBn": 73.0
+        }
+      }
+    },
+    {
+      "date": "2022-07-29",
+      "intensity": 0.12666,
+      "capexTtmBn": 146.3,
+      "revenueTtmBn": 1154.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 65.4,
+          "revenueTtmBn": 485.9
+        },
+        "GOOGL": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 29.8,
+          "revenueTtmBn": 278.1
+        },
+        "META": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 22.7,
+          "revenueTtmBn": 119.4
+        },
+        "MSFT": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 23.9,
+          "revenueTtmBn": 198.3
+        },
+        "ORCL": {
+          "periodEnd": "2022-05-31",
+          "capexTtmBn": 4.5,
+          "revenueTtmBn": 73.0
+        }
+      }
+    },
+    {
+      "date": "2022-09-13",
+      "intensity": 0.12704,
+      "capexTtmBn": 146.9,
+      "revenueTtmBn": 1156.5,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 65.4,
+          "revenueTtmBn": 485.9
+        },
+        "GOOGL": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 29.8,
+          "revenueTtmBn": 278.1
+        },
+        "META": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 22.7,
+          "revenueTtmBn": 119.4
+        },
+        "MSFT": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 23.9,
+          "revenueTtmBn": 198.3
+        },
+        "ORCL": {
+          "periodEnd": "2022-08-31",
+          "capexTtmBn": 5.2,
+          "revenueTtmBn": 74.8
+        }
+      }
+    },
+    {
+      "date": "2022-10-25",
+      "intensity": 0.12693,
+      "capexTtmBn": 147.4,
+      "revenueTtmBn": 1161.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 65.4,
+          "revenueTtmBn": 485.9
+        },
+        "GOOGL": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 29.8,
+          "revenueTtmBn": 278.1
+        },
+        "META": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 22.7,
+          "revenueTtmBn": 119.4
+        },
+        "MSFT": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 24.4,
+          "revenueTtmBn": 203.1
+        },
+        "ORCL": {
+          "periodEnd": "2022-08-31",
+          "capexTtmBn": 5.2,
+          "revenueTtmBn": 74.8
+        }
+      }
+    },
+    {
+      "date": "2022-10-26",
+      "intensity": 0.12689,
+      "capexTtmBn": 147.9,
+      "revenueTtmBn": 1165.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 65.4,
+          "revenueTtmBn": 485.9
+        },
+        "GOOGL": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 30.3,
+          "revenueTtmBn": 282.1
+        },
+        "META": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 22.7,
+          "revenueTtmBn": 119.4
+        },
+        "MSFT": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 24.4,
+          "revenueTtmBn": 203.1
+        },
+        "ORCL": {
+          "periodEnd": "2022-08-31",
+          "capexTtmBn": 5.2,
+          "revenueTtmBn": 74.8
+        }
+      }
+    },
+    {
+      "date": "2022-10-27",
+      "intensity": 0.13137,
+      "capexTtmBn": 152.9,
+      "revenueTtmBn": 1164.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-06-30",
+          "capexTtmBn": 65.4,
+          "revenueTtmBn": 485.9
+        },
+        "GOOGL": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 30.3,
+          "revenueTtmBn": 282.1
+        },
+        "META": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 27.8,
+          "revenueTtmBn": 118.1
+        },
+        "MSFT": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 24.4,
+          "revenueTtmBn": 203.1
+        },
+        "ORCL": {
+          "periodEnd": "2022-08-31",
+          "capexTtmBn": 5.2,
+          "revenueTtmBn": 74.8
+        }
+      }
+    },
+    {
+      "date": "2022-10-28",
+      "intensity": 0.1301,
+      "capexTtmBn": 153.5,
+      "revenueTtmBn": 1180.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 66.0,
+          "revenueTtmBn": 502.2
+        },
+        "GOOGL": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 30.3,
+          "revenueTtmBn": 282.1
+        },
+        "META": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 27.8,
+          "revenueTtmBn": 118.1
+        },
+        "MSFT": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 24.4,
+          "revenueTtmBn": 203.1
+        },
+        "ORCL": {
+          "periodEnd": "2022-08-31",
+          "capexTtmBn": 5.2,
+          "revenueTtmBn": 74.8
+        }
+      }
+    },
+    {
+      "date": "2022-12-13",
+      "intensity": 0.13116,
+      "capexTtmBn": 155.1,
+      "revenueTtmBn": 1182.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 66.0,
+          "revenueTtmBn": 502.2
+        },
+        "GOOGL": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 30.3,
+          "revenueTtmBn": 282.1
+        },
+        "META": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 27.8,
+          "revenueTtmBn": 118.1
+        },
+        "MSFT": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 24.4,
+          "revenueTtmBn": 203.1
+        },
+        "ORCL": {
+          "periodEnd": "2022-11-30",
+          "capexTtmBn": 6.7,
+          "revenueTtmBn": 76.7
+        }
+      }
+    },
+    {
+      "date": "2023-01-24",
+      "intensity": 0.13139,
+      "capexTtmBn": 155.5,
+      "revenueTtmBn": 1183.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 66.0,
+          "revenueTtmBn": 502.2
+        },
+        "GOOGL": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 30.3,
+          "revenueTtmBn": 282.1
+        },
+        "META": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 27.8,
+          "revenueTtmBn": 118.1
+        },
+        "MSFT": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 24.8,
+          "revenueTtmBn": 204.1
+        },
+        "ORCL": {
+          "periodEnd": "2022-11-30",
+          "capexTtmBn": 6.7,
+          "revenueTtmBn": 76.7
+        }
+      }
+    },
+    {
+      "date": "2023-02-02",
+      "intensity": 0.13467,
+      "capexTtmBn": 159.1,
+      "revenueTtmBn": 1181.7,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 66.0,
+          "revenueTtmBn": 502.2
+        },
+        "GOOGL": {
+          "periodEnd": "2022-09-30",
+          "capexTtmBn": 30.3,
+          "revenueTtmBn": 282.1
+        },
+        "META": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 31.4,
+          "revenueTtmBn": 116.6
+        },
+        "MSFT": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 24.8,
+          "revenueTtmBn": 204.1
+        },
+        "ORCL": {
+          "periodEnd": "2022-11-30",
+          "capexTtmBn": 6.7,
+          "revenueTtmBn": 76.7
+        }
+      }
+    },
+    {
+      "date": "2023-02-03",
+      "intensity": 0.13231,
+      "capexTtmBn": 158.0,
+      "revenueTtmBn": 1194.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 63.6,
+          "revenueTtmBn": 514.0
+        },
+        "GOOGL": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 31.5,
+          "revenueTtmBn": 282.8
+        },
+        "META": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 31.4,
+          "revenueTtmBn": 116.6
+        },
+        "MSFT": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 24.8,
+          "revenueTtmBn": 204.1
+        },
+        "ORCL": {
+          "periodEnd": "2022-11-30",
+          "capexTtmBn": 6.7,
+          "revenueTtmBn": 76.7
+        }
+      }
+    },
+    {
+      "date": "2023-03-10",
+      "intensity": 0.13338,
+      "capexTtmBn": 159.5,
+      "revenueTtmBn": 1196.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 63.6,
+          "revenueTtmBn": 514.0
+        },
+        "GOOGL": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 31.5,
+          "revenueTtmBn": 282.8
+        },
+        "META": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 31.4,
+          "revenueTtmBn": 116.6
+        },
+        "MSFT": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 24.8,
+          "revenueTtmBn": 204.1
+        },
+        "ORCL": {
+          "periodEnd": "2023-02-28",
+          "capexTtmBn": 8.2,
+          "revenueTtmBn": 78.6
+        }
+      }
+    },
+    {
+      "date": "2023-04-25",
+      "intensity": 0.13405,
+      "capexTtmBn": 160.8,
+      "revenueTtmBn": 1199.6,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 63.6,
+          "revenueTtmBn": 514.0
+        },
+        "GOOGL": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 31.5,
+          "revenueTtmBn": 282.8
+        },
+        "META": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 31.4,
+          "revenueTtmBn": 116.6
+        },
+        "MSFT": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 26.0,
+          "revenueTtmBn": 207.6
+        },
+        "ORCL": {
+          "periodEnd": "2023-02-28",
+          "capexTtmBn": 8.2,
+          "revenueTtmBn": 78.6
+        }
+      }
+    },
+    {
+      "date": "2023-04-26",
+      "intensity": 0.13094,
+      "capexTtmBn": 157.3,
+      "revenueTtmBn": 1201.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 63.6,
+          "revenueTtmBn": 514.0
+        },
+        "GOOGL": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 28.0,
+          "revenueTtmBn": 284.6
+        },
+        "META": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 31.4,
+          "revenueTtmBn": 116.6
+        },
+        "MSFT": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 26.0,
+          "revenueTtmBn": 207.6
+        },
+        "ORCL": {
+          "periodEnd": "2023-02-28",
+          "capexTtmBn": 8.2,
+          "revenueTtmBn": 78.6
+        }
+      }
+    },
+    {
+      "date": "2023-04-27",
+      "intensity": 0.13202,
+      "capexTtmBn": 158.7,
+      "revenueTtmBn": 1202.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2022-12-31",
+          "capexTtmBn": 63.6,
+          "revenueTtmBn": 514.0
+        },
+        "GOOGL": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 28.0,
+          "revenueTtmBn": 284.6
+        },
+        "META": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 32.8,
+          "revenueTtmBn": 117.3
+        },
+        "MSFT": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 26.0,
+          "revenueTtmBn": 207.6
+        },
+        "ORCL": {
+          "periodEnd": "2023-02-28",
+          "capexTtmBn": 8.2,
+          "revenueTtmBn": 78.6
+        }
+      }
+    },
+    {
+      "date": "2023-04-28",
+      "intensity": 0.13022,
+      "capexTtmBn": 158.0,
+      "revenueTtmBn": 1213.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 62.9,
+          "revenueTtmBn": 524.9
+        },
+        "GOOGL": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 28.0,
+          "revenueTtmBn": 284.6
+        },
+        "META": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 32.8,
+          "revenueTtmBn": 117.3
+        },
+        "MSFT": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 26.0,
+          "revenueTtmBn": 207.6
+        },
+        "ORCL": {
+          "periodEnd": "2023-02-28",
+          "capexTtmBn": 8.2,
+          "revenueTtmBn": 78.6
+        }
+      }
+    },
+    {
+      "date": "2023-06-20",
+      "intensity": 0.13378,
+      "capexTtmBn": 158.5,
+      "revenueTtmBn": 1184.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 62.9,
+          "revenueTtmBn": 524.9
+        },
+        "GOOGL": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 28.0,
+          "revenueTtmBn": 284.6
+        },
+        "META": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 32.8,
+          "revenueTtmBn": 117.3
+        },
+        "MSFT": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 26.0,
+          "revenueTtmBn": 207.6
+        },
+        "ORCL": {
+          "periodEnd": "2023-05-31",
+          "capexTtmBn": 8.7,
+          "revenueTtmBn": 50.0
+        }
+      }
+    },
+    {
+      "date": "2023-07-26",
+      "intensity": 0.13328,
+      "capexTtmBn": 158.5,
+      "revenueTtmBn": 1189.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 62.9,
+          "revenueTtmBn": 524.9
+        },
+        "GOOGL": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 28.0,
+          "revenueTtmBn": 289.5
+        },
+        "META": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 32.8,
+          "revenueTtmBn": 117.3
+        },
+        "MSFT": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 26.0,
+          "revenueTtmBn": 207.6
+        },
+        "ORCL": {
+          "periodEnd": "2023-05-31",
+          "capexTtmBn": 8.7,
+          "revenueTtmBn": 50.0
+        }
+      }
+    },
+    {
+      "date": "2023-07-27",
+      "intensity": 0.13304,
+      "capexTtmBn": 159.2,
+      "revenueTtmBn": 1196.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-03-31",
+          "capexTtmBn": 62.9,
+          "revenueTtmBn": 524.9
+        },
+        "GOOGL": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 28.0,
+          "revenueTtmBn": 289.5
+        },
+        "META": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 31.5,
+          "revenueTtmBn": 120.5
+        },
+        "MSFT": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 28.1,
+          "revenueTtmBn": 211.9
+        },
+        "ORCL": {
+          "periodEnd": "2023-05-31",
+          "capexTtmBn": 8.7,
+          "revenueTtmBn": 50.0
+        }
+      }
+    },
+    {
+      "date": "2023-08-04",
+      "intensity": 0.12807,
+      "capexTtmBn": 155.0,
+      "revenueTtmBn": 1210.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 58.6,
+          "revenueTtmBn": 538.0
+        },
+        "GOOGL": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 28.0,
+          "revenueTtmBn": 289.5
+        },
+        "META": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 31.5,
+          "revenueTtmBn": 120.5
+        },
+        "MSFT": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 28.1,
+          "revenueTtmBn": 211.9
+        },
+        "ORCL": {
+          "periodEnd": "2023-05-31",
+          "capexTtmBn": 8.7,
+          "revenueTtmBn": 50.0
+        }
+      }
+    },
+    {
+      "date": "2023-09-12",
+      "intensity": 0.12763,
+      "capexTtmBn": 154.6,
+      "revenueTtmBn": 1211.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 58.6,
+          "revenueTtmBn": 538.0
+        },
+        "GOOGL": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 28.0,
+          "revenueTtmBn": 289.5
+        },
+        "META": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 31.5,
+          "revenueTtmBn": 120.5
+        },
+        "MSFT": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 28.1,
+          "revenueTtmBn": 211.9
+        },
+        "ORCL": {
+          "periodEnd": "2023-08-31",
+          "capexTtmBn": 8.3,
+          "revenueTtmBn": 51.0
+        }
+      }
+    },
+    {
+      "date": "2023-10-24",
+      "intensity": 0.12994,
+      "capexTtmBn": 158.2,
+      "revenueTtmBn": 1217.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 58.6,
+          "revenueTtmBn": 538.0
+        },
+        "GOOGL": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 28.0,
+          "revenueTtmBn": 289.5
+        },
+        "META": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 31.5,
+          "revenueTtmBn": 120.5
+        },
+        "MSFT": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 31.7,
+          "revenueTtmBn": 218.3
+        },
+        "ORCL": {
+          "periodEnd": "2023-08-31",
+          "capexTtmBn": 8.3,
+          "revenueTtmBn": 51.0
+        }
+      }
+    },
+    {
+      "date": "2023-10-25",
+      "intensity": 0.12977,
+      "capexTtmBn": 159.0,
+      "revenueTtmBn": 1225.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 58.6,
+          "revenueTtmBn": 538.0
+        },
+        "GOOGL": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 28.8,
+          "revenueTtmBn": 297.1
+        },
+        "META": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 31.5,
+          "revenueTtmBn": 120.5
+        },
+        "MSFT": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 31.7,
+          "revenueTtmBn": 218.3
+        },
+        "ORCL": {
+          "periodEnd": "2023-08-31",
+          "capexTtmBn": 8.3,
+          "revenueTtmBn": 51.0
+        }
+      }
+    },
+    {
+      "date": "2023-10-26",
+      "intensity": 0.12679,
+      "capexTtmBn": 156.1,
+      "revenueTtmBn": 1231.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-06-30",
+          "capexTtmBn": 58.6,
+          "revenueTtmBn": 538.0
+        },
+        "GOOGL": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 28.8,
+          "revenueTtmBn": 297.1
+        },
+        "META": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 28.6,
+          "revenueTtmBn": 127.0
+        },
+        "MSFT": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 31.7,
+          "revenueTtmBn": 218.3
+        },
+        "ORCL": {
+          "periodEnd": "2023-08-31",
+          "capexTtmBn": 8.3,
+          "revenueTtmBn": 51.0
+        }
+      }
+    },
+    {
+      "date": "2023-10-27",
+      "intensity": 0.12204,
+      "capexTtmBn": 152.2,
+      "revenueTtmBn": 1247.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 54.7,
+          "revenueTtmBn": 554.0
+        },
+        "GOOGL": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 28.8,
+          "revenueTtmBn": 297.1
+        },
+        "META": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 28.6,
+          "revenueTtmBn": 127.0
+        },
+        "MSFT": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 31.7,
+          "revenueTtmBn": 218.3
+        },
+        "ORCL": {
+          "periodEnd": "2023-08-31",
+          "capexTtmBn": 8.3,
+          "revenueTtmBn": 51.0
+        }
+      }
+    },
+    {
+      "date": "2023-12-12",
+      "intensity": 0.12089,
+      "capexTtmBn": 150.9,
+      "revenueTtmBn": 1248.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 54.7,
+          "revenueTtmBn": 554.0
+        },
+        "GOOGL": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 28.8,
+          "revenueTtmBn": 297.1
+        },
+        "META": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 28.6,
+          "revenueTtmBn": 127.0
+        },
+        "MSFT": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 31.7,
+          "revenueTtmBn": 218.3
+        },
+        "ORCL": {
+          "periodEnd": "2023-11-30",
+          "capexTtmBn": 6.9,
+          "revenueTtmBn": 51.6
+        }
+      }
+    },
+    {
+      "date": "2024-01-30",
+      "intensity": 0.12275,
+      "capexTtmBn": 154.3,
+      "revenueTtmBn": 1257.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 54.7,
+          "revenueTtmBn": 554.0
+        },
+        "GOOGL": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 28.8,
+          "revenueTtmBn": 297.1
+        },
+        "META": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 28.6,
+          "revenueTtmBn": 127.0
+        },
+        "MSFT": {
+          "periodEnd": "2023-12-31",
+          "capexTtmBn": 35.2,
+          "revenueTtmBn": 227.6
+        },
+        "ORCL": {
+          "periodEnd": "2023-11-30",
+          "capexTtmBn": 6.9,
+          "revenueTtmBn": 51.6
+        }
+      }
+    },
+    {
+      "date": "2024-01-31",
+      "intensity": 0.12446,
+      "capexTtmBn": 157.8,
+      "revenueTtmBn": 1267.6,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 54.7,
+          "revenueTtmBn": 554.0
+        },
+        "GOOGL": {
+          "periodEnd": "2023-12-31",
+          "capexTtmBn": 32.3,
+          "revenueTtmBn": 307.4
+        },
+        "META": {
+          "periodEnd": "2023-09-30",
+          "capexTtmBn": 28.6,
+          "revenueTtmBn": 127.0
+        },
+        "MSFT": {
+          "periodEnd": "2023-12-31",
+          "capexTtmBn": 35.2,
+          "revenueTtmBn": 227.6
+        },
+        "ORCL": {
+          "periodEnd": "2023-11-30",
+          "capexTtmBn": 6.9,
+          "revenueTtmBn": 51.6
+        }
+      }
+    },
+    {
+      "date": "2024-02-02",
+      "intensity": 0.1191,
+      "capexTtmBn": 154.4,
+      "revenueTtmBn": 1296.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-12-31",
+          "capexTtmBn": 52.7,
+          "revenueTtmBn": 574.8
+        },
+        "GOOGL": {
+          "periodEnd": "2023-12-31",
+          "capexTtmBn": 32.3,
+          "revenueTtmBn": 307.4
+        },
+        "META": {
+          "periodEnd": "2023-12-31",
+          "capexTtmBn": 27.3,
+          "revenueTtmBn": 134.9
+        },
+        "MSFT": {
+          "periodEnd": "2023-12-31",
+          "capexTtmBn": 35.2,
+          "revenueTtmBn": 227.6
+        },
+        "ORCL": {
+          "periodEnd": "2023-11-30",
+          "capexTtmBn": 6.9,
+          "revenueTtmBn": 51.6
+        }
+      }
+    },
+    {
+      "date": "2024-03-12",
+      "intensity": 0.11828,
+      "capexTtmBn": 153.4,
+      "revenueTtmBn": 1297.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-12-31",
+          "capexTtmBn": 52.7,
+          "revenueTtmBn": 574.8
+        },
+        "GOOGL": {
+          "periodEnd": "2023-12-31",
+          "capexTtmBn": 32.3,
+          "revenueTtmBn": 307.4
+        },
+        "META": {
+          "periodEnd": "2023-12-31",
+          "capexTtmBn": 27.3,
+          "revenueTtmBn": 134.9
+        },
+        "MSFT": {
+          "periodEnd": "2023-12-31",
+          "capexTtmBn": 35.2,
+          "revenueTtmBn": 227.6
+        },
+        "ORCL": {
+          "periodEnd": "2024-02-29",
+          "capexTtmBn": 6.0,
+          "revenueTtmBn": 52.5
+        }
+      }
+    },
+    {
+      "date": "2024-04-25",
+      "intensity": 0.11974,
+      "capexTtmBn": 157.3,
+      "revenueTtmBn": 1314.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-12-31",
+          "capexTtmBn": 52.7,
+          "revenueTtmBn": 574.8
+        },
+        "GOOGL": {
+          "periodEnd": "2023-12-31",
+          "capexTtmBn": 32.3,
+          "revenueTtmBn": 307.4
+        },
+        "META": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 26.8,
+          "revenueTtmBn": 142.7
+        },
+        "MSFT": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 39.5,
+          "revenueTtmBn": 236.6
+        },
+        "ORCL": {
+          "periodEnd": "2024-02-29",
+          "capexTtmBn": 6.0,
+          "revenueTtmBn": 52.5
+        }
+      }
+    },
+    {
+      "date": "2024-04-26",
+      "intensity": 0.12308,
+      "capexTtmBn": 163.1,
+      "revenueTtmBn": 1324.7,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2023-12-31",
+          "capexTtmBn": 52.7,
+          "revenueTtmBn": 574.8
+        },
+        "GOOGL": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 38.0,
+          "revenueTtmBn": 318.1
+        },
+        "META": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 26.8,
+          "revenueTtmBn": 142.7
+        },
+        "MSFT": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 39.5,
+          "revenueTtmBn": 236.6
+        },
+        "ORCL": {
+          "periodEnd": "2024-02-29",
+          "capexTtmBn": 6.0,
+          "revenueTtmBn": 52.5
+        }
+      }
+    },
+    {
+      "date": "2024-05-01",
+      "intensity": 0.12216,
+      "capexTtmBn": 163.8,
+      "revenueTtmBn": 1340.7,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 53.4,
+          "revenueTtmBn": 590.7
+        },
+        "GOOGL": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 38.0,
+          "revenueTtmBn": 318.1
+        },
+        "META": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 26.8,
+          "revenueTtmBn": 142.7
+        },
+        "MSFT": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 39.5,
+          "revenueTtmBn": 236.6
+        },
+        "ORCL": {
+          "periodEnd": "2024-02-29",
+          "capexTtmBn": 6.0,
+          "revenueTtmBn": 52.5
+        }
+      }
+    },
+    {
+      "date": "2024-06-20",
+      "intensity": 0.12277,
+      "capexTtmBn": 164.7,
+      "revenueTtmBn": 1341.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 53.4,
+          "revenueTtmBn": 590.7
+        },
+        "GOOGL": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 38.0,
+          "revenueTtmBn": 318.1
+        },
+        "META": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 26.8,
+          "revenueTtmBn": 142.7
+        },
+        "MSFT": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 39.5,
+          "revenueTtmBn": 236.6
+        },
+        "ORCL": {
+          "periodEnd": "2024-05-31",
+          "capexTtmBn": 6.9,
+          "revenueTtmBn": 53.0
+        }
+      }
+    },
+    {
+      "date": "2024-07-24",
+      "intensity": 0.12651,
+      "capexTtmBn": 171.0,
+      "revenueTtmBn": 1351.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 53.4,
+          "revenueTtmBn": 590.7
+        },
+        "GOOGL": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 44.3,
+          "revenueTtmBn": 328.3
+        },
+        "META": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 26.8,
+          "revenueTtmBn": 142.7
+        },
+        "MSFT": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 39.5,
+          "revenueTtmBn": 236.6
+        },
+        "ORCL": {
+          "periodEnd": "2024-05-31",
+          "capexTtmBn": 6.9,
+          "revenueTtmBn": 53.0
+        }
+      }
+    },
+    {
+      "date": "2024-07-30",
+      "intensity": 0.12935,
+      "capexTtmBn": 175.9,
+      "revenueTtmBn": 1359.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 53.4,
+          "revenueTtmBn": 590.7
+        },
+        "GOOGL": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 44.3,
+          "revenueTtmBn": 328.3
+        },
+        "META": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 26.8,
+          "revenueTtmBn": 142.7
+        },
+        "MSFT": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 44.5,
+          "revenueTtmBn": 245.1
+        },
+        "ORCL": {
+          "periodEnd": "2024-05-31",
+          "capexTtmBn": 6.9,
+          "revenueTtmBn": 53.0
+        }
+      }
+    },
+    {
+      "date": "2024-08-01",
+      "intensity": 0.13011,
+      "capexTtmBn": 177.8,
+      "revenueTtmBn": 1366.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-03-31",
+          "capexTtmBn": 53.4,
+          "revenueTtmBn": 590.7
+        },
+        "GOOGL": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 44.3,
+          "revenueTtmBn": 328.3
+        },
+        "META": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 28.8,
+          "revenueTtmBn": 149.8
+        },
+        "MSFT": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 44.5,
+          "revenueTtmBn": 245.1
+        },
+        "ORCL": {
+          "periodEnd": "2024-05-31",
+          "capexTtmBn": 6.9,
+          "revenueTtmBn": 53.0
+        }
+      }
+    },
+    {
+      "date": "2024-08-02",
+      "intensity": 0.13329,
+      "capexTtmBn": 184.0,
+      "revenueTtmBn": 1380.5,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 59.6,
+          "revenueTtmBn": 604.3
+        },
+        "GOOGL": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 44.3,
+          "revenueTtmBn": 328.3
+        },
+        "META": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 28.8,
+          "revenueTtmBn": 149.8
+        },
+        "MSFT": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 44.5,
+          "revenueTtmBn": 245.1
+        },
+        "ORCL": {
+          "periodEnd": "2024-05-31",
+          "capexTtmBn": 6.9,
+          "revenueTtmBn": 53.0
+        }
+      }
+    },
+    {
+      "date": "2024-09-10",
+      "intensity": 0.13393,
+      "capexTtmBn": 185.0,
+      "revenueTtmBn": 1381.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 59.6,
+          "revenueTtmBn": 604.3
+        },
+        "GOOGL": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 44.3,
+          "revenueTtmBn": 328.3
+        },
+        "META": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 28.8,
+          "revenueTtmBn": 149.8
+        },
+        "MSFT": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 44.5,
+          "revenueTtmBn": 245.1
+        },
+        "ORCL": {
+          "periodEnd": "2024-08-31",
+          "capexTtmBn": 7.9,
+          "revenueTtmBn": 53.8
+        }
+      }
+    },
+    {
+      "date": "2024-10-30",
+      "intensity": 0.1391,
+      "capexTtmBn": 195.0,
+      "revenueTtmBn": 1402.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 59.6,
+          "revenueTtmBn": 604.3
+        },
+        "GOOGL": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 49.3,
+          "revenueTtmBn": 339.9
+        },
+        "META": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 28.8,
+          "revenueTtmBn": 149.8
+        },
+        "MSFT": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 49.5,
+          "revenueTtmBn": 254.2
+        },
+        "ORCL": {
+          "periodEnd": "2024-08-31",
+          "capexTtmBn": 7.9,
+          "revenueTtmBn": 53.8
+        }
+      }
+    },
+    {
+      "date": "2024-10-31",
+      "intensity": 0.13968,
+      "capexTtmBn": 196.7,
+      "revenueTtmBn": 1408.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-06-30",
+          "capexTtmBn": 59.6,
+          "revenueTtmBn": 604.3
+        },
+        "GOOGL": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 49.3,
+          "revenueTtmBn": 339.9
+        },
+        "META": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 30.5,
+          "revenueTtmBn": 156.2
+        },
+        "MSFT": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 49.5,
+          "revenueTtmBn": 254.2
+        },
+        "ORCL": {
+          "periodEnd": "2024-08-31",
+          "capexTtmBn": 7.9,
+          "revenueTtmBn": 53.8
+        }
+      }
+    },
+    {
+      "date": "2024-11-01",
+      "intensity": 0.14525,
+      "capexTtmBn": 206.9,
+      "revenueTtmBn": 1424.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 69.8,
+          "revenueTtmBn": 620.1
+        },
+        "GOOGL": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 49.3,
+          "revenueTtmBn": 339.9
+        },
+        "META": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 30.5,
+          "revenueTtmBn": 156.2
+        },
+        "MSFT": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 49.5,
+          "revenueTtmBn": 254.2
+        },
+        "ORCL": {
+          "periodEnd": "2024-08-31",
+          "capexTtmBn": 7.9,
+          "revenueTtmBn": 53.8
+        }
+      }
+    },
+    {
+      "date": "2024-12-10",
+      "intensity": 0.14716,
+      "capexTtmBn": 209.8,
+      "revenueTtmBn": 1425.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 69.8,
+          "revenueTtmBn": 620.1
+        },
+        "GOOGL": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 49.3,
+          "revenueTtmBn": 339.9
+        },
+        "META": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 30.5,
+          "revenueTtmBn": 156.2
+        },
+        "MSFT": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 49.5,
+          "revenueTtmBn": 254.2
+        },
+        "ORCL": {
+          "periodEnd": "2024-11-30",
+          "capexTtmBn": 10.7,
+          "revenueTtmBn": 54.9
+        }
+      }
+    },
+    {
+      "date": "2025-01-29",
+      "intensity": 0.15062,
+      "capexTtmBn": 215.8,
+      "revenueTtmBn": 1432.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 69.8,
+          "revenueTtmBn": 620.1
+        },
+        "GOOGL": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 49.3,
+          "revenueTtmBn": 339.9
+        },
+        "META": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 30.5,
+          "revenueTtmBn": 156.2
+        },
+        "MSFT": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 55.6,
+          "revenueTtmBn": 261.8
+        },
+        "ORCL": {
+          "periodEnd": "2024-11-30",
+          "capexTtmBn": 10.7,
+          "revenueTtmBn": 54.9
+        }
+      }
+    },
+    {
+      "date": "2025-01-30",
+      "intensity": 0.15444,
+      "capexTtmBn": 222.6,
+      "revenueTtmBn": 1441.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 69.8,
+          "revenueTtmBn": 620.1
+        },
+        "GOOGL": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 49.3,
+          "revenueTtmBn": 339.9
+        },
+        "META": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 37.3,
+          "revenueTtmBn": 164.5
+        },
+        "MSFT": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 55.6,
+          "revenueTtmBn": 261.8
+        },
+        "ORCL": {
+          "periodEnd": "2024-11-30",
+          "capexTtmBn": 10.7,
+          "revenueTtmBn": 54.9
+        }
+      }
+    },
+    {
+      "date": "2025-02-05",
+      "intensity": 0.1556,
+      "capexTtmBn": 225.8,
+      "revenueTtmBn": 1451.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-09-30",
+          "capexTtmBn": 69.8,
+          "revenueTtmBn": 620.1
+        },
+        "GOOGL": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 52.5,
+          "revenueTtmBn": 350.0
+        },
+        "META": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 37.3,
+          "revenueTtmBn": 164.5
+        },
+        "MSFT": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 55.6,
+          "revenueTtmBn": 261.8
+        },
+        "ORCL": {
+          "periodEnd": "2024-11-30",
+          "capexTtmBn": 10.7,
+          "revenueTtmBn": 54.9
+        }
+      }
+    },
+    {
+      "date": "2025-02-07",
+      "intensity": 0.16273,
+      "capexTtmBn": 239.1,
+      "revenueTtmBn": 1469.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 83.0,
+          "revenueTtmBn": 638.0
+        },
+        "GOOGL": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 52.5,
+          "revenueTtmBn": 350.0
+        },
+        "META": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 37.3,
+          "revenueTtmBn": 164.5
+        },
+        "MSFT": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 55.6,
+          "revenueTtmBn": 261.8
+        },
+        "ORCL": {
+          "periodEnd": "2024-11-30",
+          "capexTtmBn": 10.7,
+          "revenueTtmBn": 54.9
+        }
+      }
+    },
+    {
+      "date": "2025-03-11",
+      "intensity": 0.16549,
+      "capexTtmBn": 243.3,
+      "revenueTtmBn": 1470.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 83.0,
+          "revenueTtmBn": 638.0
+        },
+        "GOOGL": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 52.5,
+          "revenueTtmBn": 350.0
+        },
+        "META": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 37.3,
+          "revenueTtmBn": 164.5
+        },
+        "MSFT": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 55.6,
+          "revenueTtmBn": 261.8
+        },
+        "ORCL": {
+          "periodEnd": "2025-02-28",
+          "capexTtmBn": 14.9,
+          "revenueTtmBn": 55.8
+        }
+      }
+    },
+    {
+      "date": "2025-04-25",
+      "intensity": 0.16791,
+      "capexTtmBn": 248.5,
+      "revenueTtmBn": 1479.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 83.0,
+          "revenueTtmBn": 638.0
+        },
+        "GOOGL": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 57.7,
+          "revenueTtmBn": 359.7
+        },
+        "META": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 37.3,
+          "revenueTtmBn": 164.5
+        },
+        "MSFT": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 55.6,
+          "revenueTtmBn": 261.8
+        },
+        "ORCL": {
+          "periodEnd": "2025-02-28",
+          "capexTtmBn": 14.9,
+          "revenueTtmBn": 55.8
+        }
+      }
+    },
+    {
+      "date": "2025-04-30",
+      "intensity": 0.17087,
+      "capexTtmBn": 254.3,
+      "revenueTtmBn": 1488.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 83.0,
+          "revenueTtmBn": 638.0
+        },
+        "GOOGL": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 57.7,
+          "revenueTtmBn": 359.7
+        },
+        "META": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 37.3,
+          "revenueTtmBn": 164.5
+        },
+        "MSFT": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 61.3,
+          "revenueTtmBn": 270.0
+        },
+        "ORCL": {
+          "periodEnd": "2025-02-28",
+          "capexTtmBn": 14.9,
+          "revenueTtmBn": 55.8
+        }
+      }
+    },
+    {
+      "date": "2025-05-01",
+      "intensity": 0.17458,
+      "capexTtmBn": 260.8,
+      "revenueTtmBn": 1493.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2024-12-31",
+          "capexTtmBn": 83.0,
+          "revenueTtmBn": 638.0
+        },
+        "GOOGL": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 57.7,
+          "revenueTtmBn": 359.7
+        },
+        "META": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 43.8,
+          "revenueTtmBn": 170.4
+        },
+        "MSFT": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 61.3,
+          "revenueTtmBn": 270.0
+        },
+        "ORCL": {
+          "periodEnd": "2025-02-28",
+          "capexTtmBn": 14.9,
+          "revenueTtmBn": 55.8
+        }
+      }
+    },
+    {
+      "date": "2025-05-02",
+      "intensity": 0.17985,
+      "capexTtmBn": 270.9,
+      "revenueTtmBn": 1506.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 93.1,
+          "revenueTtmBn": 650.3
+        },
+        "GOOGL": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 57.7,
+          "revenueTtmBn": 359.7
+        },
+        "META": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 43.8,
+          "revenueTtmBn": 170.4
+        },
+        "MSFT": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 61.3,
+          "revenueTtmBn": 270.0
+        },
+        "ORCL": {
+          "periodEnd": "2025-02-28",
+          "capexTtmBn": 14.9,
+          "revenueTtmBn": 55.8
+        }
+      }
+    },
+    {
+      "date": "2025-06-18",
+      "intensity": 0.18382,
+      "capexTtmBn": 277.2,
+      "revenueTtmBn": 1507.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 93.1,
+          "revenueTtmBn": 650.3
+        },
+        "GOOGL": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 57.7,
+          "revenueTtmBn": 359.7
+        },
+        "META": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 43.8,
+          "revenueTtmBn": 170.4
+        },
+        "MSFT": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 61.3,
+          "revenueTtmBn": 270.0
+        },
+        "ORCL": {
+          "periodEnd": "2025-05-31",
+          "capexTtmBn": 21.2,
+          "revenueTtmBn": 57.4
+        }
+      }
+    },
+    {
+      "date": "2025-07-24",
+      "intensity": 0.18851,
+      "capexTtmBn": 286.4,
+      "revenueTtmBn": 1519.5,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 93.1,
+          "revenueTtmBn": 650.3
+        },
+        "GOOGL": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 67.0,
+          "revenueTtmBn": 371.4
+        },
+        "META": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 43.8,
+          "revenueTtmBn": 170.4
+        },
+        "MSFT": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 61.3,
+          "revenueTtmBn": 270.0
+        },
+        "ORCL": {
+          "periodEnd": "2025-05-31",
+          "capexTtmBn": 21.2,
+          "revenueTtmBn": 57.4
+        }
+      }
+    },
+    {
+      "date": "2025-07-30",
+      "intensity": 0.18916,
+      "capexTtmBn": 289.6,
+      "revenueTtmBn": 1531.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 93.1,
+          "revenueTtmBn": 650.3
+        },
+        "GOOGL": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 67.0,
+          "revenueTtmBn": 371.4
+        },
+        "META": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 43.8,
+          "revenueTtmBn": 170.4
+        },
+        "MSFT": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 64.6,
+          "revenueTtmBn": 281.7
+        },
+        "ORCL": {
+          "periodEnd": "2025-05-31",
+          "capexTtmBn": 21.2,
+          "revenueTtmBn": 57.4
+        }
+      }
+    },
+    {
+      "date": "2025-07-31",
+      "intensity": 0.19355,
+      "capexTtmBn": 298.0,
+      "revenueTtmBn": 1539.6,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-03-31",
+          "capexTtmBn": 93.1,
+          "revenueTtmBn": 650.3
+        },
+        "GOOGL": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 67.0,
+          "revenueTtmBn": 371.4
+        },
+        "META": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 52.2,
+          "revenueTtmBn": 178.8
+        },
+        "MSFT": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 64.6,
+          "revenueTtmBn": 281.7
+        },
+        "ORCL": {
+          "periodEnd": "2025-05-31",
+          "capexTtmBn": 21.2,
+          "revenueTtmBn": 57.4
+        }
+      }
+    },
+    {
+      "date": "2025-08-01",
+      "intensity": 0.20044,
+      "capexTtmBn": 312.6,
+      "revenueTtmBn": 1559.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 107.7,
+          "revenueTtmBn": 670.0
+        },
+        "GOOGL": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 67.0,
+          "revenueTtmBn": 371.4
+        },
+        "META": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 52.2,
+          "revenueTtmBn": 178.8
+        },
+        "MSFT": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 64.6,
+          "revenueTtmBn": 281.7
+        },
+        "ORCL": {
+          "periodEnd": "2025-05-31",
+          "capexTtmBn": 21.2,
+          "revenueTtmBn": 57.4
+        }
+      }
+    },
+    {
+      "date": "2025-09-10",
+      "intensity": 0.20421,
+      "capexTtmBn": 318.8,
+      "revenueTtmBn": 1561.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 107.7,
+          "revenueTtmBn": 670.0
+        },
+        "GOOGL": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 67.0,
+          "revenueTtmBn": 371.4
+        },
+        "META": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 52.2,
+          "revenueTtmBn": 178.8
+        },
+        "MSFT": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 64.6,
+          "revenueTtmBn": 281.7
+        },
+        "ORCL": {
+          "periodEnd": "2025-08-31",
+          "capexTtmBn": 27.4,
+          "revenueTtmBn": 59.0
+        }
+      }
+    },
+    {
+      "date": "2025-10-29",
+      "intensity": 0.20548,
+      "capexTtmBn": 323.2,
+      "revenueTtmBn": 1573.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 107.7,
+          "revenueTtmBn": 670.0
+        },
+        "GOOGL": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 67.0,
+          "revenueTtmBn": 371.4
+        },
+        "META": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 52.2,
+          "revenueTtmBn": 178.8
+        },
+        "MSFT": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 69.0,
+          "revenueTtmBn": 293.8
+        },
+        "ORCL": {
+          "periodEnd": "2025-08-31",
+          "capexTtmBn": 27.4,
+          "revenueTtmBn": 59.0
+        }
+      }
+    },
+    {
+      "date": "2025-10-30",
+      "intensity": 0.21573,
+      "capexTtmBn": 344.7,
+      "revenueTtmBn": 1597.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-06-30",
+          "capexTtmBn": 107.7,
+          "revenueTtmBn": 670.0
+        },
+        "GOOGL": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 77.9,
+          "revenueTtmBn": 385.5
+        },
+        "META": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 62.7,
+          "revenueTtmBn": 189.5
+        },
+        "MSFT": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 69.0,
+          "revenueTtmBn": 293.8
+        },
+        "ORCL": {
+          "periodEnd": "2025-08-31",
+          "capexTtmBn": 27.4,
+          "revenueTtmBn": 59.0
+        }
+      }
+    },
+    {
+      "date": "2025-10-31",
+      "intensity": 0.2206,
+      "capexTtmBn": 357.2,
+      "revenueTtmBn": 1619.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 120.1,
+          "revenueTtmBn": 691.3
+        },
+        "GOOGL": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 77.9,
+          "revenueTtmBn": 385.5
+        },
+        "META": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 62.7,
+          "revenueTtmBn": 189.5
+        },
+        "MSFT": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 69.0,
+          "revenueTtmBn": 293.8
+        },
+        "ORCL": {
+          "periodEnd": "2025-08-31",
+          "capexTtmBn": 27.4,
+          "revenueTtmBn": 59.0
+        }
+      }
+    },
+    {
+      "date": "2025-12-11",
+      "intensity": 0.2253,
+      "capexTtmBn": 365.2,
+      "revenueTtmBn": 1621.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 120.1,
+          "revenueTtmBn": 691.3
+        },
+        "GOOGL": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 77.9,
+          "revenueTtmBn": 385.5
+        },
+        "META": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 62.7,
+          "revenueTtmBn": 189.5
+        },
+        "MSFT": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 69.0,
+          "revenueTtmBn": 293.8
+        },
+        "ORCL": {
+          "periodEnd": "2025-11-30",
+          "capexTtmBn": 35.5,
+          "revenueTtmBn": 61.0
+        }
+      }
+    },
+    {
+      "date": "2026-01-28",
+      "intensity": 0.23231,
+      "capexTtmBn": 379.3,
+      "revenueTtmBn": 1632.7,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 120.1,
+          "revenueTtmBn": 691.3
+        },
+        "GOOGL": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 77.9,
+          "revenueTtmBn": 385.5
+        },
+        "META": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 62.7,
+          "revenueTtmBn": 189.5
+        },
+        "MSFT": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 83.1,
+          "revenueTtmBn": 305.5
+        },
+        "ORCL": {
+          "periodEnd": "2025-11-30",
+          "capexTtmBn": 35.5,
+          "revenueTtmBn": 61.0
+        }
+      }
+    },
+    {
+      "date": "2026-01-29",
+      "intensity": 0.23492,
+      "capexTtmBn": 386.3,
+      "revenueTtmBn": 1644.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 120.1,
+          "revenueTtmBn": 691.3
+        },
+        "GOOGL": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 77.9,
+          "revenueTtmBn": 385.5
+        },
+        "META": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 69.7,
+          "revenueTtmBn": 201.0
+        },
+        "MSFT": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 83.1,
+          "revenueTtmBn": 305.5
+        },
+        "ORCL": {
+          "periodEnd": "2025-11-30",
+          "capexTtmBn": 35.5,
+          "revenueTtmBn": 61.0
+        }
+      }
+    },
+    {
+      "date": "2026-02-05",
+      "intensity": 0.24064,
+      "capexTtmBn": 399.8,
+      "revenueTtmBn": 1661.6,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-09-30",
+          "capexTtmBn": 120.1,
+          "revenueTtmBn": 691.3
+        },
+        "GOOGL": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 91.4,
+          "revenueTtmBn": 402.8
+        },
+        "META": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 69.7,
+          "revenueTtmBn": 201.0
+        },
+        "MSFT": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 83.1,
+          "revenueTtmBn": 305.5
+        },
+        "ORCL": {
+          "periodEnd": "2025-11-30",
+          "capexTtmBn": 35.5,
+          "revenueTtmBn": 61.0
+        }
+      }
+    },
+    {
+      "date": "2026-02-06",
+      "intensity": 0.24391,
+      "capexTtmBn": 411.5,
+      "revenueTtmBn": 1687.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 131.8,
+          "revenueTtmBn": 716.9
+        },
+        "GOOGL": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 91.4,
+          "revenueTtmBn": 402.8
+        },
+        "META": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 69.7,
+          "revenueTtmBn": 201.0
+        },
+        "MSFT": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 83.1,
+          "revenueTtmBn": 305.5
+        },
+        "ORCL": {
+          "periodEnd": "2025-11-30",
+          "capexTtmBn": 35.5,
+          "revenueTtmBn": 61.0
+        }
+      }
+    },
+    {
+      "date": "2026-03-11",
+      "intensity": 0.25103,
+      "capexTtmBn": 424.3,
+      "revenueTtmBn": 1690.3,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 131.8,
+          "revenueTtmBn": 716.9
+        },
+        "GOOGL": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 91.4,
+          "revenueTtmBn": 402.8
+        },
+        "META": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 69.7,
+          "revenueTtmBn": 201.0
+        },
+        "MSFT": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 83.1,
+          "revenueTtmBn": 305.5
+        },
+        "ORCL": {
+          "periodEnd": "2026-02-28",
+          "capexTtmBn": 48.2,
+          "revenueTtmBn": 64.1
+        }
+      }
+    },
+    {
+      "date": "2026-04-29",
+      "intensity": 0.25744,
+      "capexTtmBn": 438.4,
+      "revenueTtmBn": 1703.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 131.8,
+          "revenueTtmBn": 716.9
+        },
+        "GOOGL": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 91.4,
+          "revenueTtmBn": 402.8
+        },
+        "META": {
+          "periodEnd": "2025-12-31",
+          "capexTtmBn": 69.7,
+          "revenueTtmBn": 201.0
+        },
+        "MSFT": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 97.2,
+          "revenueTtmBn": 318.3
+        },
+        "ORCL": {
+          "periodEnd": "2026-02-28",
+          "capexTtmBn": 48.2,
+          "revenueTtmBn": 64.1
+        }
+      }
+    },
+    {
+      "date": "2026-04-30",
+      "intensity": 0.27355,
+      "capexTtmBn": 482.1,
+      "revenueTtmBn": 1762.6,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 151.0,
+          "revenueTtmBn": 742.8
+        },
+        "GOOGL": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 109.9,
+          "revenueTtmBn": 422.5
+        },
+        "META": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 75.7,
+          "revenueTtmBn": 215.0
+        },
+        "MSFT": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 97.2,
+          "revenueTtmBn": 318.3
+        },
+        "ORCL": {
+          "periodEnd": "2026-02-28",
+          "capexTtmBn": 48.2,
+          "revenueTtmBn": 64.1
+        }
+      }
+    },
+    {
+      "date": "2026-06-22",
+      "intensity": 0.27724,
+      "capexTtmBn": 489.6,
+      "revenueTtmBn": 1765.9,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 151.0,
+          "revenueTtmBn": 742.8
+        },
+        "GOOGL": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 109.9,
+          "revenueTtmBn": 422.5
+        },
+        "META": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 75.7,
+          "revenueTtmBn": 215.0
+        },
+        "MSFT": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 97.2,
+          "revenueTtmBn": 318.3
+        },
+        "ORCL": {
+          "periodEnd": "2026-05-31",
+          "capexTtmBn": 55.7,
+          "revenueTtmBn": 67.4
+        }
+      }
+    },
+    {
+      "date": "2026-07-23",
+      "intensity": 0.28618,
+      "capexTtmBn": 512.0,
+      "revenueTtmBn": 1789.2,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 151.0,
+          "revenueTtmBn": 742.8
+        },
+        "GOOGL": {
+          "periodEnd": "2026-06-30",
+          "capexTtmBn": 132.4,
+          "revenueTtmBn": 445.9
+        },
+        "META": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 75.7,
+          "revenueTtmBn": 215.0
+        },
+        "MSFT": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 97.2,
+          "revenueTtmBn": 318.3
+        },
+        "ORCL": {
+          "periodEnd": "2026-05-31",
+          "capexTtmBn": 55.7,
+          "revenueTtmBn": 67.4
+        }
+      }
+    },
+    {
+      "date": "2026-07-29",
+      "intensity": 0.29441,
+      "capexTtmBn": 530.8,
+      "revenueTtmBn": 1802.8,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 151.0,
+          "revenueTtmBn": 742.8
+        },
+        "GOOGL": {
+          "periodEnd": "2026-06-30",
+          "capexTtmBn": 132.4,
+          "revenueTtmBn": 445.9
+        },
+        "META": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 75.7,
+          "revenueTtmBn": 215.0
+        },
+        "MSFT": {
+          "periodEnd": "2026-06-30",
+          "capexTtmBn": 115.9,
+          "revenueTtmBn": 331.8
+        },
+        "ORCL": {
+          "periodEnd": "2026-05-31",
+          "capexTtmBn": 55.7,
+          "revenueTtmBn": 67.4
+        }
+      }
+    },
+    {
+      "date": "2026-07-30",
+      "intensity": 0.29973,
+      "capexTtmBn": 544.3,
+      "revenueTtmBn": 1816.1,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2026-03-31",
+          "capexTtmBn": 151.0,
+          "revenueTtmBn": 742.8
+        },
+        "GOOGL": {
+          "periodEnd": "2026-06-30",
+          "capexTtmBn": 132.4,
+          "revenueTtmBn": 445.9
+        },
+        "META": {
+          "periodEnd": "2026-06-30",
+          "capexTtmBn": 89.3,
+          "revenueTtmBn": 228.2
+        },
+        "MSFT": {
+          "periodEnd": "2026-06-30",
+          "capexTtmBn": 115.9,
+          "revenueTtmBn": 331.8
+        },
+        "ORCL": {
+          "periodEnd": "2026-05-31",
+          "capexTtmBn": 55.7,
+          "revenueTtmBn": 67.4
+        }
+      }
+    },
+    {
+      "date": "2026-07-31",
+      "intensity": 0.30631,
+      "capexTtmBn": 566.4,
+      "revenueTtmBn": 1849.0,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2026-06-30",
+          "capexTtmBn": 173.0,
+          "revenueTtmBn": 775.7
+        },
+        "GOOGL": {
+          "periodEnd": "2026-06-30",
+          "capexTtmBn": 132.4,
+          "revenueTtmBn": 445.9
+        },
+        "META": {
+          "periodEnd": "2026-06-30",
+          "capexTtmBn": 89.3,
+          "revenueTtmBn": 228.2
+        },
+        "MSFT": {
+          "periodEnd": "2026-06-30",
+          "capexTtmBn": 115.9,
+          "revenueTtmBn": 331.8
+        },
+        "ORCL": {
+          "periodEnd": "2026-05-31",
+          "capexTtmBn": 55.7,
+          "revenueTtmBn": 67.4
+        }
+      }
+    },
+    {
+      "date": "2026-09-11",
+      "intensity": 0.31637,
+      "capexTtmBn": 586.4,
+      "revenueTtmBn": 1853.4,
+      "members": {
+        "AMZN": {
+          "periodEnd": "2026-06-30",
+          "capexTtmBn": 173.0,
+          "revenueTtmBn": 775.7
+        },
+        "GOOGL": {
+          "periodEnd": "2026-06-30",
+          "capexTtmBn": 132.4,
+          "revenueTtmBn": 445.9
+        },
+        "META": {
+          "periodEnd": "2026-06-30",
+          "capexTtmBn": 89.3,
+          "revenueTtmBn": 228.2
+        },
+        "MSFT": {
+          "periodEnd": "2026-06-30",
+          "capexTtmBn": 115.9,
+          "revenueTtmBn": 331.8
+        },
+        "ORCL": {
+          "periodEnd": "2026-08-31",
+          "capexTtmBn": 75.7,
+          "revenueTtmBn": 71.8
+        }
+      }
+    }
+  ]
 }
