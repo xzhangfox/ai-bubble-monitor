@@ -102,6 +102,9 @@ const T = {
 
 const bn = (x: number) => (x >= 1000 ? `$${(x / 1000).toFixed(2)} trillion` : `$${x.toFixed(1)} billion`)
 const bnZh = (x: number) => `${Math.round(x * 10).toLocaleString('en-US')} 亿美元`
+// (compact, for chips and per-company figures)
+const bnShort = (x: number) => (x >= 1000 ? `$${(x / 1000).toFixed(2)}T` : `$${x.toFixed(1)}B`)
+const bnShortZh = (x: number) => `${Math.round(x * 10).toLocaleString('en-US')} 亿`
 const pct1 = (x: number) => `${(x * 100).toFixed(1)}%`
 const signed = (x: number) => `${x > 0 ? '+' : x < 0 ? '−' : ''}${Math.abs(Math.round(x * 100))}%`
 
@@ -122,7 +125,7 @@ function IntensityChart({ series, lang }: { series: NonNullable<CapexData['serie
   const y = (v: number) => padT + (1 - v / vMax) * (height - padT - padB)
   // a step line: each reading holds until the next filing
   const path = series.map((p, i) => (i ? `H${x(p.date).toFixed(1)}V${y(p.intensity).toFixed(1)}` : `M${x(p.date).toFixed(1)},${y(p.intensity).toFixed(1)}`)).join('')
-  const ticks = [0, vMax / 2, vMax]
+  const ticks = Array.from({ length: Math.floor(vMax / 0.1 + 1e-9) + 1 }, (_, i) => i * 0.1)
   const onMove = (e: PointerEvent<SVGSVGElement>) => {
     const r = e.currentTarget.getBoundingClientRect()
     const tx = t0 + ((e.clientX - r.left - padL) / (width - padL - padR)) * (t1 - t0)
@@ -163,6 +166,7 @@ function IntensityChart({ series, lang }: { series: NonNullable<CapexData['serie
 export default function ForwardPurchases({ capex, commitments, lang }: { capex: CapexData; commitments: CommitmentsData; lang: Lang }) {
   const t = T[lang]
   const money = lang === 'zh' ? bnZh : bn
+  const short = lang === 'zh' ? bnShortZh : bnShort
   const [open, setOpen] = useState<string | null>(null)
   const last = capex.latest
   const s = commitments.summary
@@ -193,7 +197,7 @@ export default function ForwardPurchases({ capex, commitments, lang }: { capex: 
             <div className="mt-4 flex flex-wrap gap-2">
               {Object.entries(last.members).map(([ticker, m]) => (
                 <span key={ticker} className="rounded-md border border-white/10 bg-white/[0.03] px-2.5 py-1 text-xs text-white/60">
-                  <span className="font-mono text-white/85">{ticker}</span> {money(m.capexTtmBn)} · {pct1(m.capexTtmBn / m.revenueTtmBn)}
+                  <span className="font-mono text-white/85">{ticker}</span> {short(m.capexTtmBn)} · {pct1(m.capexTtmBn / m.revenueTtmBn)}
                 </span>
               ))}
             </div>
@@ -228,24 +232,26 @@ export default function ForwardPurchases({ capex, commitments, lang }: { capex: 
                           {c.form} · {c.reportDate}
                         </a>
                       </p>
-                      <p className="text-xs text-white/60">
-                        {leases === undefined && buys === undefined ? (
-                          t.none
-                        ) : (
-                          <>
-                            {leases !== undefined && (
-                              <span className="mr-3">
-                                {t.leases} <span className="font-mono text-white/85">{money(leases)}</span>
-                              </span>
-                            )}
-                            {buys !== undefined && (
-                              <span>
-                                {t.purchases} <span className="font-mono text-white/85">{money(buys)}</span>
-                              </span>
-                            )}
-                          </>
-                        )}
-                      </p>
+                      {leases === undefined && buys === undefined ? (
+                        <p className="text-xs text-white/50">{t.none}</p>
+                      ) : (
+                        <dl className="grid grid-cols-2 gap-x-6 text-xs sm:flex sm:gap-x-6">
+                          {[
+                            [t.leases, leases, c.yearAgo?.totals.leases_not_commenced],
+                            [t.purchases, buys, c.yearAgo?.totals.purchase_commitments],
+                          ].map(([label, now, then]) => (
+                            <div key={label as string} className="sm:text-right">
+                              <dt className="text-white/45">{label}</dt>
+                              <dd className="font-mono text-white/85">
+                                {now === undefined ? '—' : short(now as number)}
+                                {typeof now === 'number' && typeof then === 'number' && then > 0 && (
+                                  <span className="ml-1.5 text-white/40">{signed(now / then - 1)}</span>
+                                )}
+                              </dd>
+                            </div>
+                          ))}
+                        </dl>
+                      )}
                     </div>
                     {c.items.length > 0 && (
                       <button type="button" onClick={() => setOpen(isOpen ? null : c.ticker)} aria-expanded={isOpen} className="mt-1.5 text-[0.7rem] text-gold/80 hover:text-gold">

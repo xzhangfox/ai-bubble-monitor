@@ -68,8 +68,16 @@ def http_get(url: str, *, headers: dict[str, str] | None = None, retries: int = 
             return body
         except (urllib.error.URLError, TimeoutError, ValueError) as err:
             last = err
-            # (a 403/404 won't get better by asking again)
+            # (a 403/404 won't get better by asking again; say what the server said)
             if isinstance(err, urllib.error.HTTPError) and err.code in (403, 404):
+                try:
+                    raw = err.read()
+                    if (err.headers.get("Content-Encoding") or "").lower() == "gzip":
+                        raw = gzip.decompress(raw)
+                    text = " ".join(raw.decode("utf-8", "replace").split())
+                    last = RuntimeError(f"{err} — {text[:300]}")
+                except Exception:
+                    pass
                 break
             if attempt < retries:
                 time.sleep(2 * attempt)

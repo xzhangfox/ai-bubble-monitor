@@ -1,0 +1,29 @@
+# (temporary: why does SEC refuse the runner? removed before merging)
+name: SEC probe
+on:
+  push:
+    branches: [ml-model]
+    paths: [".github/workflows/sec-probe.yml", "ml/common.py"]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Probe
+        run: |
+          python - <<'PY'
+          import os, urllib.request
+          from ml import common as C
+          for label, ua in [("default", C.SEC_USER_AGENT), ("tool", "Mozilla/5.0 (compatible; AIBubbleMonitor/1.0; +https://github.com/xzhangfox/ai-bubble-monitor) xzhangfox@users.noreply.github.com")]:
+              for url in ["https://data.sec.gov/api/xbrl/companyfacts/CIK0000789019.json", "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019&type=10-Q&count=1"]:
+                  C.SEC_USER_AGENT = ua
+                  try:
+                      b = C.http_get(url, retries=1)
+                      C.annotate("notice", f"SEC {label}", f"{url[:60]} OK {len(b)} bytes")
+                  except Exception as e:
+                      C.annotate("warning", f"SEC {label}", f"{url[:60]} {e}")
+          PY
