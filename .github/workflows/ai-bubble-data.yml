@@ -47,7 +47,8 @@ jobs:
       - name: Hyperscaler capex from SEC filings
         continue-on-error: true
         env:
-          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          # (temporary, this branch only: a diagnostic contact until the secret is set)
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT || 'AI Bubble Monitor contact@example.com' }}
         run: python -m ml.sec_capex
 
       - name: Fetch data and compute indicators
