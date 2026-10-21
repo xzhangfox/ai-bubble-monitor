@@ -6,9 +6,6 @@ on:
     # end-of-day settle, covering each Mon-Fri session.
     - cron: "15 11 * * 2-6"
   workflow_dispatch:
-  # (temporary: a run on this branch, for real data while it's built)
-  push:
-    branches: [ml-model]
 
 permissions:
   contents: write
@@ -47,8 +44,7 @@ jobs:
       - name: Hyperscaler capex from SEC filings
         continue-on-error: true
         env:
-          # (temporary, this branch only: a diagnostic contact until the secret is set)
-          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT || 'AI Bubble Monitor contact@example.com' }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: python -m ml.sec_capex
 
       - name: Fetch data and compute indicators
