@@ -1,30 +1,33 @@
-# (temporary: why does SEC refuse the runner? removed before merging)
+# (temporary: check the SEC steps on real filings; removed before merging)
 name: SEC probe
 on:
   push:
     branches: [ml-model]
-    paths: [".github/workflows/sec-probe.yml", "ml/common.py"]
+    paths: [".github/workflows/sec-probe.yml", "ml/**"]
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
+    env:
+      SEC_USER_AGENT: "AI Bubble Monitor contact@example.com"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Probe
+      - name: Capex series
+        run: python -m ml.sec_capex
+      - name: Filing text (no LLM)
         run: |
           python - <<'PY'
-          import os, urllib.request
-          from ml import common as C
-          # (diagnosis only: does the contact's domain matter, or is it the runner's address?)
-          for label, ua in [("example-domain", "AI Bubble Monitor contact@example.com"), ("person-format", "Jane Doe jane.doe@example.com")]:
-              for url in ["https://data.sec.gov/api/xbrl/companyfacts/CIK0000789019.json"]:
-                  C.SEC_USER_AGENT = ua
-                  try:
-                      b = C.http_get(url, retries=1)
-                      C.annotate("notice", f"SEC {label}", f"{url[:60]} OK {len(b)} bytes")
-                  except Exception as e:
-                      C.annotate("warning", f"SEC {label}", f"{url[:60]} {e}")
+          import time
+          from ml import common as C, filings_llm as F
+          from ml.sec_capex import COMPANIES
+          for t, cik in COMPANIES.items():
+              meta = F.recent_filings(t, cik)[0]
+              text = F.html_to_text(C.http_get(meta["url"]).decode("utf-8", "replace"))
+              ps = F.passages(text)
+              top = next((p for p in ps if "not yet commenced" in p or "commitments" in p.lower()), ps[0] if ps else "")
+              C.annotate("notice", f"Filing {t}", f"{meta['form']} {meta['reportDate']}: {len(text)} chars, {len(ps)} passages; {top[:230]}")
+              time.sleep(0.3)
           PY
