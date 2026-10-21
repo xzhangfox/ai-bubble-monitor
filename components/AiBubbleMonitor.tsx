@@ -6,6 +6,9 @@ import FadeIn from './FadeIn'
 import IndicatorIcon from './IndicatorIcon'
 import EcosystemTicker from './EcosystemTicker'
 import ShareAppButton from './ShareAppButton'
+import Briefing, { type BriefingData } from './Briefing'
+import ModelView, { type ModelData } from './ModelView'
+import ForwardPurchases, { type CapexData, type CommitmentsData } from './ForwardPurchases'
 import { getScoreColor } from '@/lib/scoreColor'
 
 export interface Indicator {
@@ -59,11 +62,15 @@ const STRINGS = {
     methodologyIntro:
       'Ray Dalio’s "How to Identify Bubbles" names six recurring hallmarks of a market bubble: prices high relative to traditional measures, prices discounting continued rapid appreciation, broad bullish sentiment, purchases financed by high leverage, buyers making unusually extended forward purchases, and new, unsophisticated buyers being drawn in — often amplified by stimulative monetary policy. Robert Shiller’s work on valuation extremes and market narratives, and Hyman Minsky’s financial instability hypothesis (hedge → speculative → Ponzi financing), inform the same reading.',
     methodologyHow:
-      'Each indicator below is a free, daily-updatable proxy for one of those hallmarks, scored as a percentile rank against its own trailing history up to that day (no lookahead). The composite is their equal-weighted average, 0–100.',
+      'Each indicator below is a free proxy for one of those hallmarks, scored as a percentile rank against its own trailing history up to that day (no lookahead). Seven come from daily market prices; the eighth — extended forward purchases — from the hyperscalers’ quarterly SEC filings, counted from the day after each filing. The composite is their equal-weighted average, 0–100.',
+    methodologyModel:
+      'The drawdown model (Python: scikit-learn and PyTorch) asks what followed each day: did the AI basket fall 10% or more below that close within 63 trading days? Four models — the composite itself, logistic regression, gradient-boosted trees and a small Transformer over the last 60 days — are tested walk-forward: retrained each quarter on the past only, with a 63-day gap so no training outcome overlaps the days predicted, and scored out of sample with block-bootstrap intervals.',
+    methodologyLlm:
+      'Two steps use an LLM (Gemini), each checked by code before anything is shown: it reads the commitments in the hyperscalers’ 10-Q and 10-K filings, and a figure is kept only if the sentence it quotes is in the filing word for word and states that amount; and it writes the daily brief, which is published only if every number in it is one of the day’s figures.',
     dataSourcesLabel: 'Data sources',
     disclaimer:
       'Educational tool only. This is a simplified proxy inspired by public bubble frameworks — it is not Dalio’s proprietary gauge, not a trading signal, and not investment advice.',
-    footerNote: 'Data refreshes daily via an automated GitHub Actions workflow, sourced entirely from free Yahoo Finance endpoints.',
+    footerNote: 'Data refreshes daily via an automated GitHub Actions workflow, from free Yahoo Finance endpoints and SEC EDGAR.',
     basketLabel: 'AI basket',
     langToggle: '中文',
     shareApp: 'Share',
@@ -97,11 +104,15 @@ const STRINGS = {
     methodologyIntro:
       '达里欧在《如何识别泡沫》中提出泡沫的六个典型特征：价格相对传统估值指标偏高、价格已计入未来持续快速上涨的预期、市场情绪普遍乐观、购买行为由高杠杆融资支撑、买家进行异常超前的远期采购、以及此前未参与市场的新买家被不断吸引入场 —— 往往由宽松的货币政策进一步助推。席勒关于估值极端与市场叙事的研究，以及明斯基的金融不稳定性假说（对冲性融资 → 投机性融资 → 庞氏融资），共同支撑了这一判断框架。',
     methodologyHow:
-      '下方每个指标都是对应某一特征的免费、可每日更新的替代指标，其得分为该指标相对自身截至当日历史数据的百分位排名（不使用未来数据）。综合指数为各指标得分的等权平均值，范围 0-100。',
+      '下方每个指标都是对应某一特征的免费替代指标，其得分为该指标相对自身截至当日历史数据的百分位排名（不使用未来数据）。其中七个来自每日市场价格；第八个“超前采购”来自大厂每季度提交给美国证监会的财报，从每份财报发布的次日起计入。综合指数为各指标得分的等权平均值，范围 0-100。',
+    methodologyModel:
+      '回撤模型（Python：scikit-learn 与 PyTorch）回答的是每一天之后发生了什么：AI 篮子是否在 63 个交易日内从当日收盘价下跌 10% 以上？四个模型——综合指数本身、逻辑回归、梯度提升树和读取过去 60 天的小型 Transformer——用滚动向前的方式检验：每个季度只用过去的数据重新训练，并留出 63 天空档，保证训练用到的结果不与被预测的日子重叠；在样本外评分，并给出分块自助法区间。',
+    methodologyLlm:
+      '有两个环节使用 LLM（Gemini），展示前都由代码核对：一是读取大厂 10-Q 和 10-K 财报中的承诺金额，只有当它引用的句子在财报中一字不差地存在、并写明这个金额时才保留；二是撰写每日简报，只有其中每个数字都来自当天数据时才会发布。',
     dataSourcesLabel: '数据来源',
     disclaimer:
       '本工具仅供学习参考。这是受公开泡沫理论启发的简化替代指标，并非达里欧本人的专有模型，不构成交易信号，也不构成投资建议。',
-    footerNote: '数据通过 GitHub Actions 自动化流程每日刷新，全部来自免费的 Yahoo Finance 接口。',
+    footerNote: '数据通过 GitHub Actions 自动化流程每日刷新，来自免费的 Yahoo Finance 接口和美国证监会 EDGAR 系统。',
     basketLabel: 'AI 篮子成分股',
     langToggle: 'EN',
     shareApp: '分享',
@@ -141,6 +152,8 @@ const INDICATOR_DESCRIPTIONS_ZH: Record<string, string> = {
     '10年期美债收益率的反向读数。长端利率走低会缓解为投机性估值提供支撑所需的贴现率测算——对应达里欧提出的"宽松货币政策可能进一步吹大泡沫"这一特征。',
   volumeSurge:
     'AI 篮子20日平均成交量相对其自身252日平均成交量的比值。成交量的持续激增意味着"此前未曾入场的新买家正被不断吸引进场"——这是达里欧提出的第六个泡沫特征，也对应明斯基周期中的庞氏融资阶段。',
+  forwardPurchases:
+    '微软、Alphabet、亚马逊、Meta 和甲骨文过去12个月的资本开支除以过去12个月的收入，数据来自它们向美国证监会提交的 10-Q 和 10-K 财报（XBRL），从每份财报发布的次日起计入。为多年后才可能带来收入的数据中心提前投入巨资，正是达里欧提出的第五个泡沫特征——"买家进行异常超前的远期采购"。',
 }
 
 function Gauge({ score, category, color }: { score: number; category: string; color: string }) {
@@ -373,7 +386,21 @@ function TrendChart({ series, lang }: { series: HistoryPoint[]; lang: 'en' | 'zh
   )
 }
 
-export default function AiBubbleMonitor({ latest, history }: { latest: LatestData; history: HistoryData }) {
+export default function AiBubbleMonitor({
+  latest,
+  history,
+  model,
+  capex,
+  commitments,
+  briefing,
+}: {
+  latest: LatestData
+  history: HistoryData
+  model: ModelData
+  capex: CapexData
+  commitments: CommitmentsData
+  briefing: BriefingData
+}) {
   const [lang, setLang] = useState<'en' | 'zh'>('en')
   const s = STRINGS[lang]
   const [hasData] = useState(latest.compositeScore !== null)
@@ -382,6 +409,7 @@ export default function AiBubbleMonitor({ latest, history }: { latest: LatestDat
   const color = latest.categoryColor ?? '#C9A84C'
 
   const sortedHistory = useMemo(() => [...history.series].sort((a, b) => (a.date < b.date ? -1 : 1)), [history.series])
+  const indicatorNames = useMemo(() => Object.fromEntries(latest.indicators.map((i) => [i.id, i.name])), [latest.indicators])
 
   return (
     <main className="relative bg-bg min-h-screen">
@@ -447,6 +475,8 @@ export default function AiBubbleMonitor({ latest, history }: { latest: LatestDat
               </div>
             </FadeIn>
 
+            <Briefing briefing={briefing} asOf={latest.asOf} lang={lang} />
+
             <FadeIn delay={0.15}>
               <div className="mt-12 mb-6">
                 <p className="section-label mb-4">{s.indicatorsLabel}</p>
@@ -466,6 +496,9 @@ export default function AiBubbleMonitor({ latest, history }: { latest: LatestDat
                 <TrendChart series={sortedHistory} lang={lang} />
               </div>
             </FadeIn>
+
+            <ModelView model={model} names={indicatorNames} lang={lang} />
+            <ForwardPurchases capex={capex} commitments={commitments} lang={lang} />
           </>
         )}
 
@@ -476,7 +509,9 @@ export default function AiBubbleMonitor({ latest, history }: { latest: LatestDat
             </div>
             <div className="glass-card rounded-2xl p-6 md:p-8">
               <p className="text-white/45 text-sm leading-relaxed mb-4">{s.methodologyIntro}</p>
-              <p className="text-white/45 text-sm leading-relaxed mb-6">{s.methodologyHow}</p>
+              <p className="text-white/45 text-sm leading-relaxed mb-4">{s.methodologyHow}</p>
+              <p className="text-white/45 text-sm leading-relaxed mb-4">{s.methodologyModel}</p>
+              <p className="text-white/45 text-sm leading-relaxed mb-6">{s.methodologyLlm}</p>
 
               <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-2">{s.dataSourcesLabel}</p>
               <ul className="space-y-1">

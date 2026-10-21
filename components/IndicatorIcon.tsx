@@ -34,6 +34,9 @@ const PATHS: Record<string, ReactNode> = {
   volumeSurge: (
     <path d="M4 20V10M10 20V4M16 20v-7M22 20V13" strokeLinecap="round" strokeLinejoin="round" />
   ),
+  forwardPurchases: (
+    <path d="M4 4h16v6H4V4zM4 14h16v6H4v-6zM8 7h.01M8 17h.01M12 7h4M12 17h4" strokeLinecap="round" strokeLinejoin="round" />
+  ),
 }
 
 export default function IndicatorIcon({ id, color }: { id: string; color: string }) {
