@@ -6,6 +6,12 @@
  * data/ai-bubble/history.json (trailing time series for the trend chart).
  * Designed to run daily from GitHub Actions.
  *
+ * The eighth indicator — hyperscaler capital spending against revenue, from
+ * SEC filings — is computed by ml/sec_capex.py (run just before this) into
+ * data/ai-bubble/sec-capex.json; this script lines it up with the trading
+ * days. It also writes data/ai-bubble/features.csv, every day's indicators
+ * over the full ten years, which the drawdown model (ml/model.py) reads.
+ *
  * No lookahead: every historical percentile is computed against an
  * expanding window of only the data available up to and including that day.
  *
@@ -150,7 +156,7 @@ function makeExpandingPercentileTracker() {
   }
 }
 
-const INDICATOR_DEFS = [
+const MARKET_INDICATORS = [
   {
     id: 'momentum',
     name: 'AI Basket Momentum Extension',
@@ -209,6 +215,39 @@ const INDICATOR_DEFS = [
   },
 ]
 
+// Dalio's fifth hallmark, from the hyperscalers' own filings (ml/sec_capex.py).
+const FORWARD_PURCHASES = {
+  id: 'forwardPurchases',
+  name: 'Forward Purchases: Hyperscaler Capex vs Revenue',
+  framework: 'Dalio',
+  description:
+    'Trailing-12-month capital spending of Microsoft, Alphabet, Amazon, Meta and Oracle divided by their trailing-12-month revenue, from their 10-Q and 10-K filings with the SEC (XBRL), counted from the day after each filing. Data-centre build-outs paid for years ahead of the revenue they are meant to earn are Dalio\'s fifth hallmark — "buyers making unusually extended forward purchases."',
+  format: (v) => `${(v * 100).toFixed(1)}% of revenue (TTM capex)`,
+}
+
+/** The SEC series as {date, intensity} steps, or null if it isn't there. */
+async function readSecCapex() {
+  try {
+    const sec = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'sec-capex.json'), 'utf8'))
+    const steps = (sec.series ?? []).filter((p) => p.date && Number.isFinite(p.intensity)).sort((a, b) => (a.date < b.date ? -1 : 1))
+    return steps.length ? steps : null
+  } catch {
+    return null
+  }
+}
+
+/** Each trading day's value of a step series, counted from the day after
+ *  each step's date (a filing is public the day it's filed, not before). */
+function stepsToCalendar(dates, steps) {
+  const out = new Array(dates.length).fill(null)
+  let j = -1
+  for (let i = 0; i < dates.length; i++) {
+    while (j + 1 < steps.length && steps[j + 1].date < dates[i]) j++
+    out[i] = j >= 0 ? steps[j].intensity : null
+  }
+  return out
+}
+
 const CATEGORY_BANDS = [
   { max: 24, label: 'Low', color: '#4ADE80' },
   { max: 44, label: 'Moderate', color: '#C9A84C' },
@@ -222,6 +261,10 @@ function categoryFor(score) {
 }
 
 async function main() {
+  const secSteps = await readSecCapex()
+  const INDICATOR_DEFS = secSteps ? [...MARKET_INDICATORS, FORWARD_PURCHASES] : MARKET_INDICATORS
+  if (!secSteps) console.warn('No SEC capex series (data/ai-bubble/sec-capex.json) — the composite uses the seven market indicators.')
+
   console.log('Fetching Yahoo Finance series...')
   const yahooEntries = await Promise.all(
     [...AI_BASKET, ...Object.values(YAHOO_SYMBOLS)].map(async (symbol) => {
@@ -265,6 +308,8 @@ async function main() {
   const hygAligned = alignToCalendar(dates, toSeriesMap(yahoo[YAHOO_SYMBOLS.hyg], 'close'))
   const iefAligned = alignToCalendar(dates, toSeriesMap(yahoo[YAHOO_SYMBOLS.ief], 'close'))
 
+  const capexAligned = secSteps ? stepsToCalendar(dates, secSteps) : null
+
   const rutBase = rutAligned.find((v) => v !== null)
   const rutIndex = rutAligned.map((v) => (v !== null && rutBase ? (v / rutBase) * 100 : null))
 
@@ -294,6 +339,7 @@ async function main() {
     const volShort = sma(basketVolume, VOLUME_SHORT, i)
     const volLong = sma(basketVolume, VOLUME_LONG, i)
     if (volShort && volLong) rawSeries.volumeSurge[i] = volShort / volLong
+    if (capexAligned) rawSeries.forwardPurchases[i] = capexAligned[i]
 
     for (const def of INDICATOR_DEFS) {
       scoreSeries[def.id][i] = trackers[def.id](rawSeries[def.id][i])
@@ -335,12 +381,14 @@ async function main() {
     categoryColor: category?.color ?? null,
     indicators: latestIndicators,
     basket: AI_BASKET,
-    methodologyNote:
-      "Composite score is the equal-weighted average of the percentile ranks below, each computed against its own trailing history up to that day (no lookahead). It is a simplified, transparent proxy inspired by Ray Dalio's six classic bubble hallmarks, Robert Shiller's work on valuation extremes and market narratives, and Hyman Minsky's financial instability hypothesis — it is not Dalio's proprietary bubble gauge, not a trading signal, and not investment advice. One hallmark Dalio names — buyers making unusually extended forward purchases for speculation or hedging, e.g. hyperscaler AI-capex commitments running far ahead of current revenue — has no free daily data feed and is intentionally left out of the composite; track it via quarterly hyperscaler earnings instead.",
+    methodologyNote: secSteps
+      ? "Composite score is the equal-weighted average of the percentile ranks below, each computed against its own trailing history up to that day (no lookahead). It is a simplified, transparent proxy inspired by Ray Dalio's six classic bubble hallmarks, Robert Shiller's work on valuation extremes and market narratives, and Hyman Minsky's financial instability hypothesis — it is not Dalio's proprietary bubble gauge, not a trading signal, and not investment advice. The hallmark of extended forward purchases is measured quarterly, from the hyperscalers' capital spending against their revenue in their SEC filings, and held at its last filed value between filings."
+      : "Composite score is the equal-weighted average of the percentile ranks below, each computed against its own trailing history up to that day (no lookahead). It is a simplified, transparent proxy inspired by Ray Dalio's six classic bubble hallmarks, Robert Shiller's work on valuation extremes and market narratives, and Hyman Minsky's financial instability hypothesis — it is not Dalio's proprietary bubble gauge, not a trading signal, and not investment advice. One hallmark Dalio names — buyers making unusually extended forward purchases for speculation or hedging, e.g. hyperscaler AI-capex commitments running far ahead of current revenue — has no free daily data feed and is intentionally left out of the composite; track it via quarterly hyperscaler earnings instead.",
     dataSources: [
       'Yahoo Finance daily prices: NVDA, MSFT, GOOGL, AMZN, META, AVGO, ORCL (AI basket)',
       'Yahoo Finance daily levels: VIX, Russell 2000 (^RUT), 10-Year Treasury Yield Index (^TNX)',
       'Yahoo Finance daily prices: HYG / IEF (high-yield vs Treasury bond ETFs, credit spread proxy)',
+      ...(secSteps ? ['SEC EDGAR XBRL company facts: capital expenditures and revenue of MSFT, GOOGL, AMZN, META, ORCL (10-Q / 10-K)'] : []),
     ],
   }
 
@@ -359,9 +407,27 @@ async function main() {
     }),
   }
 
+  // Every day over the full ten years, for the drawdown model: the AI basket
+  // (to see what followed each day), each indicator's value and percentile
+  // rank, and the composite. All of it no-lookahead already.
+  const num = (v, d) => (v === null || v === undefined || !Number.isFinite(v) ? '' : Number(v.toFixed(d)))
+  const featureRows = [
+    ['date', 'basket', ...INDICATOR_DEFS.map((d) => `raw_${d.id}`), ...INDICATOR_DEFS.map((d) => `rank_${d.id}`), 'composite'].join(','),
+    ...dates.map((date, i) =>
+      [
+        date,
+        num(basketIndex[i], 4),
+        ...INDICATOR_DEFS.map((d) => num(rawSeries[d.id][i], 6)),
+        ...INDICATOR_DEFS.map((d) => num(scoreSeries[d.id][i], 2)),
+        num(compositeSeries[i], 2),
+      ].join(',')
+    ),
+  ]
+
   await fs.mkdir(DATA_DIR, { recursive: true })
   await fs.writeFile(path.join(DATA_DIR, 'latest.json'), JSON.stringify(latest, null, 2) + '\n')
   await fs.writeFile(path.join(DATA_DIR, 'history.json'), JSON.stringify(history, null, 2) + '\n')
+  await fs.writeFile(path.join(DATA_DIR, 'features.csv'), featureRows.join('\n') + '\n')
 
   console.log(`Wrote data for ${asOf}: composite score ${composite} (${category?.label})`)
 }

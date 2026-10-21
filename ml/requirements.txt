@@ -1,0 +1,5 @@
+# PyTorch is installed first, CPU-only, from its own index (see the workflow).
+numpy>=2.0,<3
+pandas>=2.2
+scikit-learn>=1.5
+pytest>=8
