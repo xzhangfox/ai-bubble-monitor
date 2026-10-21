@@ -18,8 +18,9 @@ jobs:
           python - <<'PY'
           import os, urllib.request
           from ml import common as C
-          for label, ua in [("default", C.SEC_USER_AGENT), ("tool", "Mozilla/5.0 (compatible; AIBubbleMonitor/1.0; +https://github.com/xzhangfox/ai-bubble-monitor) xzhangfox@users.noreply.github.com")]:
-              for url in ["https://data.sec.gov/api/xbrl/companyfacts/CIK0000789019.json", "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019&type=10-Q&count=1"]:
+          # (diagnosis only: does the contact's domain matter, or is it the runner's address?)
+          for label, ua in [("example-domain", "AI Bubble Monitor contact@example.com"), ("person-format", "Jane Doe jane.doe@example.com")]:
+              for url in ["https://data.sec.gov/api/xbrl/companyfacts/CIK0000789019.json"]:
                   C.SEC_USER_AGENT = ua
                   try:
                       b = C.http_get(url, retries=1)
