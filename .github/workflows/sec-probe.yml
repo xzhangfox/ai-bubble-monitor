@@ -15,19 +15,22 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Capex series
-        run: python -m ml.sec_capex
-      - name: Filing text (no LLM)
+      - name: Coverage
         run: |
           python - <<'PY'
           import time
-          from ml import common as C, filings_llm as F
-          from ml.sec_capex import COMPANIES
-          for t, cik in COMPANIES.items():
-              meta = F.recent_filings(t, cik)[0]
-              text = F.html_to_text(C.http_get(meta["url"]).decode("utf-8", "replace"))
-              ps = F.passages(text)
-              top = next((p for p in ps if "not yet commenced" in p or "commitments" in p.lower()), ps[0] if ps else "")
-              C.annotate("notice", f"Filing {t}", f"{meta['form']} {meta['reportDate']}: {len(text)} chars, {len(ps)} passages; {top[:230]}")
-              time.sleep(0.3)
+          from datetime import date
+          from ml import common as C, sec_capex as S
+          facts = {}
+          for t, cik in S.COMPANIES.items():
+              facts[t] = S.fetch_facts(cik); time.sleep(0.3)
+          for t in S.COMPANIES:
+              for what, concepts in [("capex", S.CAPEX_CONCEPTS.get(t, S.DEFAULT_CAPEX)), ("revenue", S.REVENUE_CONCEPTS)]:
+                  ttm = S.trailing_year(S.quarters(S.duration_facts(facts[t], concepts)))
+                  ends = [p.end for p in ttm]
+                  gaps = [f"{a}->{b}" for a, b in zip(ends, ends[1:]) if (b - a).days > 100]
+                  used = sorted({c for c in concepts if facts[t]["facts"]["us-gaap"].get(c)})
+                  C.annotate("notice", f"{t} {what}", f"{len(ttm)} TTM from {ends[0] if ends else '-'} to {ends[-1] if ends else '-'}; gaps {gaps[:6]}; concepts present {used}")
+          out = S.build(facts)
+          C.annotate("notice", "aggregate", f"{len(out['series'])} readings from {out['series'][0]['date']} to {out['series'][-1]['date']}")
           PY
