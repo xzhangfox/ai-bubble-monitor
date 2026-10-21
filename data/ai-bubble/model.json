@@ -1,6 +1,6 @@
 {
   "asOf": "2026-10-21",
-  "generatedAt": "2026-10-21T21:05:59+00:00",
+  "generatedAt": "2026-10-21T21:16:39+00:00",
   "target": {
     "horizonDays": 63,
     "drop": 0.1,
@@ -125,43 +125,50 @@
       "id": "trendExtension",
       "rank": 27.6,
       "weight": -2.762,
-      "contribution": 0.727
+      "contribution": 0.727,
+      "effect": 0.148
     },
     {
       "id": "volumeSurge",
       "rank": 13.8,
       "weight": 1.325,
-      "contribution": -0.482
+      "contribution": -0.482,
+      "effect": -0.117
     },
     {
       "id": "momentum",
       "rank": 23.9,
       "weight": 0.953,
-      "contribution": -0.284
+      "contribution": -0.284,
+      "effect": -0.068
     },
     {
       "id": "complacency",
       "rank": 52.2,
       "weight": 1.796,
-      "contribution": 0.282
+      "contribution": 0.282,
+      "effect": 0.063
     },
     {
       "id": "monetaryStimulus",
       "rank": 0.6,
       "weight": -0.236,
-      "contribution": 0.085
+      "contribution": 0.085,
+      "effect": 0.019
     },
     {
       "id": "concentration",
       "rank": 33.7,
       "weight": 0.36,
-      "contribution": -0.06
+      "contribution": -0.06,
+      "effect": -0.014
     },
     {
       "id": "creditAppetite",
       "rank": 41.0,
       "weight": 0.455,
-      "contribution": -0.047
+      "contribution": -0.047,
+      "effect": -0.011
     }
   ],
   "analogs": {
@@ -1785,6 +1792,88 @@
       "date": "2026-10-21",
       "p": 0.4,
       "fell": null
+    }
+  ],
+  "longerHorizons": [
+    {
+      "horizonDays": 126,
+      "drop": 0.15,
+      "start": "2020-10-26",
+      "end": "2026-04-22",
+      "baseRate": 0.279,
+      "episodes": 4,
+      "models": [
+        {
+          "id": "composite",
+          "name": "Composite score",
+          "auc": 0.396,
+          "aucCi": [
+            0.231,
+            0.626
+          ],
+          "brier": 0.2247,
+          "brierSkill": 0.021,
+          "brierSkillCi": [
+            -0.078,
+            0.164
+          ]
+        },
+        {
+          "id": "logistic",
+          "name": "Logistic regression",
+          "auc": 0.239,
+          "aucCi": [
+            0.104,
+            0.44
+          ],
+          "brier": 0.4391,
+          "brierSkill": -0.914,
+          "brierSkillCi": [
+            -2.09,
+            -0.127
+          ]
+        }
+      ]
+    },
+    {
+      "horizonDays": 252,
+      "drop": 0.2,
+      "start": "2021-04-28",
+      "end": "2025-10-20",
+      "baseRate": 0.359,
+      "episodes": 3,
+      "models": [
+        {
+          "id": "composite",
+          "name": "Composite score",
+          "auc": 0.186,
+          "aucCi": [
+            0.066,
+            0.374
+          ],
+          "brier": 0.2732,
+          "brierSkill": -0.07,
+          "brierSkillCi": [
+            -0.118,
+            0.059
+          ]
+        },
+        {
+          "id": "logistic",
+          "name": "Logistic regression",
+          "auc": 0.184,
+          "aucCi": [
+            0.02,
+            0.276
+          ],
+          "brier": 0.5409,
+          "brierSkill": -1.117,
+          "brierSkillCi": [
+            -3.891,
+            -0.199
+          ]
+        }
+      ]
     }
   ]
 }
