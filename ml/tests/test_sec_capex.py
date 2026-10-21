@@ -70,6 +70,19 @@ class QuarterMath(unittest.TestCase):
         (q,) = quarters(duration_facts(f, ["PaymentsToAcquirePropertyPlantAndEquipment"]))
         self.assertEqual((q.val, q.known), (10, date(2024, 4, 30)))
 
+    def test_first_report_wins_across_tags(self):
+        # filed as "Revenues" at the time; restated two years later under the ASC 606 tag
+        f = {
+            "facts": {
+                "us-gaap": {
+                    "RevenueFromContractWithCustomerExcludingAssessedTax": {"units": {"USD": [row("2017-01-01", "2017-03-31", 101, "2019-04-30")]}},
+                    "Revenues": {"units": {"USD": [row("2017-01-01", "2017-03-31", 100, "2017-04-28")]}},
+                }
+            }
+        }
+        (fact,) = duration_facts(f, ["RevenueFromContractWithCustomerExcludingAssessedTax", "Revenues"])
+        self.assertEqual((fact.val, fact.filed), (100, date(2017, 4, 28)))
+
     def test_missing_quarter_breaks_the_trailing_year(self):
         f = facts(
             [

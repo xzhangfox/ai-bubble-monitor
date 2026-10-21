@@ -30,12 +30,14 @@ COMPANIES = {
     "ORCL": 1341439,
 }
 
-# What each files its capital spending and revenue under, in order of preference.
-# (Amazon's "purchases of property and equipment" is tagged as productive assets.)
+# What each files its capital spending and revenue under. Capex is one line
+# per company, never mixed (Amazon tags its "purchases of property and
+# equipment" as productive assets); revenue moved between tags over the years
+# (ASC 606), and any of these is total revenue.
 CAPEX_CONCEPTS = {
-    "AMZN": ["PaymentsToAcquireProductiveAssets", "PaymentsToAcquirePropertyPlantAndEquipment"],
+    "AMZN": ["PaymentsToAcquireProductiveAssets"],
 }
-DEFAULT_CAPEX = ["PaymentsToAcquirePropertyPlantAndEquipment", "PaymentsToAcquireProductiveAssets"]
+DEFAULT_CAPEX = ["PaymentsToAcquirePropertyPlantAndEquipment"]
 REVENUE_CONCEPTS = [
     "RevenueFromContractWithCustomerExcludingAssessedTax",
     "Revenues",
@@ -72,21 +74,20 @@ def _d(s: str) -> date:
 
 
 def duration_facts(companyfacts: dict, concepts: list[str]) -> list[Fact]:
-    """Every duration fact for these concepts, one per period: the first
-    concept that has the period wins, and of its reports, the earliest."""
+    """Every duration fact for these concepts, one per period: as first
+    reported, whichever tag it was filed under then (a later filing's
+    comparative under a newer tag would date it a year or two late); the
+    concepts' order only breaks a tie on the same day."""
     by_period: dict[tuple[date, date], Fact] = {}
     gaap = companyfacts.get("facts", {}).get("us-gaap", {})
     for concept in concepts:
-        seen: dict[tuple[date, date], Fact] = {}
         for row in gaap.get(concept, {}).get("units", {}).get("USD", []):
             if "start" not in row or row.get("form") not in FORMS:
                 continue
             f = Fact(_d(row["start"]), _d(row["end"]), float(row["val"]), _d(row["filed"]), row["form"])
             key = (f.start, f.end)
-            if key not in seen or f.filed < seen[key].filed:
-                seen[key] = f
-        for key, f in seen.items():
-            by_period.setdefault(key, f)
+            if key not in by_period or f.filed < by_period[key].filed:
+                by_period[key] = f
     return sorted(by_period.values(), key=lambda f: (f.end, f.start))
 
 
