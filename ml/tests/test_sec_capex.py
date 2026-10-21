@@ -96,6 +96,23 @@ class QuarterMath(unittest.TestCase):
         self.assertEqual([q.end.isoformat() for q in qs], ["2024-03-31", "2024-12-31"])
         self.assertEqual(trailing_year(qs), [])
 
+    def test_trailing_year_from_year_to_date_when_a_quarter_is_missing(self):
+        f = facts(
+            [
+                row("2023-01-01", "2023-09-30", 30, "2023-10-30"),
+                row("2023-01-01", "2023-12-31", 40, "2024-02-01", "10-K"),
+                row("2024-01-01", "2024-03-31", 12, "2024-04-30"),
+                row("2024-01-01", "2024-09-30", 45, "2024-10-30"),  # no half-year figure
+            ],
+            [],
+        )
+        from ml.sec_capex import trailing_points
+
+        pts = trailing_points(duration_facts(f, ["PaymentsToAcquirePropertyPlantAndEquipment"]))
+        p = pts[date(2024, 9, 30)]
+        self.assertEqual((p.val, p.known), (45 + 40 - 30, date(2024, 10, 30)))
+        self.assertEqual(pts[date(2023, 12, 31)].val, 40)
+
     def test_off_calendar_fiscal_year(self):
         # Oracle-style: fiscal year to May 31
         ends = ["2024-08-31", "2024-11-30", "2025-02-28", "2025-05-31"]
@@ -128,7 +145,7 @@ class Sector(unittest.TestCase):
         self.assertAlmostEqual(out[0]["intensity"], 0.2)
 
     def test_stale_member_is_not_mixed_in(self):
-        a = [{"periodEnd": "2023-03-31", "known": "2023-04-25", "capex": 10.0, "revenue": 100.0}]
+        a = [{"periodEnd": "2023-06-30", "known": "2023-07-25", "capex": 10.0, "revenue": 100.0}]
         b = [{"periodEnd": "2024-03-31", "known": "2024-05-01", "capex": 30.0, "revenue": 100.0}]
         self.assertEqual(aggregate({"A": a, "B": b}), [])
 

@@ -124,10 +124,38 @@ def trailing_year(qs: list[Point]) -> list[Point]:
     return out
 
 
+def from_year_to_date(facts: list[Fact]) -> list[Point]:
+    """Trailing years without every quarter: a full fiscal year as filed, or
+    this year to date + last fiscal year − last year to the same date."""
+    def near(a: date, b: date, days: int = 10) -> bool:
+        return abs((a - b).days) <= days
+
+    annual = [f for f in facts if 355 <= f.days <= 375]
+    out: list[Point] = [Point(f.end, f.val, f.filed) for f in annual]
+    for f in facts:
+        if not 80 <= f.days < 355:
+            continue
+        prev_fy = next((a for a in annual if near(a.end, f.start - timedelta(days=1), 3)), None)
+        prev_ytd = next((g for g in facts if near(g.start, f.start - timedelta(days=365)) and near(g.end, f.end - timedelta(days=365)) and abs(g.days - f.days) <= 10), None)
+        if prev_fy and prev_ytd:
+            out.append(Point(f.end, f.val + prev_fy.val - prev_ytd.val, max(f.filed, prev_fy.filed, prev_ytd.filed)))
+    return out
+
+
+def trailing_points(facts: list[Fact]) -> dict[date, Point]:
+    """Trailing years both ways; for a period end found both ways, the one
+    public first."""
+    out: dict[date, Point] = {}
+    for p in trailing_year(quarters(facts)) + from_year_to_date(facts):
+        if p.end not in out or p.known < out[p.end].known:
+            out[p.end] = p
+    return out
+
+
 def company_series(companyfacts: dict, ticker: str) -> list[dict]:
     """Trailing-year capex and revenue for one company, per quarter end."""
-    capex = {p.end: p for p in trailing_year(quarters(duration_facts(companyfacts, CAPEX_CONCEPTS.get(ticker, DEFAULT_CAPEX))))}
-    revenue = {p.end: p for p in trailing_year(quarters(duration_facts(companyfacts, REVENUE_CONCEPTS)))}
+    capex = trailing_points(duration_facts(companyfacts, CAPEX_CONCEPTS.get(ticker, DEFAULT_CAPEX)))
+    revenue = trailing_points(duration_facts(companyfacts, REVENUE_CONCEPTS))
     rows = []
     for end in sorted(set(capex) & set(revenue)):
         c, r = capex[end], revenue[end]
@@ -137,9 +165,11 @@ def company_series(companyfacts: dict, ticker: str) -> list[dict]:
     return rows
 
 
-def aggregate(per_company: dict[str, list[dict]], max_spread_days: int = 120) -> list[dict]:
+def aggregate(per_company: dict[str, list[dict]], max_spread_days: int = 200) -> list[dict]:
     """The sector's capex-to-revenue ratio each time a company's new quarter
-    becomes public, from every company's latest known trailing year."""
+    becomes public, from every company's latest known trailing year (none
+    more than about two quarters behind the newest; Oracle's fiscal quarters
+    end two months off the others')."""
     events = sorted(
         ((row["known"], ticker, row) for ticker, rows in per_company.items() for row in rows),
         key=lambda e: (e[0], e[1]),
