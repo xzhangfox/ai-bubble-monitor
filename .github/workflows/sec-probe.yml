@@ -24,13 +24,21 @@ jobs:
           facts = {}
           for t, cik in S.COMPANIES.items():
               facts[t] = S.fetch_facts(cik); time.sleep(0.3)
-          for t in S.COMPANIES:
-              for what, concepts in [("capex", S.CAPEX_CONCEPTS.get(t, S.DEFAULT_CAPEX)), ("revenue", S.REVENUE_CONCEPTS)]:
-                  ttm = S.trailing_year(S.quarters(S.duration_facts(facts[t], concepts)))
-                  ends = [p.end for p in ttm]
-                  gaps = [f"{a}->{b}" for a, b in zip(ends, ends[1:]) if (b - a).days > 100]
-                  used = sorted({c for c in concepts if facts[t]["facts"]["us-gaap"].get(c)})
-                  C.annotate("notice", f"{t} {what}", f"{len(ttm)} TTM from {ends[0] if ends else '-'} to {ends[-1] if ends else '-'}; gaps {gaps[:6]}; concepts present {used}")
-          out = S.build(facts)
-          C.annotate("notice", "aggregate", f"{len(out['series'])} readings from {out['series'][0]['date']} to {out['series'][-1]['date']}")
+          per = {t: S.company_series(facts[t], t) for t in S.COMPANIES}
+          ev = sorted(((r["known"], t, r) for t, rows in per.items() for r in rows), key=lambda e: (e[0], e[1]))
+          latest, why, years = {}, {}, {}
+          for known, t, r in ev:
+              if t not in latest or r["periodEnd"] >= latest[t]["periodEnd"]:
+                  latest[t] = r
+              if len(latest) < 5:
+                  why["missing"] = why.get("missing", 0) + 1; continue
+              ends = [date.fromisoformat(x["periodEnd"]) for x in latest.values()]
+              spread = (max(ends) - min(ends)).days
+              if spread > 120:
+                  k = "spread " + min(latest, key=lambda x: latest[x]["periodEnd"])
+                  why[k] = why.get(k, 0) + 1; continue
+              years[known[:4]] = years.get(known[:4], 0) + 1
+          first = {t: rows[0]["known"] for t, rows in per.items()}
+          lags = {t: sorted({(date.fromisoformat(r["known"]) - date.fromisoformat(r["periodEnd"])).days for r in rows})[-3:] for t, rows in per.items()}
+          C.annotate("notice", "aggregate", f"kept by year {years}; skipped {why}; first known {first}; longest lags {lags}")
           PY
