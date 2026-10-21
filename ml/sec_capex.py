@@ -16,10 +16,11 @@ from __future__ import annotations
 
 import json
 import sys
+import time
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 
-from ml.common import http_get, read_json, write_json
+from ml.common import annotate, http_get, read_json, write_json
 
 COMPANIES = {
     "MSFT": 789019,
@@ -208,18 +209,30 @@ def fetch_facts(cik: int) -> dict:
 
 
 def main() -> int:
-    facts = {t: fetch_facts(cik) for t, cik in COMPANIES.items()}
-    out = build(facts)
-    old = read_json("sec-capex.json")
-    if old and old.get("latest", {}).get("date", "") > out["latest"]["date"]:
-        raise RuntimeError("SEC data is older than what's saved — keeping the saved file")
+    try:
+        facts = {}
+        for t, cik in COMPANIES.items():
+            facts[t] = fetch_facts(cik)
+            time.sleep(0.2)
+        for t in COMPANIES:
+            rows = company_series(facts[t], t)
+            last = rows[-1] if rows else None
+            annotate(
+                "notice",
+                f"SEC {t}",
+                f"{len(rows)} trailing years; latest to {last['periodEnd']}: capex {last['capex'] / 1e9:.1f}bn, revenue {last['revenue'] / 1e9:.1f}bn" if last else "no capex/revenue series",
+            )
+        out = build(facts)
+        old = read_json("sec-capex.json")
+        if old and old.get("latest", {}).get("date", "") > out["latest"]["date"]:
+            raise RuntimeError("SEC data is older than what's saved — keeping the saved file")
+    except Exception as err:
+        annotate("error", "SEC capex", str(err))
+        return 1
     write_json("sec-capex.json", out)
     last = out["latest"]
-    print(f"Capex intensity {last['intensity']:.1%} as of {last['date']} ({last['capexTtmBn']}bn / {last['revenueTtmBn']}bn)")
-    for t, m in last["members"].items():
-        print(f"  {t}: period to {m['periodEnd']} capex {m['capexTtmBn']}bn revenue {m['revenueTtmBn']}bn")
+    annotate("notice", "SEC capex", f"{last['intensity']:.1%} of revenue as of {last['date']} ({last['capexTtmBn']}bn / {last['revenueTtmBn']}bn), {len(out['series'])} readings")
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main())

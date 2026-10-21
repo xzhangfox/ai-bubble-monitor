@@ -26,6 +26,15 @@ GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3-flash-preview")
 GEMINI_URL = os.environ.get("GEMINI_URL", "https://generativelanguage.googleapis.com/v1beta/models")
 
 
+def annotate(level: str, title: str, message: str) -> None:
+    """A line in the log, and in GitHub Actions also an annotation on the run
+    (readable through the API, so a failed step says why without the logs)."""
+    if os.environ.get("GITHUB_ACTIONS"):
+        print(f"::{level} title={title}::{message.replace(chr(10), ' ')}")
+    else:
+        print(f"[{level}] {title}: {message}")
+
+
 def read_json(name: str, default: Any = None) -> Any:
     path = DATA_DIR / name
     if not path.exists():

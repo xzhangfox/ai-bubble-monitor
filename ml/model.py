@@ -14,6 +14,9 @@ the next three months (63 trading days), and tests that honestly:
   separate drawdowns, and the intervals say so.
 - Today: each model's probability, what pushes the logistic model's estimate
   up or down, and the most similar days in the past and what followed them.
+- Two longer horizons, fixed in advance and always reported together — a 15%
+  fall within six months, a 20% fall within a year — for the composite and
+  the logistic model, so a result at one horizon can't be picked out alone.
 
 Reads data/ai-bubble/features.csv (from the Node script); writes model.json.
 
@@ -33,10 +36,11 @@ from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 
-from ml.common import DATA_DIR, write_json
+from ml.common import DATA_DIR, annotate, write_json
 
 HORIZON = 63  # trading days ahead
 DROP = 0.10  # a fall of this much below the day's close counts
+LONGER = [(126, 0.15), (252, 0.20)]  # the other horizons, reported alongside
 MIN_TRAIN = 504  # two years before the first test quarter
 STEP = 63  # retrain every quarter
 SEQ = 60  # days the Transformer reads
@@ -66,9 +70,11 @@ class Frame:
     y: np.ndarray  # (n,) 1/0, nan where the outcome isn't known yet
     fwd_return: np.ndarray
     fwd_drawdown: np.ndarray
+    horizon: int = HORIZON
+    drop: float = DROP
 
 
-def load(df: pd.DataFrame) -> Frame:
+def load(df: pd.DataFrame, horizon: int = HORIZON, drop: float = DROP) -> Frame:
     ids = [c[5:] for c in df.columns if c.startswith("rank_")]
     rank_cols = [f"rank_{i}" for i in ids]
     ok = df[rank_cols + ["composite", "basket"]].notna().all(axis=1).to_numpy()
@@ -79,18 +85,18 @@ def load(df: pd.DataFrame) -> Frame:
         first = int(bad[-1]) + 1
     all_ranks = df[rank_cols].to_numpy(dtype=float) / 100.0
     start = first + max(BURN_IN, SEQ - 1)
-    if len(df) - start < MIN_TRAIN + HORIZON + STEP:
+    if len(df) - start < MIN_TRAIN + horizon + STEP:
         raise ValueError(f"only {len(df) - start} usable days")
     basket = df["basket"].to_numpy(dtype=float)
     n_all = len(df)
     y = np.full(n_all, np.nan)
     fwd_ret = np.full(n_all, np.nan)
     fwd_dd = np.full(n_all, np.nan)
-    for t in range(n_all - HORIZON):
-        window = basket[t + 1 : t + HORIZON + 1]
+    for t in range(n_all - horizon):
+        window = basket[t + 1 : t + horizon + 1]
         fwd_dd[t] = window.min() / basket[t] - 1
-        fwd_ret[t] = basket[t + HORIZON] / basket[t] - 1
-        y[t] = 1.0 if fwd_dd[t] <= -DROP else 0.0
+        fwd_ret[t] = basket[t + horizon] / basket[t] - 1
+        y[t] = 1.0 if fwd_dd[t] <= -drop else 0.0
     idx = np.arange(start, n_all)
     seq = np.stack([all_ranks[t - SEQ + 1 : t + 1] for t in idx])
     return Frame(
@@ -103,6 +109,8 @@ def load(df: pd.DataFrame) -> Frame:
         y=y[idx],
         fwd_return=fwd_ret[idx],
         fwd_drawdown=fwd_dd[idx],
+        horizon=horizon,
+        drop=drop,
     )
 
 
@@ -129,14 +137,14 @@ def fit_predict(model: str, f: Frame, train: np.ndarray, test: np.ndarray) -> np
         m.fit(x[train], yt)
         return m.predict_proba(x[test])[:, 1]
     if model == "transformer":
-        return transformer_fit_predict(f.seq_ranks[train], yt, f.seq_ranks[test])
+        return transformer_fit_predict(f.seq_ranks[train], yt, f.seq_ranks[test], gap=f.horizon)
     raise ValueError(model)
 
 
-def transformer_fit_predict(x_train: np.ndarray, y_train: np.ndarray, x_test: np.ndarray, *, epochs: int = 40) -> np.ndarray:
+def transformer_fit_predict(x_train: np.ndarray, y_train: np.ndarray, x_test: np.ndarray, *, gap: int = HORIZON, epochs: int = 40) -> np.ndarray:
     """A two-layer Transformer encoder over the last 60 days of the eight
     ranks. Early-stopped on the last fifth of the training span, which is
-    kept HORIZON days clear of what it trains on."""
+    kept `gap` days clear of what it trains on."""
     import torch
     from torch import nn
 
@@ -159,7 +167,7 @@ def transformer_fit_predict(x_train: np.ndarray, y_train: np.ndarray, x_test: np
 
     n = len(x_train)
     cut = int(n * 0.8)
-    fit_end = cut - HORIZON
+    fit_end = cut - gap
     if fit_end < 200 or y_train[cut:].min() == y_train[cut:].max():
         fit_end, cut = n, n  # too little to hold out: fixed epochs
     xt = torch.tensor(x_train[:fit_end], dtype=torch.float32)
@@ -214,9 +222,9 @@ def folds(f: Frame) -> list[tuple[np.ndarray, np.ndarray]]:
     trained only on days whose three-month outcome was over before it began."""
     labeled_end = int(np.where(~np.isnan(f.y))[0][-1])
     out = []
-    s = MIN_TRAIN + HORIZON
+    s = MIN_TRAIN + f.horizon
     while s <= labeled_end:
-        train = np.arange(0, s - HORIZON)
+        train = np.arange(0, s - f.horizon)
         test = np.arange(s, min(s + STEP, labeled_end + 1))
         out.append((train, test))
         s += STEP
@@ -238,7 +246,7 @@ def brier_skill(p: np.ndarray, y: np.ndarray, clim: np.ndarray) -> float:
     return float(1 - np.mean((p - y) ** 2) / ref) if ref > 0 else float("nan")
 
 
-def block_bootstrap(p: np.ndarray, y: np.ndarray, clim: np.ndarray, *, block: int = HORIZON, reps: int = BOOTSTRAP) -> tuple[list[float], list[float]]:
+def block_bootstrap(p: np.ndarray, y: np.ndarray, clim: np.ndarray, *, block: int, reps: int = BOOTSTRAP) -> tuple[list[float], list[float]]:
     """95% intervals for AUC and Brier skill, resampling quarter-long blocks
     (the days inside a block share one outcome window, so they move together)."""
     rng = np.random.default_rng(SEED)
@@ -278,18 +286,65 @@ def calibration(p: np.ndarray, y: np.ndarray) -> list[dict]:
     return out
 
 
+def score(f: Frame, wf: dict[str, np.ndarray], m: str) -> dict:
+    """Out-of-sample AUC and Brier skill, with their intervals."""
+    y, p, clim = f.y[wf["index"]], wf[m], wf["climatology"]
+    auc_ci, skill_ci = block_bootstrap(p, y, clim, block=f.horizon)
+    return {
+        "id": m,
+        "name": NAMES[m],
+        "auc": round(float(roc_auc_score(y, p)), 3),
+        "aucCi": auc_ci,
+        "brier": round(float(np.mean((p - y) ** 2)), 4),
+        "brierSkill": round(brier_skill(p, y, clim), 3),
+        "brierSkillCi": skill_ci,
+    }
+
+
+def longer_horizons(df: pd.DataFrame) -> list[dict]:
+    out = []
+    for horizon, drop in LONGER:
+        f = load(df, horizon, drop)
+        models = ["composite", "logistic"]
+        wf = walk_forward(f, models)
+        y = f.y[wf["index"]]
+        out.append(
+            {
+                "horizonDays": horizon,
+                "drop": drop,
+                "start": str(f.dates[wf["index"][0]]),
+                "end": str(f.dates[wf["index"][-1]]),
+                "baseRate": round(float(y.mean()), 3),
+                "episodes": episodes(y),
+                "models": [score(f, wf, m) for m in models],
+            }
+        )
+    return out
+
+
 # ---------------------------------------------------------------- today
 
 def drivers(f: Frame, labeled: np.ndarray) -> list[dict]:
     """What moves the logistic model's estimate today: each indicator's weight
-    times how far today's rank sits from its average, in log-odds."""
+    times how far today's rank sits from its average (log-odds), and what the
+    estimate would be, in points, with that indicator at its average instead."""
     m = LogisticRegression(C=0.5, max_iter=2000).fit(f.ranks[labeled], f.y[labeled])
     mean = f.ranks[labeled].mean(axis=0)
     today = f.ranks[-1]
-    rows = [
-        {"id": i, "rank": round(float(today[j] * 100), 1), "weight": round(float(m.coef_[0][j]), 3), "contribution": round(float(m.coef_[0][j] * (today[j] - mean[j])), 3)}
-        for j, i in enumerate(f.ids)
-    ]
+    p_today = m.predict_proba(today[None])[0, 1]
+    rows = []
+    for j, i in enumerate(f.ids):
+        at_mean = today.copy()
+        at_mean[j] = mean[j]
+        rows.append(
+            {
+                "id": i,
+                "rank": round(float(today[j] * 100), 1),
+                "weight": round(float(m.coef_[0][j]), 3),
+                "contribution": round(float(m.coef_[0][j] * (today[j] - mean[j])), 3),
+                "effect": round(float(p_today - m.predict_proba(at_mean[None])[0, 1]), 3),
+            }
+        )
     return sorted(rows, key=lambda r: -abs(r["contribution"]))
 
 
@@ -326,7 +381,7 @@ def analogs(f: Frame, labeled: np.ndarray, *, top: int = 5, apart: int = 42, k: 
 
 # ---------------------------------------------------------------- run
 
-def run(df: pd.DataFrame, models: list[str] | None = None) -> dict:
+def run(df: pd.DataFrame, models: list[str] | None = None, *, longer: bool = True) -> dict:
     f = load(df)
     models = models or available_models()
     wf = walk_forward(f, models)
@@ -335,22 +390,7 @@ def run(df: pd.DataFrame, models: list[str] | None = None) -> dict:
     labeled = np.where(~np.isnan(f.y))[0]
     today = np.array([len(f.dates) - 1])
 
-    results = []
-    for m in models:
-        p = wf[m]
-        auc_ci, skill_ci = block_bootstrap(p, y, clim)
-        results.append(
-            {
-                "id": m,
-                "name": NAMES[m],
-                "auc": round(float(roc_auc_score(y, p)), 3),
-                "aucCi": auc_ci,
-                "brier": round(float(np.mean((p - y) ** 2)), 4),
-                "brierSkill": round(brier_skill(p, y, clim), 3),
-                "brierSkillCi": skill_ci,
-                "today": round(float(fit_predict(m, f, labeled, today)[0]), 3),
-            }
-        )
+    results = [{**score(f, wf, m), "today": round(float(fit_predict(m, f, labeled, today)[0]), 3)} for m in models]
     best = max(results, key=lambda r: r["brierSkill"])
     head = best["id"]
 
@@ -394,21 +434,31 @@ def run(df: pd.DataFrame, models: list[str] | None = None) -> dict:
         "drivers": drivers(f, labeled),
         "analogs": analogs(f, labeled),
         "chart": weekly,
+        "longerHorizons": longer_horizons(df) if longer else [],
     }
 
 
 def main() -> int:
-    df = pd.read_csv(DATA_DIR / "features.csv")
-    out = run(df)
+    try:
+        df = pd.read_csv(DATA_DIR / "features.csv")
+        out = run(df)
+    except Exception as err:
+        annotate("error", "Drawdown model", str(err))
+        return 1
     write_json("model.json", out)
-    h = out["headline"]
-    print(f"{out['asOf']}: {NAMES[h['model']]} says {h['probability']:.0%} (base rate {h['baseRate']:.0%})")
+    h, b = out["headline"], out["backtest"]
+    annotate(
+        "notice",
+        "Drawdown model",
+        f"{out['asOf']}: {NAMES[h['model']]} {h['probability']:.0%} vs base rate {h['baseRate']:.0%} "
+        f"({'beats' if h['beatsBaseRate'] else 'does not beat'} it); backtest {b['start']}..{b['end']}, {b['episodes']} drawdowns",
+    )
     for m in out["models"]:
-        print(f"  {m['name']:32s} AUC {m['auc']:.3f} {m['aucCi']}  Brier skill {m['brierSkill']:+.3f} {m['brierSkillCi']}  today {m['today']:.0%}")
-    b = out["backtest"]
-    print(f"  backtest {b['start']}..{b['end']}: {b['days']} days, {b['folds']} folds, {b['episodes']} separate drawdowns, base rate {b['baseRate']:.0%}")
+        annotate("notice", f"Model {m['id']}", f"AUC {m['auc']:.3f} {m['aucCi']}, Brier skill {m['brierSkill']:+.3f} {m['brierSkillCi']}, today {m['today']:.0%}")
+    for hz in out["longerHorizons"]:
+        c = hz["models"][0]
+        annotate("notice", f"Horizon {hz['horizonDays']}d", f"{hz['drop']:.0%} fall, base rate {hz['baseRate']:.0%}: composite AUC {c['auc']:.3f} {c['aucCi']}, Brier skill {c['brierSkill']:+.3f}")
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main())

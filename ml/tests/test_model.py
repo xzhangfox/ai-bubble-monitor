@@ -72,12 +72,20 @@ class Backtest(unittest.TestCase):
         dates = [d["date"] for d in out["analogs"]["days"]]
         self.assertTrue(all(d < out["chart"][-1]["date"] for d in dates))
         self.assertIsNone(out["chart"][-1]["fell"])  # the latest days' outcomes aren't in yet
+        self.assertEqual([h["horizonDays"] for h in out["longerHorizons"]], [126, 252])
+        for h in out["longerHorizons"]:
+            self.assertEqual([m["id"] for m in h["models"]], ["composite", "logistic"])
+
+    def test_longer_horizon_folds_keep_their_own_gap(self):
+        f = M.load(synthetic(n=1800), 252, 0.2)
+        for train, test in M.folds(f):
+            self.assertLess(train.max() + 252, test.min())
 
     def test_noise_does_not_beat_the_base_rate(self):
         df = synthetic(seed=3)
         rng = np.random.default_rng(1)
         df["basket"] = 100 * np.cumprod(1 + rng.normal(0.0003, 0.012, len(df)))  # unrelated to the ranks
-        out = M.run(df, ["logistic"])
+        out = M.run(df, ["logistic"], longer=False)
         self.assertFalse(out["headline"]["beatsBaseRate"])
 
 
