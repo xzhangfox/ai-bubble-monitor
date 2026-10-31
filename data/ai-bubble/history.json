@@ -15318,15 +15318,15 @@
     },
     {
       "date": "2026-10-30",
-      "compositeScore": 28.2,
+      "compositeScore": 29.5,
       "indicatorScores": {
-        "momentum": 11.6,
-        "trendExtension": 16.5,
+        "momentum": 11.9,
+        "trendExtension": 16.9,
         "concentration": 20.7,
-        "complacency": 29.8,
-        "creditAppetite": 26.7,
+        "complacency": 34.1,
+        "creditAppetite": 23.4,
         "monetaryStimulus": 1.5,
-        "volumeSurge": 19.2,
+        "volumeSurge": 27.4,
         "forwardPurchases": 100
       }
     }

@@ -1,6 +1,6 @@
 {
   "asOf": "2026-10-30",
-  "generatedAt": "2026-10-30T17:06:58+00:00",
+  "generatedAt": "2026-10-31T16:11:47+00:00",
   "target": {
     "horizonDays": 63,
     "drop": 0.1,
@@ -32,7 +32,7 @@
         -0.088,
         0.042
       ],
-      "today": 0.417
+      "today": 0.412
     },
     {
       "id": "logistic",
@@ -48,7 +48,7 @@
         -0.751,
         -0.027
       ],
-      "today": 0.31
+      "today": 0.344
     },
     {
       "id": "gbm",
@@ -64,7 +64,7 @@
         -1.284,
         -0.217
       ],
-      "today": 0.418
+      "today": 0.445
     },
     {
       "id": "transformer",
@@ -85,7 +85,7 @@
   ],
   "headline": {
     "model": "composite",
-    "probability": 0.417,
+    "probability": 0.412,
     "baseRate": 0.333,
     "chosenBy": "highest out-of-sample Brier skill",
     "beatsBaseRate": false
@@ -123,52 +123,52 @@
   "drivers": [
     {
       "id": "trendExtension",
-      "rank": 16.5,
+      "rank": 16.9,
       "weight": -2.698,
-      "contribution": 1.011,
-      "effect": 0.17
+      "contribution": 1.0,
+      "effect": 0.182
     },
     {
       "id": "momentum",
-      "rank": 11.6,
+      "rank": 11.8,
       "weight": 1.019,
-      "contribution": -0.43,
-      "effect": -0.098
+      "contribution": -0.427,
+      "effect": -0.102
     },
     {
       "id": "volumeSurge",
-      "rank": 19.2,
+      "rank": 27.4,
       "weight": 1.26,
-      "contribution": -0.387,
-      "effect": -0.088
+      "contribution": -0.284,
+      "effect": -0.067
     },
     {
       "id": "forwardPurchases",
       "rank": 100.0,
       "weight": 1.228,
       "contribution": 0.139,
-      "effect": 0.029
+      "effect": 0.031
+    },
+    {
+      "id": "creditAppetite",
+      "rank": 23.4,
+      "weight": 0.468,
+      "contribution": -0.132,
+      "effect": -0.03
     },
     {
       "id": "concentration",
       "rank": 20.7,
       "weight": 0.429,
       "contribution": -0.127,
-      "effect": -0.028
+      "effect": -0.029
     },
     {
       "id": "complacency",
-      "rank": 29.8,
+      "rank": 34.1,
       "weight": 1.712,
-      "contribution": -0.117,
-      "effect": -0.026
-    },
-    {
-      "id": "creditAppetite",
-      "rank": 26.6,
-      "weight": 0.468,
-      "contribution": -0.117,
-      "effect": -0.026
+      "contribution": -0.044,
+      "effect": -0.01
     },
     {
       "id": "monetaryStimulus",
@@ -183,46 +183,46 @@
       {
         "date": "2023-01-19",
         "composite": 30.9,
-        "similarity": 0.942,
+        "similarity": 0.96,
         "forwardReturn": 0.3464,
         "maxDrawdown": 0.0431,
         "fell": false
       },
       {
-        "date": "2018-07-02",
-        "composite": 27.1,
-        "similarity": 0.91,
-        "forwardReturn": 0.1041,
-        "maxDrawdown": -0.0162,
+        "date": "2018-05-25",
+        "composite": 25.2,
+        "similarity": 0.904,
+        "forwardReturn": 0.0627,
+        "maxDrawdown": -0.01,
         "fell": false
       },
       {
         "date": "2025-05-09",
         "composite": 33.2,
-        "similarity": 0.882,
+        "similarity": 0.9,
         "forwardReturn": 0.4859,
         "maxDrawdown": 0.0548,
         "fell": false
       },
       {
-        "date": "2026-07-29",
-        "composite": 34.8,
-        "similarity": 0.868,
-        "forwardReturn": 0.1103,
-        "maxDrawdown": 0.0314,
-        "fell": false
+        "date": "2018-07-27",
+        "composite": 24.0,
+        "similarity": 0.88,
+        "forwardReturn": -0.0789,
+        "maxDrawdown": -0.1182,
+        "fell": true
       },
       {
-        "date": "2025-03-03",
-        "composite": 35.0,
-        "similarity": 0.862,
-        "forwardReturn": 0.1824,
-        "maxDrawdown": -0.1739,
-        "fell": true
+        "date": "2026-07-28",
+        "composite": 36.9,
+        "similarity": 0.877,
+        "forwardReturn": 0.0647,
+        "maxDrawdown": -0.0294,
+        "fell": false
       }
     ],
     "nearest": 50,
-    "nearestFell": 0.12
+    "nearestFell": 0.1
   },
   "chart": [
     {
@@ -1797,7 +1797,7 @@
     },
     {
       "date": "2026-10-30",
-      "p": 0.417,
+      "p": 0.412,
       "fell": null
     }
   ],
