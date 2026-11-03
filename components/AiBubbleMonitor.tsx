@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import FadeIn from './FadeIn'
 import IndicatorIcon from './IndicatorIcon'
 import EcosystemTicker from './EcosystemTicker'
+import LivingBubble from './LivingBubble'
 import ShareAppButton from './ShareAppButton'
 import Briefing, { type BriefingData } from './Briefing'
 import ModelView, { type ModelData } from './ModelView'
@@ -54,6 +55,9 @@ const STRINGS = {
     pendingBody:
       'The daily data workflow has not produced a snapshot yet. Once the GitHub Action runs, this dashboard will populate automatically.',
     compositeLabel: 'Composite Bubble Score',
+    liveNow: 'Live',
+    bubbleHint: 'Drag to replay history · tap a dot for its indicator',
+    bubbleStripLabel: 'History scrubber',
     scoreOutOf: '/ 100',
     indicatorsLabel: 'Indicators',
     trendLabel: 'Composite Score — Trailing History',
@@ -96,6 +100,9 @@ const STRINGS = {
     pendingTitle: '数据初始化中',
     pendingBody: '每日数据流程尚未生成快照。GitHub Action 首次运行后，本面板会自动填充数据。',
     compositeLabel: '综合泡沫指数',
+    liveNow: '实时',
+    bubbleHint: '拖动回看历史 · 点击小点查看对应指标',
+    bubbleStripLabel: '历史时间轴',
     scoreOutOf: '/ 100',
     indicatorsLabel: '分项指标',
     trendLabel: '综合指数 — 历史走势',
@@ -156,44 +163,6 @@ const INDICATOR_DESCRIPTIONS_ZH: Record<string, string> = {
     '微软、Alphabet、亚马逊、Meta 和甲骨文过去12个月的资本开支除以过去12个月的收入，数据来自它们向美国证监会提交的 10-Q 和 10-K 财报（XBRL），从每份财报发布的次日起计入。为多年后才可能带来收入的数据中心提前投入巨资，正是达里欧提出的第五个泡沫特征——"买家进行异常超前的远期采购"。',
 }
 
-function Gauge({ score, category, color }: { score: number; category: string; color: string }) {
-  const clamped = Math.max(0, Math.min(100, score))
-  const radius = 90
-  const circumference = Math.PI * radius // semicircle
-  const offset = circumference * (1 - clamped / 100)
-
-  return (
-    <div className="relative w-full max-w-[280px] mx-auto">
-      <svg viewBox="0 0 220 130" className="w-full">
-        <path
-          d="M 20 110 A 90 90 0 0 1 200 110"
-          fill="none"
-          stroke="rgba(255,255,255,0.08)"
-          strokeWidth="14"
-          strokeLinecap="round"
-        />
-        <motion.path
-          d="M 20 110 A 90 90 0 0 1 200 110"
-          fill="none"
-          stroke={color}
-          strokeWidth="14"
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          initial={{ strokeDashoffset: circumference }}
-          animate={{ strokeDashoffset: offset }}
-          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-        />
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-end pb-1">
-        <span className="text-4xl font-bold font-mono" style={{ color }}>
-          {clamped.toFixed(0)}
-        </span>
-        <span className="text-white/40 text-xs font-mono uppercase tracking-widest mt-1">{category}</span>
-      </div>
-    </div>
-  )
-}
-
 function IndicatorCard({ indicator, index, lang }: { indicator: Indicator; index: number; lang: 'en' | 'zh' }) {
   const s = STRINGS[lang]
   const score = indicator.score ?? 0
@@ -223,7 +192,8 @@ function IndicatorCard({ indicator, index, lang }: { indicator: Indicator; index
           absolutely stacked on the front so the card's height is
           always driven by the (denser) front face. */}
       <div
-        className="relative h-full cursor-pointer"
+        id={`ind-${indicator.id}`}
+        className="relative h-full cursor-pointer rounded-2xl scroll-mt-28"
         style={{ perspective: 1200 }}
         onClick={() => setFlipped((f) => !f)}
         onKeyDown={(e) => {
@@ -406,9 +376,16 @@ export default function AiBubbleMonitor({
   const [hasData] = useState(latest.compositeScore !== null)
 
   const categoryLabel = latest.category ? s.categories[latest.category] ?? latest.category : ''
-  const color = latest.categoryColor ?? '#C9A84C'
 
   const sortedHistory = useMemo(() => [...history.series].sort((a, b) => (a.date < b.date ? -1 : 1)), [history.series])
+  const jumpToIndicator = (id: string) => {
+    const el = document.getElementById(`ind-${id}`)
+    if (!el) return
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' })
+    if (!reduce) el.animate([{ boxShadow: '0 0 0 0 rgba(201,168,76,0.7)' }, { boxShadow: '0 0 0 16px rgba(201,168,76,0)' }], { duration: 1000, delay: 350 })
+  }
+
   const indicatorNames = useMemo(() => Object.fromEntries(latest.indicators.map((i) => [i.id, i.name])), [latest.indicators])
 
   return (
@@ -450,7 +427,7 @@ export default function AiBubbleMonitor({
             </div>
             <div className="mt-6 rounded-2xl bg-surface-card border border-white/5 p-8 animate-pulse">
               <div className="h-3 w-40 bg-white/10 rounded mx-auto mb-6" />
-              <div className="w-full max-w-[280px] mx-auto h-[130px] bg-white/5 rounded-t-full" />
+              <div className="w-full max-w-[280px] mx-auto aspect-square bg-white/5 rounded-full" />
             </div>
             <div className="mt-8 grid sm:grid-cols-2 gap-5 animate-pulse">
               {Array.from({ length: 4 }).map((_, i) => (
@@ -471,7 +448,17 @@ export default function AiBubbleMonitor({
             <FadeIn delay={0.1}>
               <div className="mt-10 rounded-2xl bg-surface-card border border-white/5 p-8">
                 <p className="section-label mb-6 text-center">{s.compositeLabel}</p>
-                <Gauge score={latest.compositeScore ?? 0} category={categoryLabel} color={color} />
+                <LivingBubble
+                  score={latest.compositeScore ?? 0}
+                  indicators={latest.indicators}
+                  history={sortedHistory}
+                  categories={s.categories}
+                  liveLabel={s.liveNow}
+                  hint={s.bubbleHint}
+                  stripLabel={s.bubbleStripLabel}
+                  ariaLabel={`${s.compositeLabel}: ${Math.round(latest.compositeScore ?? 0)}${categoryLabel ? ` (${categoryLabel})` : ''}`}
+                  onSelectIndicator={jumpToIndicator}
+                />
               </div>
             </FadeIn>
 
