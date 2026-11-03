@@ -100,45 +100,130 @@ const FIZZ = Array.from({ length: 28 }, (_, i) => ({
   ph: i * 1.7,
 }))
 
-// The indicators ride a ring tilted 45° left-right and 45° front-back, projected
-// with a mild perspective: whatever swings toward the viewer (z > 0) grows and
-// passes in front of the bubble, whatever swings behind shrinks and passes behind it.
+// The indicators ride an invisible ring around the bubble. The ring leans left-right and
+// front-back by angles that wander to a new random pose every few seconds (it starts at 45°
+// each), projected with a mild perspective: whatever swings toward the viewer (z > 0) grows
+// and passes in front of the bubble, whatever swings behind shrinks and passes behind it.
 const RING = 162
-const TILT = Math.PI / 4
-const COS_T = Math.cos(TILT)
-const SIN_T = Math.sin(TILT)
 const DEPTH = 0.3
-const Z_MAX = RING * 0.87
 
-function ringPoint(a: number): [number, number, number, number] {
+interface Tilt {
+  x: number
+  y: number
+  tx: number
+  ty: number
+  next: number
+}
+
+function ringPoint(a: number, tx: number, ty: number): [number, number, number, number] {
   const x0 = RING * Math.cos(a)
   const y0 = RING * Math.sin(a)
-  const y1 = y0 * COS_T
-  const z1 = y0 * SIN_T
-  const x2 = x0 * COS_T + z1 * SIN_T
-  const z2 = -x0 * SIN_T + z1 * COS_T
+  const y1 = y0 * Math.cos(tx)
+  const z1 = y0 * Math.sin(tx)
+  const x2 = x0 * Math.cos(ty) + z1 * Math.sin(ty)
+  const z2 = -x0 * Math.sin(ty) + z1 * Math.cos(ty)
   const s = 1 + DEPTH * (z2 / RING)
   return [x2 * s, y1 * s, z2, s]
 }
 
-// The ring itself, split into the half in front of the bubble and the half behind it.
-const RING_PATHS = (() => {
-  const N = 90
-  const pts = Array.from({ length: N + 1 }, (_, i) => ringPoint((i / N) * TAU))
-  let front = ''
-  let back = ''
-  let prev = ''
-  for (let i = 0; i < N; i++) {
-    const [x0, y0, z0] = pts[i]
-    const [x1, y1, z1] = pts[i + 1]
-    const kind = z0 + z1 >= 0 ? 'f' : 'b'
-    const seg = `${kind !== prev ? `M${x0.toFixed(1)} ${y0.toFixed(1)}` : ''}L${x1.toFixed(1)} ${y1.toFixed(1)}`
-    if (kind === 'f') front += seg
-    else back += seg
-    prev = kind
+const easeOutBack = (u: number) => {
+  const c1 = 1.70158
+  const c3 = c1 + 1
+  return 1 + c3 * Math.pow(u - 1, 3) + c1 * Math.pow(u - 1, 2)
+}
+
+// A popped bubble: film shards and droplets thrown outwards, and a bubble that is back
+// (growing out of nothing) shortly after.
+const N_TRI = 11
+const N_DROP = 7
+const SAT_HIDDEN = 0.85
+const SAT_BACK = 1.35
+const BIG_HIDDEN = 0.95
+const BIG_BACK = 1.6
+const SHARD_LIFE = 0.8
+
+interface Pop {
+  t0: number
+  x: number
+  y: number
+  r: number
+  rgb: string
+  big: boolean
+  tri: { ang: number; dist: number; size: number; spin: number }[]
+  drop: { ang: number; dist: number; size: number }[]
+}
+
+interface BurstEls {
+  g: SVGGElement | null
+  flash: SVGCircleElement | null
+  tri: (SVGPathElement | null)[]
+  drop: (SVGCircleElement | null)[]
+}
+
+function makePop(t0: number, x: number, y: number, r: number, rgb: string, big: boolean): Pop {
+  const reach = big ? 0.9 : 1.6
+  const spread = big ? 0.9 : 1.8
+  return {
+    t0,
+    x,
+    y,
+    r,
+    rgb,
+    big,
+    tri: Array.from({ length: N_TRI }, (_, j) => ({
+      ang: (j / N_TRI) * TAU + (Math.random() - 0.5) * 0.5,
+      dist: r * (reach + Math.random() * spread),
+      size: 0.6 + Math.random() * 0.8,
+      spin: (Math.random() - 0.5) * 2.4,
+    })),
+    drop: Array.from({ length: N_DROP }, (_, j) => ({
+      ang: (j / N_DROP) * TAU + Math.random() * 0.9,
+      dist: r * (reach * 1.1 + Math.random() * spread * 1.3),
+      size: 0.6 + Math.random() * 0.9,
+    })),
   }
-  return { front, back }
-})()
+}
+
+function paintBurst(b: BurstEls | undefined, pop: Pop | null, tau: number) {
+  const g = b?.g
+  if (!b || !g) return
+  if (!pop || tau >= SHARD_LIFE) {
+    if (g.style.display !== 'none') g.style.display = 'none'
+    return
+  }
+  g.style.display = ''
+  g.style.setProperty('--sat-rgb', pop.rgb)
+  const u = tau / SHARD_LIFE
+  const e = 1 - Math.pow(1 - u, 3)
+  const fade = (1 - Math.pow(u, 1.6)).toFixed(2)
+  const fall = pop.r * 0.9 * u * u
+  const triScale = pop.r * (pop.big ? 0.12 : 0.27) * (1 - 0.45 * u)
+  pop.tri.forEach((sh, j) => {
+    const el = b.tri[j]
+    if (!el) return
+    const d = sh.dist * e
+    el.setAttribute('transform', `translate(${(pop.x + Math.cos(sh.ang) * d).toFixed(1)} ${(pop.y + Math.sin(sh.ang) * d + fall).toFixed(1)}) rotate(${(sh.spin * u * 360).toFixed(0)}) scale(${(triScale * sh.size).toFixed(2)})`)
+    el.style.opacity = fade
+  })
+  pop.drop.forEach((sh, j) => {
+    const el = b.drop[j]
+    if (!el) return
+    const d = sh.dist * e
+    el.setAttribute('cx', (pop.x + Math.cos(sh.ang) * d).toFixed(1))
+    el.setAttribute('cy', (pop.y + Math.sin(sh.ang) * d + fall).toFixed(1))
+    el.setAttribute('r', (pop.r * (pop.big ? 0.045 : 0.08) * sh.size * (1 - 0.6 * u)).toFixed(2))
+    el.style.opacity = fade
+  })
+  // a ring of light that snaps outwards at the moment it goes
+  const fl = b.flash
+  if (fl) {
+    const uf = Math.min(1, tau / 0.3)
+    fl.setAttribute('cx', pop.x.toFixed(1))
+    fl.setAttribute('cy', pop.y.toFixed(1))
+    fl.setAttribute('r', (pop.r * (1 + 0.8 * uf)).toFixed(1))
+    fl.style.opacity = ((1 - uf) * 0.9).toFixed(2)
+  }
+}
 
 export default function LivingBubble({ score, indicators, history, categories, liveLabel, hint, stripLabel, ariaLabel, onSelectIndicator }: Props) {
   const uid = useId().replace(/:/g, '')
@@ -157,8 +242,15 @@ export default function LivingBubble({ score, indicators, history, categories, l
   const labelsRef = useRef<SVGGElement>(null)
   const numRef = useRef<SVGTextElement>(null)
   const numGradRef = useRef<SVGLinearGradientElement>(null)
-  const ringBackRef = useRef<SVGPathElement>(null)
-  const ringFrontRef = useRef<SVGPathElement>(null)
+  const bodyGRef = useRef<SVGGElement>(null)
+  const tilt = useRef<Tilt>({ x: Math.PI / 4, y: Math.PI / 4, tx: Math.PI / 4, ty: Math.PI / 4, next: 3 })
+  const clock = useRef(0)
+  // pops[0..n-1] are the indicators, pops[n] is the big bubble; burst pools line up with them.
+  const pops = useRef<(Pop | null)[]>([])
+  const satPos = useRef<{ x: number; y: number; r: number }[]>([])
+  const bigPos = useRef({ x: C, y: C, r: 100 })
+  const burst = useRef<BurstEls[]>([])
+  const burstEls = (i: number) => (burst.current[i] ??= { g: null, flash: null, tri: [], drop: [] })
   // Each indicator is drawn twice: a copy behind the bubble and a copy in front of it,
   // and the frame loop shows whichever side of the ring it is currently on.
   // f/b = front/back; v = whole bubble, s = scaled shapes, t = number label.
@@ -214,6 +306,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
     (t: number, dt: number) => {
       const root = rootRef.current
       if (!root) return
+      clock.current = t
       const sc = clamp(shown.get(), 0, 100)
       const f = sc / 100
       root.style.setProperty('--bub-rgb', rgbStr(scoreRgb(sc)))
@@ -223,7 +316,25 @@ export default function LivingBubble({ score, indicators, history, categories, l
       const cx = C + px * 6
       const cy = C + py * 6
       const breath = 1 + 0.018 * Math.sin(t * (1.4 + 4.5 * f))
-      const R = (74 + 0.46 * sc) * breath * (1 + 0.07 * squish.get())
+      // The big bubble pops and grows back: pops[n] drives its size and visibility.
+      const nInd = indicatorsRef.current.length
+      const bigPop = pops.current[nInd]
+      let bigScale = 1
+      let bigAlpha = 1
+      if (bigPop) {
+        const tau = t - bigPop.t0
+        if (tau < BIG_HIDDEN) {
+          bigAlpha = 0
+          bigScale = 0.25
+        } else if (tau < BIG_BACK) {
+          const u = (tau - BIG_HIDDEN) / (BIG_BACK - BIG_HIDDEN)
+          bigScale = 0.25 + 0.75 * easeOutBack(u)
+          bigAlpha = Math.min(1, u * 4)
+        } else pops.current[nInd] = null
+      }
+      const R = (74 + 0.46 * sc) * breath * (1 + 0.07 * squish.get()) * bigScale
+      bigPos.current = { x: cx, y: cy, r: (74 + 0.46 * sc) * breath }
+      if (bodyGRef.current) bodyGRef.current.style.opacity = String(bigAlpha)
       const amp = reduce ? 0 : 0.012 + 0.07 * Math.pow(f, 1.6)
       const speed = 0.5 + 1.7 * f
       const jitter = !reduce && sc > 80 ? ((sc - 80) / 20) * 0.012 : 0
@@ -251,6 +362,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
 
       // The big number sits dead centre; the small print hangs underneath it.
       labelsRef.current?.setAttribute('transform', `translate(${cx.toFixed(1)} ${cy.toFixed(1)})`)
+      if (labelsRef.current) labelsRef.current.style.opacity = String(0.4 + 0.6 * bigAlpha)
       const txt = String(Math.round(sc))
       const num = numRef.current
       if (num && num.textContent !== txt) num.textContent = txt
@@ -269,16 +381,24 @@ export default function LivingBubble({ score, indicators, history, categories, l
         el.setAttribute('cx', (cx + fz.x * half + Math.sin(t * 1.7 + fz.ph) * (1.5 + 3 * u)).toFixed(1))
         el.setAttribute('cy', (yFoot - u * (yFoot - yTop)).toFixed(1))
         el.setAttribute('r', (fz.size * (0.6 + 0.7 * u)).toFixed(2))
-        el.style.opacity = reduce ? '0' : String(Math.min(1, u / 0.1) * Math.min(1, (1 - u) / 0.3) * 0.9)
+        el.style.opacity = reduce ? '0' : String(Math.min(1, u / 0.1) * Math.min(1, (1 - u) / 0.3) * 0.9 * bigAlpha)
       })
 
-      // The ring and the indicators riding it.
+      // The ring wanders to a new random lean every few seconds, and eases there.
+      const tl = tilt.current
+      if (!reduce) {
+        if (t > tl.next) {
+          tl.tx = 0.2 + Math.random() * 1.15
+          tl.ty = (Math.random() * 2 - 1) * 1.15
+          tl.next = t + 2.5 + Math.random() * 3.5
+        }
+        const kt = 1 - Math.exp(-dt * 0.9)
+        tl.x += (tl.tx - tl.x) * kt
+        tl.y += (tl.ty - tl.y) * kt
+      }
+
       const rcx = cx - px * 4
       const rcy = cy - py * 4
-      const ringT = `translate(${rcx.toFixed(1)} ${rcy.toFixed(1)})`
-      ringBackRef.current?.setAttribute('transform', ringT)
-      ringFrontRef.current?.setAttribute('transform', ringT)
-
       const els = satEls.current
       const inds = indicatorsRef.current
       const n = inds.length
@@ -288,26 +408,49 @@ export default function LivingBubble({ score, indicators, history, categories, l
         satVals.current[i] += (target - satVals.current[i]) * k
         const v = satVals.current[i]
         const a = (i / n) * TAU + (reduce ? 0 : t * (0.16 + 0.06 * f))
-        const [dx, dy, z, s] = ringPoint(a)
+        const [dx, dy, z, s] = ringPoint(a, tl.x, tl.y)
+        const zn = clamp(z / RING, -1, 1)
         const front = z >= 0
         const side = front ? 'f' : 'b'
         const hide = els[(front ? 'b' : 'f') + 'v'][i]
         const vis = els[side + 'v'][i]
         if (hide) hide.style.display = 'none'
-        const r = (12 + v * 0.09) * s * (hoverRef.current === inds[i].id ? 1.35 : 1)
+        let r = (12 + v * 0.09) * s * (hoverRef.current === inds[i].id ? 1.35 : 1)
         const x = rcx + dx
         const y = rcy + dy
+        satPos.current[i] = { x, y, r }
+        const rgb = rgbStr(scoreRgb(v))
+
+        // popped: nothing to see but the shards, then it grows back where it has orbited to
+        let alpha = 1
+        const pop = pops.current[i]
+        let popped = false
+        if (pop) {
+          const tau = t - pop.t0
+          if (tau < SAT_HIDDEN) popped = true
+          else if (tau < SAT_BACK) {
+            const u = (tau - SAT_HIDDEN) / (SAT_BACK - SAT_HIDDEN)
+            r *= Math.max(0.01, easeOutBack(u))
+            alpha = Math.min(1, u * 3)
+          } else pops.current[i] = null
+        }
+        paintBurst(burst.current[i], pop ?? null, pop ? t - pop.t0 : 0)
         const hit = els.hit[i]
         if (hit) {
           hit.setAttribute('cx', x.toFixed(1))
           hit.setAttribute('cy', y.toFixed(1))
           hit.setAttribute('r', Math.max(13, r + 4).toFixed(1))
+          hit.style.pointerEvents = popped ? 'none' : ''
         }
         if (!vis) continue
+        if (popped) {
+          vis.style.display = 'none'
+          continue
+        }
         vis.style.display = ''
         vis.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)})`)
-        vis.style.setProperty('--sat-rgb', rgbStr(scoreRgb(v)))
-        vis.style.opacity = String(front ? 0.88 + 0.12 * (z / Z_MAX) : 0.42 + 0.3 * (1 + z / Z_MAX))
+        vis.style.setProperty('--sat-rgb', rgb)
+        vis.style.opacity = String(alpha * (front ? 0.88 + 0.12 * zn : 0.42 + 0.3 * (1 + zn)))
         els[side + 's'][i]?.setAttribute('transform', `scale(${r.toFixed(2)})`)
         const label = els[side + 't'][i]
         if (label) {
@@ -316,6 +459,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
           label.setAttribute('font-size', (r * 0.62).toFixed(1))
         }
       }
+      paintBurst(burst.current[n], bigPop ?? null, bigPop ? t - bigPop.t0 : 0)
     },
     [shown, parX, parY, squish, reduce],
   )
@@ -342,8 +486,20 @@ export default function LivingBubble({ score, indicators, history, categories, l
     draw(0, 0)
   }, [reduce, targetInds, targetScore, draw])
 
-  const [ripples, setRipples] = useState<number[]>([])
   const drag = useRef<{ startX: number; startIdx: number; width: number; moved: boolean } | null>(null)
+
+  const popSat = (i: number) => {
+    if (reduce || pops.current[i]) return
+    const p = satPos.current[i]
+    if (!p) return
+    pops.current[i] = makePop(clock.current, p.x, p.y, p.r, rgbStr(scoreRgb(satVals.current[i])), false)
+  }
+  const popBig = () => {
+    const n = indicatorsRef.current.length
+    if (reduce || pops.current[n]) return
+    const b = bigPos.current
+    pops.current[n] = makePop(clock.current, b.x, b.y, b.r, rgbStr(scoreRgb(shown.get())), true)
+  }
 
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -351,7 +507,6 @@ export default function LivingBubble({ score, indicators, history, categories, l
     e.currentTarget.setPointerCapture(e.pointerId)
     if (!reduce) {
       animate(squish, [0, 1, 0], { duration: 0.55, ease: 'easeOut' })
-      setRipples((r) => [...r, Date.now()])
     }
   }
   const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
@@ -369,6 +524,11 @@ export default function LivingBubble({ score, indicators, history, categories, l
   const endDrag = () => {
     if (drag.current?.moved) scheduleRelease()
     drag.current = null
+  }
+  // a tap that goes nowhere pops the big bubble
+  const onPointerUp = () => {
+    if (drag.current && !drag.current.moved) popBig()
+    endDrag()
   }
   const onPointerLeave = () => {
     parX.set(0)
@@ -411,7 +571,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
         style={{ touchAction: 'pan-y' }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
+        onPointerUp={onPointerUp}
         onPointerCancel={endDrag}
         onPointerLeave={onPointerLeave}
       >
@@ -459,12 +619,12 @@ export default function LivingBubble({ score, indicators, history, categories, l
 
           <circle ref={glowRef} cx={C} cy={C} r={110} fill={`url(#${uid}-glow)`} />
 
-          {/* behind the bubble: far half of the ring, and the indicators currently on it */}
-          <path ref={ringBackRef} d={RING_PATHS.back} fill="none" strokeWidth={1} strokeLinecap="round" style={{ stroke: 'rgba(var(--bub-rgb),0.22)' }} />
+          {/* behind the bubble: the indicators currently on the far side of their orbit */}
           <g aria-hidden="true" pointerEvents="none">
             {indicators.map((ind, i) => satVisual(i, 'b'))}
           </g>
 
+          <g ref={bodyGRef}>
           <path ref={bodyRef} d="" fill={`url(#${uid}-body)`} />
           <g ref={cracksRef} style={{ opacity: 0 }} fill="none" strokeLinecap="round" strokeLinejoin="round">
             {CRACKS.map((d) => (
@@ -474,22 +634,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
           <path ref={rimRef} d="" fill="none" stroke={`url(#${uid}-sheen)`} strokeWidth={2.5} strokeLinejoin="round" />
           <ellipse ref={hi1Ref} cx={0} cy={0} rx={30} ry={14} fill="rgba(255,255,255,0.15)" />
           <ellipse ref={hi2Ref} cx={0} cy={0} rx={5} ry={5} fill="rgba(255,255,255,0.4)" />
-
-          {ripples.map((id) => (
-            <motion.circle
-              key={id}
-              cx={C}
-              cy={C}
-              r={100}
-              fill="none"
-              strokeWidth={2}
-              style={{ stroke: 'rgba(var(--bub-rgb),0.6)', transformBox: 'fill-box', transformOrigin: 'center' }}
-              initial={{ scale: 0.9, opacity: 0.7 }}
-              animate={{ scale: 1.9, opacity: 0 }}
-              transition={{ duration: 0.9, ease: 'easeOut' }}
-              onAnimationComplete={() => setRipples((r) => r.filter((x) => x !== id))}
-            />
-          ))}
+          </g>
 
           {/* the score: big number dead centre, the small print underneath */}
           <g ref={labelsRef} transform={`translate(${C} ${C})`} pointerEvents="none">
@@ -540,8 +685,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
             <circle key={i} ref={(el) => { fizzRefs.current[i] = el }} cx={C} cy={C} r={fz.size} fill={`url(#${uid}-fizz)`} stroke="rgba(255,255,255,0.8)" strokeWidth={0.7} opacity={0} />
           ))}
 
-          {/* in front of the bubble: near half of the ring, and the indicators currently on it */}
-          <path ref={ringFrontRef} d={RING_PATHS.front} fill="none" strokeWidth={1.3} strokeLinecap="round" style={{ stroke: 'rgba(var(--bub-rgb),0.5)' }} />
+          {/* in front of the bubble: the indicators on the near side of their orbit */}
           {indicators.map((ind, i) => (
             <g
               key={ind.id}
@@ -554,7 +698,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
               onPointerLeave={() => setHover(null)}
               onFocus={() => setHover(ind.id)}
               onBlur={() => setHover(null)}
-              onClick={() => onSelectIndicator(ind.id)}
+              onClick={() => popSat(i)}
               onKeyDown={(e: KeyboardEvent<SVGGElement>) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault()
@@ -566,6 +710,20 @@ export default function LivingBubble({ score, indicators, history, categories, l
               <circle ref={(el) => { satEls.current.hit[i] = el }} r={18} fill="transparent" stroke="transparent" strokeWidth={1.5} />
             </g>
           ))}
+          {/* shards of whatever has just popped */}
+          <g aria-hidden="true" pointerEvents="none">
+            {Array.from({ length: indicators.length + 1 }, (_, i) => (
+              <g key={i} ref={(el) => { burstEls(i).g = el }} style={{ display: 'none' }}>
+                <circle ref={(el) => { burstEls(i).flash = el }} fill="none" stroke="rgba(255,255,255,0.9)" strokeWidth={1.4} opacity={0} />
+                {Array.from({ length: N_TRI }, (_, j) => (
+                  <path key={j} ref={(el) => { burstEls(i).tri[j] = el }} d="M0 -1L0.9 0.7L-0.9 0.7Z" strokeWidth={1.2} strokeLinejoin="round" vectorEffect="non-scaling-stroke" stroke={`url(#${uid}-rim)`} fill="rgba(255,255,255,0.2)" opacity={0} />
+                ))}
+                {Array.from({ length: N_DROP }, (_, j) => (
+                  <circle key={j} ref={(el) => { burstEls(i).drop[j] = el }} r={1} fill="rgba(255,255,255,0.75)" opacity={0} />
+                ))}
+              </g>
+            ))}
+          </g>
         </svg>
       </div>
 
