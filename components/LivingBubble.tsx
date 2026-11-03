@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from 'react'
-import { AnimatePresence, animate, motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion'
+import { AnimatePresence, animate, motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion, useSpring } from 'framer-motion'
 import { getScoreCategory } from '@/lib/scoreColor'
 
 export interface BubbleIndicator {
@@ -91,12 +91,54 @@ const CRACKS = [
 ]
 
 // Deterministic (no Math.random) so server and client render identically.
-const SPARKS = Array.from({ length: 10 }, (_, i) => ({
-  hx: ((i * 61) % 97) / 97,
-  speed: 0.05 + ((i * 17) % 11) / 200,
-  size: 1.2 + ((i * 7) % 5) * 0.35,
+// Tiny bubbles that fizz up out of the digits.
+const FIZZ = Array.from({ length: 28 }, (_, i) => ({
+  x: (((i * 37) % 29) / 28) * 2 - 1,
+  speed: 0.1 + (((i * 13) % 17) / 17) * 0.2,
+  size: 0.9 + ((i * 7) % 6) * 0.38,
   seed: ((i * 29) % 53) / 53,
+  ph: i * 1.7,
 }))
+
+// The indicators ride a ring tilted 45° left-right and 45° front-back, projected
+// with a mild perspective: whatever swings toward the viewer (z > 0) grows and
+// passes in front of the bubble, whatever swings behind shrinks and passes behind it.
+const RING = 162
+const TILT = Math.PI / 4
+const COS_T = Math.cos(TILT)
+const SIN_T = Math.sin(TILT)
+const DEPTH = 0.3
+const Z_MAX = RING * 0.87
+
+function ringPoint(a: number): [number, number, number, number] {
+  const x0 = RING * Math.cos(a)
+  const y0 = RING * Math.sin(a)
+  const y1 = y0 * COS_T
+  const z1 = y0 * SIN_T
+  const x2 = x0 * COS_T + z1 * SIN_T
+  const z2 = -x0 * SIN_T + z1 * COS_T
+  const s = 1 + DEPTH * (z2 / RING)
+  return [x2 * s, y1 * s, z2, s]
+}
+
+// The ring itself, split into the half in front of the bubble and the half behind it.
+const RING_PATHS = (() => {
+  const N = 90
+  const pts = Array.from({ length: N + 1 }, (_, i) => ringPoint((i / N) * TAU))
+  let front = ''
+  let back = ''
+  let prev = ''
+  for (let i = 0; i < N; i++) {
+    const [x0, y0, z0] = pts[i]
+    const [x1, y1, z1] = pts[i + 1]
+    const kind = z0 + z1 >= 0 ? 'f' : 'b'
+    const seg = `${kind !== prev ? `M${x0.toFixed(1)} ${y0.toFixed(1)}` : ''}L${x1.toFixed(1)} ${y1.toFixed(1)}`
+    if (kind === 'f') front += seg
+    else back += seg
+    prev = kind
+  }
+  return { front, back }
+})()
 
 export default function LivingBubble({ score, indicators, history, categories, liveLabel, hint, stripLabel, ariaLabel, onSelectIndicator }: Props) {
   const uid = useId().replace(/:/g, '')
@@ -111,9 +153,16 @@ export default function LivingBubble({ score, indicators, history, categories, l
   const hi1Ref = useRef<SVGEllipseElement>(null)
   const hi2Ref = useRef<SVGEllipseElement>(null)
   const cracksRef = useRef<SVGGElement>(null)
-  const sparkRefs = useRef<(SVGCircleElement | null)[]>([])
-  const satGRefs = useRef<(SVGGElement | null)[]>([])
-  const satCRefs = useRef<(SVGCircleElement | null)[]>([])
+  const fizzRefs = useRef<(SVGCircleElement | null)[]>([])
+  const labelsRef = useRef<SVGGElement>(null)
+  const numRef = useRef<SVGTextElement>(null)
+  const numGradRef = useRef<SVGLinearGradientElement>(null)
+  const ringBackRef = useRef<SVGPathElement>(null)
+  const ringFrontRef = useRef<SVGPathElement>(null)
+  // Each indicator is drawn twice: a copy behind the bubble and a copy in front of it,
+  // and the frame loop shows whichever side of the ring it is currently on.
+  // f/b = front/back; v = whole bubble, s = scaled shapes, t = number label.
+  const satEls = useRef<Record<string, (SVGElement | null)[]>>({ fv: [], bv: [], fs: [], bs: [], ft: [], bt: [], hit: [] })
 
   const inView = useInView(rootRef, { margin: '200px' })
   const inViewRef = useRef(false)
@@ -156,7 +205,6 @@ export default function LivingBubble({ score, indicators, history, categories, l
   const parX = useSpring(0, { stiffness: 110, damping: 16 })
   const parY = useSpring(0, { stiffness: 110, damping: 16 })
   const squish = useMotionValue(0)
-  const rounded = useTransform(shown, (v) => String(Math.round(clamp(v, 0, 100))))
   const satVals = useRef<number[]>(indicators.map((i) => i.score ?? 0))
   const hoverRef = useRef<string | null>(null)
   const [hoverId, setHoverId] = useState<string | null>(null)
@@ -191,8 +239,8 @@ export default function LivingBubble({ score, indicators, history, categories, l
       hi1Ref.current?.setAttribute('rx', (R * 0.3).toFixed(1))
       hi1Ref.current?.setAttribute('ry', (R * 0.14).toFixed(1))
       hi1Ref.current?.setAttribute('transform', `translate(${(cx - R * 0.42 - px * 10).toFixed(1)} ${(cy - R * 0.46 - py * 10).toFixed(1)}) rotate(-32)`)
-      hi2Ref.current?.setAttribute('rx', (R * 0.05).toFixed(1))
-      hi2Ref.current?.setAttribute('ry', (R * 0.05).toFixed(1))
+      hi2Ref.current?.setAttribute('rx', (R * 0.022).toFixed(1))
+      hi2Ref.current?.setAttribute('ry', (R * 0.022).toFixed(1))
       hi2Ref.current?.setAttribute('transform', `translate(${(cx + R * 0.5 - px * 6).toFixed(1)} ${(cy + R * 0.46 - py * 6).toFixed(1)})`)
 
       const cracks = cracksRef.current
@@ -201,37 +249,72 @@ export default function LivingBubble({ score, indicators, history, categories, l
         cracks.style.opacity = String(clamp((sc - 82) / 12, 0, 1))
       }
 
-      SPARKS.forEach((sp, i) => {
-        const el = sparkRefs.current[i]
+      // The big number sits dead centre; the small print hangs underneath it.
+      labelsRef.current?.setAttribute('transform', `translate(${cx.toFixed(1)} ${cy.toFixed(1)})`)
+      const txt = String(Math.round(sc))
+      const num = numRef.current
+      if (num && num.textContent !== txt) num.textContent = txt
+      // Light drifting up through the digits, like fizz catching the light.
+      numGradRef.current?.setAttribute('gradientTransform', `translate(0 ${(-((t * 0.22) % 0.6)).toFixed(3)})`)
+
+      // Carbonation: tiny bubbles are born at the foot of the digits and rise through them.
+      const half = Math.max(16, txt.length * 15)
+      const flow = 0.55 + 1.3 * f
+      const yFoot = cy + 22
+      const yTop = cy - R * 0.86
+      FIZZ.forEach((fz, i) => {
+        const el = fizzRefs.current[i]
         if (!el) return
-        const u = (t * sp.speed * (0.4 + f * 1.6) + sp.seed) % 1
-        el.setAttribute('cx', (cx + (sp.hx - 0.5) * R * 1.25).toFixed(1))
-        el.setAttribute('cy', (cy + R * 0.72 - u * R * 1.44).toFixed(1))
-        el.style.opacity = String(reduce ? 0 : Math.sin(u * Math.PI) * 0.75)
+        const u = (t * fz.speed * flow + fz.seed) % 1
+        el.setAttribute('cx', (cx + fz.x * half + Math.sin(t * 1.7 + fz.ph) * (1.5 + 3 * u)).toFixed(1))
+        el.setAttribute('cy', (yFoot - u * (yFoot - yTop)).toFixed(1))
+        el.setAttribute('r', (fz.size * (0.6 + 0.7 * u)).toFixed(2))
+        el.style.opacity = reduce ? '0' : String(Math.min(1, u / 0.1) * Math.min(1, (1 - u) / 0.3) * 0.9)
       })
 
+      // The ring and the indicators riding it.
+      const rcx = cx - px * 4
+      const rcy = cy - py * 4
+      const ringT = `translate(${rcx.toFixed(1)} ${rcy.toFixed(1)})`
+      ringBackRef.current?.setAttribute('transform', ringT)
+      ringFrontRef.current?.setAttribute('transform', ringT)
+
+      const els = satEls.current
       const inds = indicatorsRef.current
       const n = inds.length
       const k = reduce ? 1 : 1 - Math.exp(-dt * 7)
       for (let i = 0; i < n; i++) {
-        const g = satGRefs.current[i]
-        const c = satCRefs.current[i]
-        if (!g || !c) continue
         const target = targetIndsRef.current[i] ?? 0
         satVals.current[i] += (target - satVals.current[i]) * k
         const v = satVals.current[i]
         const a = (i / n) * TAU + (reduce ? 0 : t * (0.16 + 0.06 * f))
-        const ex = 158 * Math.cos(a)
-        const ey = 138 * Math.sin(a)
-        const tilt = -0.32
-        const x = cx - px * 8 + ex * Math.cos(tilt) - ey * Math.sin(tilt)
-        const y = cy - py * 8 + ex * Math.sin(tilt) + ey * Math.cos(tilt)
-        const z = Math.sin(a)
-        const r = (7 + v * 0.075) * (0.85 + 0.15 * z) * (hoverRef.current === inds[i].id ? 1.4 : 1)
-        g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)})`)
-        g.style.opacity = String(0.55 + 0.45 * (z * 0.5 + 0.5))
-        c.setAttribute('r', r.toFixed(1))
-        c.setAttribute('fill', `rgb(${rgbStr(scoreRgb(v))})`)
+        const [dx, dy, z, s] = ringPoint(a)
+        const front = z >= 0
+        const side = front ? 'f' : 'b'
+        const hide = els[(front ? 'b' : 'f') + 'v'][i]
+        const vis = els[side + 'v'][i]
+        if (hide) hide.style.display = 'none'
+        const r = (12 + v * 0.09) * s * (hoverRef.current === inds[i].id ? 1.35 : 1)
+        const x = rcx + dx
+        const y = rcy + dy
+        const hit = els.hit[i]
+        if (hit) {
+          hit.setAttribute('cx', x.toFixed(1))
+          hit.setAttribute('cy', y.toFixed(1))
+          hit.setAttribute('r', Math.max(13, r + 4).toFixed(1))
+        }
+        if (!vis) continue
+        vis.style.display = ''
+        vis.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)})`)
+        vis.style.setProperty('--sat-rgb', rgbStr(scoreRgb(v)))
+        vis.style.opacity = String(front ? 0.88 + 0.12 * (z / Z_MAX) : 0.42 + 0.3 * (1 + z / Z_MAX))
+        els[side + 's'][i]?.setAttribute('transform', `scale(${r.toFixed(2)})`)
+        const label = els[side + 't'][i]
+        if (label) {
+          const vt = String(Math.round(v))
+          if (label.textContent !== vt) label.textContent = vt
+          label.setAttribute('font-size', (r * 0.62).toFixed(1))
+        }
       }
     },
     [shown, parX, parY, squish, reduce],
@@ -246,9 +329,11 @@ export default function LivingBubble({ score, indicators, history, categories, l
   useEffect(() => {
     if (!inView && !started.current) return
     started.current = true
-    if (reduce) shown.jump(targetScore)
-    else shown.set(targetScore)
-  }, [inView, targetScore, reduce, shown])
+    if (reduce) {
+      shown.jump(targetScore)
+      draw(0, 0)
+    } else shown.set(targetScore)
+  }, [inView, targetScore, reduce, shown, draw])
 
   // Reduced motion: no loop, so repaint once whenever the target changes.
   useEffect(() => {
@@ -299,6 +384,23 @@ export default function LivingBubble({ score, indicators, history, categories, l
   const hoverVal = hoverIdx >= 0 ? targetInds[hoverIdx] : null
   const initialRgb = rgbStr(scoreRgb(score))
 
+  // One indicator as a soap bubble: clear middle, bright edge, rainbow film, a glint, its score in faint print.
+  const satVisual = (i: number, k: 'f' | 'b') => (
+    <g key={k + i} ref={(el) => { satEls.current[k + 'v'][i] = el }} style={{ display: k === 'b' ? 'none' : undefined }}>
+      <g ref={(el) => { satEls.current[k + 's'][i] = el }}>
+        <circle r={1} style={{ fill: 'rgb(var(--sat-rgb))', fillOpacity: 0.16 }} />
+        <circle r={1} fill={`url(#${uid}-fres)`} />
+        <circle r={0.88} fill="none" strokeWidth={0.28} style={{ stroke: 'rgb(var(--sat-rgb))', strokeOpacity: 0.32 }} />
+        <circle r={1} fill="none" stroke={`url(#${uid}-rim)`} strokeWidth={1.1} vectorEffect="non-scaling-stroke" />
+        <ellipse cx={-0.38} cy={-0.44} rx={0.28} ry={0.14} transform="rotate(-38 -0.38 -0.44)" fill="rgba(255,255,255,0.65)" />
+        <circle cx={0.42} cy={0.46} r={0.07} fill="rgba(255,255,255,0.5)" />
+      </g>
+      <text ref={(el) => { satEls.current[k + 't'][i] = el }} textAnchor="middle" dominantBaseline="central" className="font-mono" fill="rgba(255,255,255,0.6)" pointerEvents="none">
+        0
+      </text>
+    </g>
+  )
+
   return (
     <div ref={rootRef} className="relative mx-auto w-full max-w-[420px]" style={{ '--bub-rgb': initialRgb } as CSSProperties}>
       <div
@@ -306,7 +408,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
         role="img"
         aria-label={ariaLabel}
         className="relative aspect-square w-full cursor-grab select-none active:cursor-grabbing"
-        style={{ touchAction: 'pan-y', containerType: 'inline-size' }}
+        style={{ touchAction: 'pan-y' }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
@@ -332,13 +434,36 @@ export default function LivingBubble({ score, indicators, history, categories, l
               <stop offset="72%" stopColor="rgba(255,150,230,0.85)" />
               <stop offset="100%" style={{ stopColor: 'rgba(var(--bub-rgb),0.95)' }} />
             </linearGradient>
+            {/* The big number: a band of light that keeps climbing through the digits. */}
+            <linearGradient id={`${uid}-num`} ref={numGradRef} x1="0" y1="0" x2="0" y2="0.6" spreadMethod="repeat">
+              <stop offset="0%" style={{ stopColor: 'rgb(var(--bub-rgb))' }} />
+              <stop offset="50%" style={{ stopColor: 'color-mix(in srgb, rgb(var(--bub-rgb)) 35%, white)' }} />
+              <stop offset="100%" style={{ stopColor: 'rgb(var(--bub-rgb))' }} />
+            </linearGradient>
+            {/* Soap-bubble skin for the indicators: clear middle, bright thin edge, rainbow film. */}
+            <radialGradient id={`${uid}-fres`}>
+              <stop offset="55%" stopColor="rgba(255,255,255,0)" />
+              <stop offset="100%" stopColor="rgba(255,255,255,0.34)" />
+            </radialGradient>
+            <linearGradient id={`${uid}-rim`} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="rgba(170,235,255,0.95)" />
+              <stop offset="45%" stopColor="rgba(255,255,255,0.5)" />
+              <stop offset="75%" stopColor="rgba(255,170,235,0.85)" />
+              <stop offset="100%" stopColor="rgba(190,170,255,0.9)" />
+            </linearGradient>
+            <radialGradient id={`${uid}-fizz`}>
+              <stop offset="0%" stopColor="rgba(255,255,255,0.06)" />
+              <stop offset="100%" stopColor="rgba(255,255,255,0.38)" />
+            </radialGradient>
           </defs>
 
           <circle ref={glowRef} cx={C} cy={C} r={110} fill={`url(#${uid}-glow)`} />
 
-          {SPARKS.map((sp, i) => (
-            <circle key={i} ref={(el) => { sparkRefs.current[i] = el }} cx={C} cy={C} r={sp.size} opacity={0} style={{ fill: 'rgb(var(--bub-rgb))' }} />
-          ))}
+          {/* behind the bubble: far half of the ring, and the indicators currently on it */}
+          <path ref={ringBackRef} d={RING_PATHS.back} fill="none" strokeWidth={1} strokeLinecap="round" style={{ stroke: 'rgba(var(--bub-rgb),0.22)' }} />
+          <g aria-hidden="true" pointerEvents="none">
+            {indicators.map((ind, i) => satVisual(i, 'b'))}
+          </g>
 
           <path ref={bodyRef} d="" fill={`url(#${uid}-body)`} />
           <g ref={cracksRef} style={{ opacity: 0 }} fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -347,7 +472,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
             ))}
           </g>
           <path ref={rimRef} d="" fill="none" stroke={`url(#${uid}-sheen)`} strokeWidth={2.5} strokeLinejoin="round" />
-          <ellipse ref={hi1Ref} cx={0} cy={0} rx={30} ry={14} fill="rgba(255,255,255,0.22)" />
+          <ellipse ref={hi1Ref} cx={0} cy={0} rx={30} ry={14} fill="rgba(255,255,255,0.15)" />
           <ellipse ref={hi2Ref} cx={0} cy={0} rx={5} ry={5} fill="rgba(255,255,255,0.4)" />
 
           {ripples.map((id) => (
@@ -366,14 +491,64 @@ export default function LivingBubble({ score, indicators, history, categories, l
             />
           ))}
 
+          {/* the score: big number dead centre, the small print underneath */}
+          <g ref={labelsRef} transform={`translate(${C} ${C})`} pointerEvents="none">
+            <text
+              ref={numRef}
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontSize={52}
+              className="font-mono font-bold"
+              fill={`url(#${uid}-num)`}
+              style={{ filter: 'drop-shadow(0 0 7px rgba(var(--bub-rgb),0.45))' }}
+            >
+              0
+            </text>
+            <text y={35} textAnchor="middle" fontSize={9.5} className="font-mono" fill="rgba(255,255,255,0.3)">
+              / 100
+            </text>
+            <g transform="translate(0 48)">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.text
+                  key={categoryKey}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.18 }}
+                  textAnchor="middle"
+                  fontSize={8}
+                  className="font-mono uppercase"
+                  style={{ fill: 'rgba(var(--bub-rgb),0.7)', letterSpacing: '0.2em' }}
+                >
+                  {categories[categoryKey] ?? categoryKey}
+                </motion.text>
+              </AnimatePresence>
+            </g>
+            <text y={61} textAnchor="middle" fontSize={7.5} className="font-mono" fill="rgba(255,255,255,0.28)">
+              {active ? (
+                active.date
+              ) : (
+                <>
+                  <tspan fill="#4ADE80" className="animate-pulse">●</tspan> {liveLabel}
+                </>
+              )}
+            </text>
+          </g>
+
+          {/* carbonation */}
+          {FIZZ.map((fz, i) => (
+            <circle key={i} ref={(el) => { fizzRefs.current[i] = el }} cx={C} cy={C} r={fz.size} fill={`url(#${uid}-fizz)`} stroke="rgba(255,255,255,0.8)" strokeWidth={0.7} opacity={0} />
+          ))}
+
+          {/* in front of the bubble: near half of the ring, and the indicators currently on it */}
+          <path ref={ringFrontRef} d={RING_PATHS.front} fill="none" strokeWidth={1.3} strokeLinecap="round" style={{ stroke: 'rgba(var(--bub-rgb),0.5)' }} />
           {indicators.map((ind, i) => (
             <g
               key={ind.id}
-              ref={(el) => { satGRefs.current[i] = el }}
               role="button"
               tabIndex={0}
               aria-label={`${ind.name}: ${targetInds[i] === null ? '—' : Math.round(targetInds[i] as number)}`}
-              className="cursor-pointer outline-none [&:focus-visible>circle:first-child]:stroke-white"
+              className="cursor-pointer outline-none [&:focus-visible>circle]:stroke-white"
               onPointerDown={(e) => e.stopPropagation()}
               onPointerEnter={() => setHover(ind.id)}
               onPointerLeave={() => setHover(null)}
@@ -387,43 +562,11 @@ export default function LivingBubble({ score, indicators, history, categories, l
                 }
               }}
             >
-              <circle ref={(el) => { satCRefs.current[i] = el }} r={10} fill="rgb(var(--bub-rgb))" stroke="rgba(255,255,255,0.35)" strokeWidth={1.2} />
-              <circle r={18} fill="transparent" />
+              {satVisual(i, 'f')}
+              <circle ref={(el) => { satEls.current.hit[i] = el }} r={18} fill="transparent" stroke="transparent" strokeWidth={1.5} />
             </g>
           ))}
         </svg>
-
-        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
-          <div className="flex items-baseline gap-1" style={{ color: 'rgb(var(--bub-rgb))' }}>
-            <motion.span className="font-mono font-bold tabular-nums leading-none" style={{ fontSize: '14cqw', textShadow: '0 2px 24px rgba(0,0,0,0.5)' }}>
-              {rounded}
-            </motion.span>
-            <span className="font-mono text-white/35" style={{ fontSize: 'clamp(0.6rem, 3.6cqw, 0.9rem)' }}>/ 100</span>
-          </div>
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.span
-              key={categoryKey}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.18 }}
-              className="mt-1 font-mono uppercase tracking-[0.25em]"
-              style={{ color: 'rgb(var(--bub-rgb))', fontSize: 'clamp(0.6rem, 3.2cqw, 0.8rem)' }}
-            >
-              {categories[categoryKey] ?? categoryKey}
-            </motion.span>
-          </AnimatePresence>
-          <span className="mt-1.5 flex items-center gap-1.5 font-mono text-white/45" style={{ fontSize: 'clamp(0.55rem, 3cqw, 0.75rem)' }}>
-            {active ? (
-              active.date
-            ) : (
-              <>
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#4ADE80]" />
-                {liveLabel}
-              </>
-            )}
-          </span>
-        </div>
       </div>
 
       <p className="mt-1 min-h-5 text-center font-mono text-xs text-white/40" aria-live="polite">
