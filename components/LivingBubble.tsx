@@ -127,6 +127,39 @@ function ringPoint(a: number, tx: number, ty: number): [number, number, number, 
   return [x2 * s, y1 * s, z2, s]
 }
 
+// Unperspective screen position of a ring point, for working out how a drag should move the ring.
+function ringXY(a: number, tx: number, ty: number): [number, number] {
+  const p = ringPoint(a, tx, ty)
+  return [p[0] / p[3], p[1] / p[3]]
+}
+
+// How a finger drag of (dx, dy) on a bubble at ring angle `a` turns the ring: the part of the
+// drag along the ring spins it; the part across it leans it (damped least squares on the pose).
+function ringDrag(a: number, tx: number, ty: number, dx: number, dy: number): { da: number; dtx: number; dty: number } {
+  const e = 1e-3
+  const p0 = ringXY(a, tx, ty)
+  const pa = ringXY(a + e, tx, ty)
+  const px = ringXY(a, tx + e, ty)
+  const py = ringXY(a, tx, ty + e)
+  const t: [number, number] = [(pa[0] - p0[0]) / e, (pa[1] - p0[1]) / e]
+  const tl2 = t[0] * t[0] + t[1] * t[1]
+  const along = dx * t[0] + dy * t[1]
+  const da = along / (tl2 + (0.3 * RING) ** 2)
+  // what is left once the spin has taken its share
+  const rx = dx - t[0] * da
+  const ry = dy - t[1] * da
+  const j1: [number, number] = [(px[0] - p0[0]) / e, (px[1] - p0[1]) / e]
+  const j2: [number, number] = [(py[0] - p0[0]) / e, (py[1] - p0[1]) / e]
+  const lam = (0.25 * RING) ** 2
+  const a11 = j1[0] * j1[0] + j1[1] * j1[1] + lam
+  const a12 = j1[0] * j2[0] + j1[1] * j2[1]
+  const a22 = j2[0] * j2[0] + j2[1] * j2[1] + lam
+  const b1 = j1[0] * rx + j1[1] * ry
+  const b2 = j2[0] * rx + j2[1] * ry
+  const det = a11 * a22 - a12 * a12 || 1
+  return { da, dtx: (b1 * a22 - b2 * a12) / det, dty: (a11 * b2 - a12 * b1) / det }
+}
+
 const easeOutBack = (u: number) => {
   const c1 = 1.70158
   const c3 = c1 + 1
@@ -348,6 +381,11 @@ export default function LivingBubble({ score, indicators, history, categories, l
   const glRef = useRef<{ back: BubbleGL; front: BubbleGL; u: number } | null>(null)
   const [glOn, setGlOn] = useState(false)
   const parts = useRef<Part[]>([])
+  // The orbit's spin (phase + a fling that bleeds back to the idle speed) and the jelly pull on the big bubble.
+  const spin = useRef({ phase: 0, extra: 0, held: false })
+  const pull = useRef({ x: 0, y: 0, vx: 0, vy: 0, tx: 0, ty: 0 })
+  const satDrag = useRef<{ i: number; pointer: number; x: number; y: number; moved: boolean; acc: number; samples: { t: number; acc: number }[] } | null>(null)
+  const suppressClick = useRef(false)
   const tilt = useRef<Tilt>({ x: Math.PI / 4, y: Math.PI / 4, tx: Math.PI / 4, ty: Math.PI / 4, next: 3 })
   const clock = useRef(0)
   // pops[0..n-1] are the indicators, pops[n] is the big bubble; burst pools line up with them.
@@ -517,7 +555,33 @@ export default function LivingBubble({ score, indicators, history, categories, l
       }
 
       // The big number sits dead centre; the small print hangs underneath it.
-      labelsRef.current?.setAttribute('transform', `translate(${cx.toFixed(1)} ${cy.toFixed(1)})`)
+      // jelly pull on the big bubble (a damped spring, so it wobbles back when let go)
+      const pl = pull.current
+      if (gl) {
+        let rem = Math.min(dt, 0.05)
+        while (rem > 0) {
+          const h = Math.min(rem, 1 / 240)
+          pl.vx += (-150 * (pl.x - pl.tx) - 7 * pl.vx) * h
+          pl.vy += (-150 * (pl.y - pl.ty) - 7 * pl.vy) * h
+          pl.x += pl.vx * h
+          pl.y += pl.vy * h
+          rem -= h
+        }
+        const pm = Math.hypot(pl.x, pl.y)
+        if (pm > 1.1) {
+          pl.x *= 1.1 / pm
+          pl.y *= 1.1 / pm
+        }
+      }
+      const pullM = gl ? Math.hypot(pl.x, pl.y) : 0
+      if (pullM > 0.002) {
+        const ang = (Math.atan2(pl.y, pl.x) * 180) / Math.PI
+        const sx = 1 + 0.3 * pullM
+        labelsRef.current?.setAttribute(
+          'transform',
+          `translate(${(cx + pl.x * R * 0.3).toFixed(1)} ${(cy + pl.y * R * 0.3).toFixed(1)}) rotate(${ang.toFixed(1)}) scale(${sx.toFixed(3)} ${(1 / Math.sqrt(sx)).toFixed(3)}) rotate(${(-ang).toFixed(1)})`,
+        )
+      } else labelsRef.current?.setAttribute('transform', `translate(${cx.toFixed(1)} ${cy.toFixed(1)})`)
       if (labelsRef.current) labelsRef.current.style.opacity = String(gl ? labelA : 0.4 + 0.6 * bigAlpha)
       const txt = String(Math.round(sc))
       const num = numRef.current
@@ -542,7 +606,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
 
       // The ring wanders to a new random lean every few seconds, and eases there.
       const tl = tilt.current
-      if (!reduce) {
+      if (!reduce && !spin.current.held) {
         if (t > tl.next) {
           tl.tx = 0.2 + Math.random() * 1.15
           tl.ty = (Math.random() * 2 - 1) * 1.15
@@ -559,13 +623,19 @@ export default function LivingBubble({ score, indicators, history, categories, l
       const inds = indicatorsRef.current
       const n = inds.length
       const k = reduce ? 1 : 1 - Math.exp(-dt * 7)
+      // the orbit turns at its idle speed plus whatever fling is still bleeding off
+      const sp = spin.current
+      if (!reduce && !sp.held && dt > 0) {
+        sp.phase += (0.16 + 0.06 * f + sp.extra) * dt
+        sp.extra *= Math.exp(-dt / 2.6)
+      }
       const backList: { z: number; d: BubbleDraw }[] = []
       const frontList: { z: number; d: BubbleDraw }[] = []
       for (let i = 0; i < n; i++) {
         const target = targetIndsRef.current[i] ?? 0
         satVals.current[i] += (target - satVals.current[i]) * k
         const v = satVals.current[i]
-        const a = (i / n) * TAU + (reduce ? 0 : t * (0.16 + 0.06 * f))
+        const a = (i / n) * TAU + sp.phase
         const [dx, dy, z, s] = ringPoint(a, tl.x, tl.y)
         const zn = clamp(z / RING, -1, 1)
         const front = z >= 0
@@ -617,6 +687,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
             tint: [scoreRgb(v)[0] / 255, scoreRgb(v)[1] / 255, scoreRgb(v)[2] / 255],
             alpha: front ? 0.92 + 0.08 * zn : 0.5 + 0.3 * (1 + zn),
             wob: 0.03,
+            stretch: [0, 0],
             thin: 0.12,
             glow: 1,
             hole,
@@ -660,6 +731,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
             tint: [rgbF[0] / 255, rgbF[1] / 255, rgbF[2] / 255],
             alpha: bigAlpha,
             wob: amp * 0.8,
+            stretch: [pl.x, -pl.y],
             thin: 0.22 + 0.15 * Math.sin(t * 0.09),
             glow: 1.2,
             hole: bigHole,
@@ -714,7 +786,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
     draw(0, 0)
   }, [reduce, targetInds, targetScore, draw])
 
-  const drag = useRef<{ startX: number; startIdx: number; width: number; moved: boolean } | null>(null)
+  const drag = useRef<{ startX: number; startIdx: number; width: number; moved: boolean; ux0: number; uy0: number; grab: boolean } | null>(null)
 
   // Where on a bubble (unit disc, y up) a pointer landed; somewhere near the middle when unknown.
   const touchPoint = (b: { x: number; y: number; r: number }, clientX?: number, clientY?: number): [number, number] => {
@@ -747,19 +819,101 @@ export default function LivingBubble({ score, indicators, history, categories, l
     pops.current[n] = makePop(clock.current, b.x, b.y, b.r, rgbStr(scoreRgb(shown.get())), true)
   }
 
+  const toUnits = (clientX: number, clientY: number): [number, number] => {
+    const rect = figRef.current?.getBoundingClientRect()
+    if (!rect) return [0, 0]
+    return [((clientX - rect.left) / rect.width) * SIZE, ((clientY - rect.top) / rect.height) * SIZE]
+  }
+
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
-    drag.current = { startX: e.clientX, startIdx: scrubIdx ?? last, width: rect.width, moved: false }
+    const [ux, uy] = toUnits(e.clientX, e.clientY)
+    const b = bigPos.current
+    // with WebGL a press on the big bubble grabs it; anywhere else does nothing
+    const grab = !!glRef.current && !pops.current[indicatorsRef.current.length] && Math.hypot(ux - b.x, uy - b.y) <= b.r * 1.08
+    drag.current = { startX: e.clientX, startIdx: scrubIdx ?? last, width: rect.width, moved: false, ux0: ux, uy0: uy, grab }
     e.currentTarget.setPointerCapture(e.pointerId)
     if (!reduce) {
       animate(squish, [0, 1, 0], { duration: 0.55, ease: 'easeOut' })
     }
   }
+
+  // Drag an indicator: along the ring spins the orbit, across it leans it. Letting go with speed
+  // flings the orbit round like a fidget spinner; the extra speed then bleeds back to idle.
+  const onSatDown = (i: number, e: PointerEvent<SVGGElement>) => {
+    e.stopPropagation()
+    suppressClick.current = false
+    if (reduce) return
+    e.currentTarget.setPointerCapture(e.pointerId)
+    const [ux, uy] = toUnits(e.clientX, e.clientY)
+    satDrag.current = { i, pointer: e.pointerId, x: ux, y: uy, moved: false, acc: 0, samples: [{ t: e.timeStamp, acc: 0 }] }
+  }
+  const finishSatDrag = (timeStamp: number) => {
+    const sd = satDrag.current
+    satDrag.current = null
+    if (!sd || !sd.moved) return
+    const sp = spin.current
+    const s = sd.samples
+    const end = s[s.length - 1]
+    let first = end
+    for (let k = s.length - 1; k >= 0 && end.t - s[k].t <= 90; k--) first = s[k]
+    const dtm = (end.t - first.t) / 1000
+    let v = dtm > 0.012 && timeStamp - end.t < 90 ? (end.acc - first.acc) / dtm : 0
+    v = clamp(v * 1.25, -42, 42)
+    sp.extra = Math.abs(v) < 0.6 ? 0 : v - 0.2
+    sp.held = false
+  }
   const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
     parX.set(clamp(((e.clientX - rect.left) / rect.width - 0.5) * 2, -1, 1))
     parY.set(clamp(((e.clientY - rect.top) / rect.height - 0.5) * 2, -1, 1))
+
+    const sd = satDrag.current
+    if (sd && e.pointerId === sd.pointer) {
+      const [ux, uy] = toUnits(e.clientX, e.clientY)
+      const dx = ux - sd.x
+      const dy = uy - sd.y
+      if (!sd.moved) {
+        if (Math.hypot(dx, dy) < 4) return
+        sd.moved = true
+        suppressClick.current = true
+        spin.current.held = true
+        spin.current.extra = 0
+      }
+      sd.x = ux
+      sd.y = uy
+      const tl = tilt.current
+      const a = (sd.i / indicatorsRef.current.length) * TAU + spin.current.phase
+      const r = ringDrag(a, tl.x, tl.y, dx, dy)
+      const da = clamp(r.da, -0.6, 0.6)
+      spin.current.phase += da
+      tl.x = clamp(tl.x + clamp(r.dtx, -0.15, 0.15), 0.05, 1.45)
+      tl.y = clamp(tl.y + clamp(r.dty, -0.15, 0.15), -1.45, 1.45)
+      tl.tx = tl.x
+      tl.ty = tl.y
+      tl.next = clock.current + 4
+      sd.acc += da
+      sd.samples.push({ t: e.timeStamp, acc: sd.acc })
+      if (sd.samples.length > 10) sd.samples.shift()
+      return
+    }
+
     const d = drag.current
+    if (glRef.current) {
+      // pull the big bubble like jelly, towards wherever the finger has gone since it grabbed
+      if (!d?.grab) return
+      const b = bigPos.current
+      const [ux, uy] = toUnits(e.clientX, e.clientY)
+      const dx = (ux - d.ux0) / b.r
+      const dy = (uy - d.uy0) / b.r
+      const mag = Math.hypot(dx, dy)
+      if (!d.moved && mag * b.r < 4) return
+      d.moved = true
+      const target = Math.tanh(mag * 0.9)
+      pull.current.tx = mag > 0 ? (dx / mag) * target : 0
+      pull.current.ty = mag > 0 ? (dy / mag) * target : 0
+      return
+    }
     if (!d || last < 1) return
     if (!d.moved && Math.abs(e.clientX - d.startX) < 4) return
     d.moved = true
@@ -768,12 +922,19 @@ export default function LivingBubble({ score, indicators, history, categories, l
     holdScrub(d.startIdx + Math.round(((e.clientX - d.startX) / d.width) * points.length * 0.9))
   }
   const endDrag = () => {
-    if (drag.current?.moved) scheduleRelease()
+    if (!glRef.current && drag.current?.moved) scheduleRelease()
+    pull.current.tx = 0
+    pull.current.ty = 0
     drag.current = null
   }
-  // a tap that goes nowhere pops the big bubble
+  // a tap that goes nowhere pops the big bubble (with WebGL only if it landed on the bubble)
   const onPointerUp = (e: PointerEvent<HTMLDivElement>) => {
-    if (drag.current && !drag.current.moved) popBig(e.clientX, e.clientY)
+    if (satDrag.current) finishSatDrag(e.timeStamp)
+    if (drag.current && !drag.current.moved && (!glRef.current || drag.current.grab)) popBig(e.clientX, e.clientY)
+    endDrag()
+  }
+  const onPointerCancel = (e: PointerEvent<HTMLDivElement>) => {
+    if (satDrag.current) finishSatDrag(e.timeStamp)
     endDrag()
   }
   const onPointerLeave = () => {
@@ -820,7 +981,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
-        onPointerCancel={endDrag}
+        onPointerCancel={onPointerCancel}
         onPointerLeave={onPointerLeave}
       >
         {/* the halo lives on its own layer so the WebGL bubbles are not tinted by it */}
@@ -945,13 +1106,20 @@ export default function LivingBubble({ score, indicators, history, categories, l
               role="button"
               tabIndex={0}
               aria-label={`${ind.name}: ${targetInds[i] === null ? '—' : Math.round(targetInds[i] as number)}`}
-              className="cursor-pointer outline-none [&:focus-visible>circle]:stroke-white"
-              onPointerDown={(e) => e.stopPropagation()}
+              className="cursor-grab outline-none [&:focus-visible>circle]:stroke-white"
+              onPointerDown={(e) => onSatDown(i, e)}
+              style={{ touchAction: 'none' }}
               onPointerEnter={() => setHover(ind.id)}
               onPointerLeave={() => setHover(null)}
               onFocus={() => setHover(ind.id)}
               onBlur={() => setHover(null)}
-              onClick={(e) => popSat(i, e.clientX, e.clientY)}
+              onClick={(e) => {
+                if (suppressClick.current) {
+                  suppressClick.current = false
+                  return
+                }
+                popSat(i, e.clientX, e.clientY)
+              }}
               onKeyDown={(e: KeyboardEvent<SVGGElement>) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault()

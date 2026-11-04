@@ -27,6 +27,8 @@ export interface BubbleDraw {
   thin: number
   /** brightness of the wet lip while popping */
   glow: number
+  /** being pulled: direction (y up) and strength in radius units; [0,0] = at rest */
+  stretch: [number, number]
   /** unit vector (view space, y up) of where it was pierced, and the angular radius of the hole; w < 0 = intact */
   hole: [number, number, number, number]
 }
@@ -46,9 +48,11 @@ attribute vec2 aQ;
 uniform vec2 uC;
 uniform float uR;
 uniform vec2 uRes;
+uniform vec2 uStretch;
 varying vec2 vUv;
 void main() {
-  float pad = 1.16;
+  float m = length(uStretch);
+  float pad = 1.16 * (1.0 + m) + 0.4 * m;
   vec2 px = uC + aQ * uR * pad;
   vUv = vec2(aQ.x, -aQ.y) * pad;
   gl_Position = vec4(px.x / uRes.x * 2.0 - 1.0, 1.0 - px.y / uRes.y * 2.0, 0.0, 1.0);
@@ -71,6 +75,7 @@ uniform float uPx;
 uniform vec3 uTint;
 uniform vec3 uCmf[12];
 uniform vec4 uHole;
+uniform vec2 uStretch;
 
 const float PI = 3.14159265;
 const float NF = 1.33;
@@ -113,6 +118,7 @@ float thickness(vec3 P) {
   float h = mix(130.0, 520.0, pow(g, 1.2)) + (nz - 0.5) * 460.0;
   float cap = smoothstep(-0.1, 0.7, g);
   h *= mix(1.0, 0.15 + 0.85 * cap, uThin);
+  h *= 1.0 - 0.4 * clamp(length(uStretch), 0.0, 1.0);
   return clamp(h, 4.0, 1150.0);
 }
 
@@ -176,6 +182,14 @@ vec3 layer(vec3 P, float cosI, vec3 r, float k) {
 
 void main() {
   vec2 p = vUv;
+  // pulled like jelly: elongate along the pull, narrow across it (volume-ish preserved), lean towards the finger
+  float sm = length(uStretch);
+  if (sm > 1e-4) {
+    vec2 su = uStretch / sm;
+    vec2 sv = vec2(-su.y, su.x);
+    vec2 pp = p - su * sm * 0.35;
+    p = (dot(pp, su) / (1.0 + sm)) * su + (dot(pp, sv) * sqrt(1.0 + sm)) * sv;
+  }
   float ang = atan(p.y, p.x);
   float wob = uWob * (0.5 * sin(2.0 * ang + uTime * 1.1 + uSeed * 6.3)
                     + 0.3 * sin(3.0 * ang - uTime * 1.5 + uSeed * 9.1)
@@ -296,7 +310,7 @@ export class BubbleGL {
     gl.bindBuffer(gl.ARRAY_BUFFER, this.quad)
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW)
     this.partBuf = gl.createBuffer() as WebGLBuffer
-    for (const n of ['uC', 'uR', 'uRes', 'uTime', 'uSeed', 'uAlpha', 'uWob', 'uThin', 'uGlow', 'uPx', 'uTint', 'uCmf', 'uHole']) this.bu[n] = gl.getUniformLocation(this.bubbleProg, n)
+    for (const n of ['uC', 'uR', 'uRes', 'uTime', 'uSeed', 'uAlpha', 'uWob', 'uThin', 'uGlow', 'uPx', 'uTint', 'uCmf', 'uHole', 'uStretch']) this.bu[n] = gl.getUniformLocation(this.bubbleProg, n)
     this.pu.uRes = gl.getUniformLocation(this.partProg, 'uRes')
     canvas.addEventListener('webglcontextlost', (e) => {
       e.preventDefault()
@@ -361,6 +375,7 @@ export class BubbleGL {
         gl.uniform1f(this.bu.uGlow, b.glow)
         gl.uniform3f(this.bu.uTint, b.tint[0], b.tint[1], b.tint[2])
         gl.uniform4f(this.bu.uHole, b.hole[0], b.hole[1], b.hole[2], b.hole[3])
+        gl.uniform2f(this.bu.uStretch, b.stretch[0], b.stretch[1])
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
       }
     }
