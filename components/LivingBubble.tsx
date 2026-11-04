@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from 'react'
 import { AnimatePresence, animate, motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion, useSpring } from 'framer-motion'
 import { getScoreCategory } from '@/lib/scoreColor'
+import { BubbleGL, type BubbleDraw, type ParticleDraw } from '@/lib/bubbleGL'
 
 export interface BubbleIndicator {
   id: string
@@ -142,6 +143,35 @@ const BIG_HIDDEN = 0.95
 const BIG_BACK = 1.6
 const SHARD_LIFE = 0.8
 
+// ---- WebGL path: the film tears open instead of breaking into shards ----
+// The canvases extend M svg units past the figure on every side so orbiting bubbles are not clipped.
+const M = 56
+// angular radius the hole has to reach to have eaten the whole sphere (plus its ragged edge)
+const HOLE_MAX = Math.PI + 0.65
+const NO_HOLE: [number, number, number, number] = [0, 0, 1, -1]
+
+interface Pending {
+  s: number
+  phi: number
+  kind: 0 | 1
+  vr: number
+  vt: number
+  size: number
+  life: number
+  done: boolean
+}
+
+interface Part {
+  x: number
+  y: number
+  vx: number
+  vy: number
+  size: number
+  life: number
+  age: number
+  kind: 0 | 1
+}
+
 interface Pop {
   t0: number
   x: number
@@ -151,6 +181,75 @@ interface Pop {
   big: boolean
   tri: { ang: number; dist: number; size: number; spin: number }[]
   drop: { ang: number; dist: number; size: number }[]
+  /** WebGL only: where the film was pierced (unit vector), how long the tear takes, and the droplets still to be shed */
+  hole?: [number, number, number]
+  T?: number
+  pend?: Pending[]
+}
+
+function makeGlPop(t0: number, px: number, py: number, big: boolean): Pop {
+  const d = Math.hypot(px, py)
+  if (d > 0.88) {
+    px *= 0.88 / d
+    py *= 0.88 / d
+  }
+  const T = big ? 0.3 : 0.2
+  const nMist = big ? 85 : 32
+  const nDrop = big ? 22 : 8
+  const pend: Pending[] = []
+  for (let i = 0; i < nMist + nDrop; i++) {
+    const drop = i >= nMist
+    pend.push({
+      s: Math.random() * T * 0.95,
+      phi: Math.random() * TAU,
+      kind: drop ? 1 : 0,
+      vr: 0.25 + Math.random() * 0.9,
+      vt: 0.3 + Math.random() * 1.3,
+      size: drop ? (big ? 2.4 : 1.9) + Math.random() * (big ? 2.0 : 1.4) : (big ? 0.9 : 0.8) + Math.random() * 0.9,
+      life: drop ? 0.45 + Math.random() * 0.5 : 0.25 + Math.random() * 0.4,
+      done: false,
+    })
+  }
+  return { t0, x: 0, y: 0, r: 0, rgb: '', big, tri: [], drop: [], hole: [px, py, Math.sqrt(1 - px * px - py * py)], T, pend }
+}
+
+// Shed the droplets whose moment has come, from wherever the tearing edge is now.
+function spawnDue(pop: Pop, tau: number, cx: number, cy: number, R: number, out: Part[]) {
+  const h = pop.hole
+  const T = pop.T
+  if (!h || !T || !pop.pend) return
+  const ul = Math.hypot(h[2], h[0]) || 1
+  const ux = -h[2] / ul
+  const uz = h[0] / ul
+  const vx = h[1] * uz
+  const vy = h[2] * ux - h[0] * uz
+  const speed = R * 0.7 + 30
+  for (const p of pop.pend) {
+    if (p.done || tau < p.s) continue
+    p.done = true
+    const th = HOLE_MAX * (p.s / T)
+    const cp = Math.cos(p.phi)
+    const sp = Math.sin(p.phi)
+    const wx = cp * ux + sp * vx
+    const wy = sp * vy
+    const c = Math.cos(th)
+    const s = Math.sin(th)
+    const Px = c * h[0] + s * wx
+    const Py = c * h[1] + s * wy
+    const Tx = -s * h[0] + c * wx
+    const Ty = -s * h[1] + c * wy
+    const jit = () => (Math.random() - 0.5) * 0.5 * speed
+    out.push({
+      x: cx + Px * R,
+      y: cy - Py * R,
+      vx: (Px * p.vr + Tx * p.vt) * speed + jit(),
+      vy: -(Py * p.vr + Ty * p.vt) * speed + jit(),
+      size: p.size,
+      life: p.life,
+      age: 0,
+      kind: p.kind,
+    })
+  }
 }
 
 interface BurstEls {
@@ -243,6 +342,12 @@ export default function LivingBubble({ score, indicators, history, categories, l
   const numRef = useRef<SVGTextElement>(null)
   const numGradRef = useRef<SVGLinearGradientElement>(null)
   const bodyGRef = useRef<SVGGElement>(null)
+  // WebGL layers: one canvas behind the digits (far-side indicators + the big bubble), one in front of them.
+  const backCv = useRef<HTMLCanvasElement>(null)
+  const frontCv = useRef<HTMLCanvasElement>(null)
+  const glRef = useRef<{ back: BubbleGL; front: BubbleGL; u: number } | null>(null)
+  const [glOn, setGlOn] = useState(false)
+  const parts = useRef<Part[]>([])
   const tilt = useRef<Tilt>({ x: Math.PI / 4, y: Math.PI / 4, tx: Math.PI / 4, ty: Math.PI / 4, next: 3 })
   const clock = useRef(0)
   // pops[0..n-1] are the indicators, pops[n] is the big bubble; burst pools line up with them.
@@ -255,6 +360,43 @@ export default function LivingBubble({ score, indicators, history, categories, l
   // and the frame loop shows whichever side of the ring it is currently on.
   // f/b = front/back; v = whole bubble, s = scaled shapes, t = number label.
   const satEls = useRef<Record<string, (SVGElement | null)[]>>({ fv: [], bv: [], fs: [], bs: [], ft: [], bt: [], hit: [] })
+
+  // Switch to the WebGL renderer when it is available; the SVG bubble stays as the fallback
+  // (reduced motion, no WebGL, lost context).
+  useEffect(() => {
+    if (reduce) return
+    const fig = figRef.current
+    const bc = backCv.current
+    const fc = frontCv.current
+    if (!fig || !bc || !fc) return
+    const back = BubbleGL.create(bc)
+    const front = BubbleGL.create(fc)
+    if (!back || !front) return
+    const fail = () => {
+      glRef.current = null
+      setGlOn(false)
+    }
+    back.onLost = fail
+    front.onLost = fail
+    const fit = () => {
+      const w = fig.getBoundingClientRect().width
+      const u = (w / SIZE) * Math.min(window.devicePixelRatio || 1, 2)
+      const px = (SIZE + 2 * M) * u
+      back.resize(px, px)
+      front.resize(px, px)
+      if (glRef.current) glRef.current.u = u
+      return u
+    }
+    glRef.current = { back, front, u: fit() }
+    setGlOn(true)
+    const ro = new ResizeObserver(fit)
+    ro.observe(fig)
+    return () => {
+      ro.disconnect()
+      glRef.current = null
+      setGlOn(false)
+    }
+  }, [reduce])
 
   const inView = useInView(rootRef, { margin: '200px' })
   const inViewRef = useRef(false)
@@ -319,40 +461,54 @@ export default function LivingBubble({ score, indicators, history, categories, l
       // The big bubble pops and grows back: pops[n] drives its size and visibility.
       const nInd = indicatorsRef.current.length
       const bigPop = pops.current[nInd]
+      const gl = glRef.current
       let bigScale = 1
       let bigAlpha = 1
+      let labelA = 1
+      let bigHole = NO_HOLE
       if (bigPop) {
         const tau = t - bigPop.t0
-        if (tau < BIG_HIDDEN) {
+        const T = bigPop.hole ? (bigPop.T as number) : 0
+        if (tau < T) {
+          // the film is tearing open: still there, with a hole sweeping round it
+          bigHole = [bigPop.hole![0], bigPop.hole![1], bigPop.hole![2], HOLE_MAX * (tau / T)]
+          labelA = 1 - 0.6 * (tau / T)
+        } else if (tau < BIG_HIDDEN) {
           bigAlpha = 0
           bigScale = 0.25
+          labelA = 0.4
         } else if (tau < BIG_BACK) {
           const u = (tau - BIG_HIDDEN) / (BIG_BACK - BIG_HIDDEN)
           bigScale = 0.25 + 0.75 * easeOutBack(u)
           bigAlpha = Math.min(1, u * 4)
+          labelA = 0.4 + 0.6 * bigAlpha
         } else pops.current[nInd] = null
       }
       const R = (74 + 0.46 * sc) * breath * (1 + 0.07 * squish.get()) * bigScale
       bigPos.current = { x: cx, y: cy, r: (74 + 0.46 * sc) * breath }
       if (bodyGRef.current) bodyGRef.current.style.opacity = String(bigAlpha)
       const amp = reduce ? 0 : 0.012 + 0.07 * Math.pow(f, 1.6)
-      const speed = 0.5 + 1.7 * f
-      const jitter = !reduce && sc > 80 ? ((sc - 80) / 20) * 0.012 : 0
-      const d = blobPath(cx, cy, R, amp, t, speed, jitter)
-      bodyRef.current?.setAttribute('d', d)
-      rimRef.current?.setAttribute('d', d)
+      if (!gl) {
+        const speed = 0.5 + 1.7 * f
+        const jitter = !reduce && sc > 80 ? ((sc - 80) / 20) * 0.012 : 0
+        const d = blobPath(cx, cy, R, amp, t, speed, jitter)
+        bodyRef.current?.setAttribute('d', d)
+        rimRef.current?.setAttribute('d', d)
+      }
 
       glowRef.current?.setAttribute('cx', cx.toFixed(1))
       glowRef.current?.setAttribute('cy', cy.toFixed(1))
       glowRef.current?.setAttribute('r', (R * 1.5).toFixed(1))
       sheenRef.current?.setAttribute('gradientTransform', `rotate(${(t * 22 + px * 50).toFixed(1)} 0.5 0.5)`)
 
-      hi1Ref.current?.setAttribute('rx', (R * 0.3).toFixed(1))
-      hi1Ref.current?.setAttribute('ry', (R * 0.14).toFixed(1))
-      hi1Ref.current?.setAttribute('transform', `translate(${(cx - R * 0.42 - px * 10).toFixed(1)} ${(cy - R * 0.46 - py * 10).toFixed(1)}) rotate(-32)`)
-      hi2Ref.current?.setAttribute('rx', (R * 0.022).toFixed(1))
-      hi2Ref.current?.setAttribute('ry', (R * 0.022).toFixed(1))
-      hi2Ref.current?.setAttribute('transform', `translate(${(cx + R * 0.5 - px * 6).toFixed(1)} ${(cy + R * 0.46 - py * 6).toFixed(1)})`)
+      if (!gl) {
+        hi1Ref.current?.setAttribute('rx', (R * 0.3).toFixed(1))
+        hi1Ref.current?.setAttribute('ry', (R * 0.14).toFixed(1))
+        hi1Ref.current?.setAttribute('transform', `translate(${(cx - R * 0.42 - px * 10).toFixed(1)} ${(cy - R * 0.46 - py * 10).toFixed(1)}) rotate(-32)`)
+        hi2Ref.current?.setAttribute('rx', (R * 0.022).toFixed(1))
+        hi2Ref.current?.setAttribute('ry', (R * 0.022).toFixed(1))
+        hi2Ref.current?.setAttribute('transform', `translate(${(cx + R * 0.5 - px * 6).toFixed(1)} ${(cy + R * 0.46 - py * 6).toFixed(1)})`)
+      }
 
       const cracks = cracksRef.current
       if (cracks) {
@@ -362,7 +518,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
 
       // The big number sits dead centre; the small print hangs underneath it.
       labelsRef.current?.setAttribute('transform', `translate(${cx.toFixed(1)} ${cy.toFixed(1)})`)
-      if (labelsRef.current) labelsRef.current.style.opacity = String(0.4 + 0.6 * bigAlpha)
+      if (labelsRef.current) labelsRef.current.style.opacity = String(gl ? labelA : 0.4 + 0.6 * bigAlpha)
       const txt = String(Math.round(sc))
       const num = numRef.current
       if (num && num.textContent !== txt) num.textContent = txt
@@ -381,7 +537,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
         el.setAttribute('cx', (cx + fz.x * half + Math.sin(t * 1.7 + fz.ph) * (1.5 + 3 * u)).toFixed(1))
         el.setAttribute('cy', (yFoot - u * (yFoot - yTop)).toFixed(1))
         el.setAttribute('r', (fz.size * (0.6 + 0.7 * u)).toFixed(2))
-        el.style.opacity = reduce ? '0' : String(Math.min(1, u / 0.1) * Math.min(1, (1 - u) / 0.3) * 0.9 * bigAlpha)
+        el.style.opacity = reduce ? '0' : String(Math.min(1, u / 0.1) * Math.min(1, (1 - u) / 0.3) * 0.9 * (gl ? Math.max(0, (labelA - 0.4) / 0.6) : bigAlpha))
       })
 
       // The ring wanders to a new random lean every few seconds, and eases there.
@@ -403,6 +559,8 @@ export default function LivingBubble({ score, indicators, history, categories, l
       const inds = indicatorsRef.current
       const n = inds.length
       const k = reduce ? 1 : 1 - Math.exp(-dt * 7)
+      const backList: { z: number; d: BubbleDraw }[] = []
+      const frontList: { z: number; d: BubbleDraw }[] = []
       for (let i = 0; i < n; i++) {
         const target = targetIndsRef.current[i] ?? 0
         satVals.current[i] += (target - satVals.current[i]) * k
@@ -425,22 +583,45 @@ export default function LivingBubble({ score, indicators, history, categories, l
         let alpha = 1
         const pop = pops.current[i]
         let popped = false
+        let tearing = false
+        let hole = NO_HOLE
         if (pop) {
           const tau = t - pop.t0
-          if (tau < SAT_HIDDEN) popped = true
+          const T = pop.hole ? (pop.T as number) : 0
+          if (tau < T) {
+            tearing = true
+            hole = [pop.hole![0], pop.hole![1], pop.hole![2], HOLE_MAX * (tau / T)]
+            alpha = 1 - tau / T
+            spawnDue(pop, tau, x, y, r, parts.current)
+          } else if (tau < SAT_HIDDEN) popped = true
           else if (tau < SAT_BACK) {
             const u = (tau - SAT_HIDDEN) / (SAT_BACK - SAT_HIDDEN)
             r *= Math.max(0.01, easeOutBack(u))
             alpha = Math.min(1, u * 3)
           } else pops.current[i] = null
         }
-        paintBurst(burst.current[i], pop ?? null, pop ? t - pop.t0 : 0)
+        if (!gl) paintBurst(burst.current[i], pop ?? null, pop ? t - pop.t0 : 0)
         const hit = els.hit[i]
         if (hit) {
           hit.setAttribute('cx', x.toFixed(1))
           hit.setAttribute('cy', y.toFixed(1))
           hit.setAttribute('r', Math.max(13, r + 4).toFixed(1))
-          hit.style.pointerEvents = popped ? 'none' : ''
+          hit.style.pointerEvents = popped || tearing ? 'none' : ''
+        }
+        if (gl && !popped) {
+          const d: BubbleDraw = {
+            x: (x + M) * gl.u,
+            y: (y + M) * gl.u,
+            r: r * gl.u,
+            seed: 0.31 + i * 0.173,
+            tint: [scoreRgb(v)[0] / 255, scoreRgb(v)[1] / 255, scoreRgb(v)[2] / 255],
+            alpha: front ? 0.92 + 0.08 * zn : 0.5 + 0.3 * (1 + zn),
+            wob: 0.03,
+            thin: 0.12,
+            glow: 1,
+            hole,
+          }
+          ;(front ? frontList : backList).push({ z, d })
         }
         if (!vis) continue
         if (popped) {
@@ -459,7 +640,54 @@ export default function LivingBubble({ score, indicators, history, categories, l
           label.setAttribute('font-size', (r * 0.62).toFixed(1))
         }
       }
-      paintBurst(burst.current[n], bigPop ?? null, bigPop ? t - bigPop.t0 : 0)
+      if (!gl) {
+        paintBurst(burst.current[n], bigPop ?? null, bigPop ? t - bigPop.t0 : 0)
+        return
+      }
+
+      // ---- WebGL: hand both canvases this frame's bubbles and the flying droplets ----
+      if (bigPop && bigPop.hole) spawnDue(bigPop, t - bigPop.t0, cx, cy, bigPos.current.r, parts.current)
+      if (bigAlpha > 0.003 && R > 1) {
+        const rgbF = scoreRgb(sc)
+        backList.sort((a, b) => a.z - b.z)
+        backList.push({
+          z: 0,
+          d: {
+            x: (cx + M) * gl.u,
+            y: (cy + M) * gl.u,
+            r: R * gl.u,
+            seed: 0.37,
+            tint: [rgbF[0] / 255, rgbF[1] / 255, rgbF[2] / 255],
+            alpha: bigAlpha,
+            wob: amp * 0.8,
+            thin: 0.22 + 0.15 * Math.sin(t * 0.09),
+            glow: 1.2,
+            hole: bigHole,
+          },
+        })
+      } else backList.sort((a, b) => a.z - b.z)
+      frontList.sort((a, b) => a.z - b.z)
+
+      const step = Math.min(dt, 0.05)
+      const live: ParticleDraw[] = []
+      const ps = parts.current
+      let w = 0
+      for (let i = 0; i < ps.length; i++) {
+        const p = ps[i]
+        p.age += step
+        if (p.age >= p.life) continue
+        const drag = Math.exp(-(p.kind ? 0.7 : 2.0) * step)
+        p.vx *= drag
+        p.vy = p.vy * drag + (p.kind ? 190 : 60) * step
+        p.x += p.vx * step
+        p.y += p.vy * step
+        const u = p.age / p.life
+        live.push({ x: (p.x + M) * gl.u, y: (p.y + M) * gl.u, size: p.size * gl.u, alpha: Math.pow(1 - u, 1.4) * (p.kind ? 0.95 : 0.7), kind: p.kind })
+        ps[w++] = p
+      }
+      ps.length = w
+      gl.back.draw(t, backList.map((e) => e.d), [])
+      gl.front.draw(t, frontList.map((e) => e.d), live)
     },
     [shown, parX, parY, squish, reduce],
   )
@@ -488,16 +716,34 @@ export default function LivingBubble({ score, indicators, history, categories, l
 
   const drag = useRef<{ startX: number; startIdx: number; width: number; moved: boolean } | null>(null)
 
-  const popSat = (i: number) => {
+  // Where on a bubble (unit disc, y up) a pointer landed; somewhere near the middle when unknown.
+  const touchPoint = (b: { x: number; y: number; r: number }, clientX?: number, clientY?: number): [number, number] => {
+    const rect = figRef.current?.getBoundingClientRect()
+    if (!rect || !clientX || !clientY) return [(Math.random() - 0.5) * 0.8, (Math.random() - 0.5) * 0.8]
+    const ux = ((clientX - rect.left) / rect.width) * SIZE
+    const uy = ((clientY - rect.top) / rect.height) * SIZE
+    return [(ux - b.x) / b.r, -(uy - b.y) / b.r]
+  }
+  const popSat = (i: number, clientX?: number, clientY?: number) => {
     if (reduce || pops.current[i]) return
     const p = satPos.current[i]
     if (!p) return
+    if (glRef.current) {
+      const [hx, hy] = touchPoint(p, clientX, clientY)
+      pops.current[i] = makeGlPop(clock.current, hx, hy, false)
+      return
+    }
     pops.current[i] = makePop(clock.current, p.x, p.y, p.r, rgbStr(scoreRgb(satVals.current[i])), false)
   }
-  const popBig = () => {
+  const popBig = (clientX?: number, clientY?: number) => {
     const n = indicatorsRef.current.length
     if (reduce || pops.current[n]) return
     const b = bigPos.current
+    if (glRef.current) {
+      const [hx, hy] = touchPoint(b, clientX, clientY)
+      pops.current[n] = makeGlPop(clock.current, hx, hy, true)
+      return
+    }
     pops.current[n] = makePop(clock.current, b.x, b.y, b.r, rgbStr(scoreRgb(shown.get())), true)
   }
 
@@ -526,8 +772,8 @@ export default function LivingBubble({ score, indicators, history, categories, l
     drag.current = null
   }
   // a tap that goes nowhere pops the big bubble
-  const onPointerUp = () => {
-    if (drag.current && !drag.current.moved) popBig()
+  const onPointerUp = (e: PointerEvent<HTMLDivElement>) => {
+    if (drag.current && !drag.current.moved) popBig(e.clientX, e.clientY)
     endDrag()
   }
   const onPointerLeave = () => {
@@ -543,11 +789,13 @@ export default function LivingBubble({ score, indicators, history, categories, l
   const hoverIdx = hoverId ? indicators.findIndex((i) => i.id === hoverId) : -1
   const hoverVal = hoverIdx >= 0 ? targetInds[hoverIdx] : null
   const initialRgb = rgbStr(scoreRgb(score))
+  // the canvases cover the figure plus M svg units of margin on every side
+  const canvasBox: CSSProperties = { left: `${(-M / SIZE) * 100}%`, top: `${(-M / SIZE) * 100}%`, width: `${((SIZE + 2 * M) / SIZE) * 100}%`, height: `${((SIZE + 2 * M) / SIZE) * 100}%`, zIndex: 2 }
 
   // One indicator as a soap bubble: clear middle, bright edge, rainbow film, a glint, its score in faint print.
   const satVisual = (i: number, k: 'f' | 'b') => (
     <g key={k + i} ref={(el) => { satEls.current[k + 'v'][i] = el }} style={{ display: k === 'b' ? 'none' : undefined }}>
-      <g ref={(el) => { satEls.current[k + 's'][i] = el }}>
+      <g ref={(el) => { satEls.current[k + 's'][i] = el }} className="group-data-[gl=on]:hidden">
         <circle r={1} style={{ fill: 'rgb(var(--sat-rgb))', fillOpacity: 0.16 }} />
         <circle r={1} fill={`url(#${uid}-fres)`} />
         <circle r={0.88} fill="none" strokeWidth={0.28} style={{ stroke: 'rgb(var(--sat-rgb))', strokeOpacity: 0.32 }} />
@@ -562,7 +810,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
   )
 
   return (
-    <div ref={rootRef} className="relative mx-auto w-full max-w-[420px]" style={{ '--bub-rgb': initialRgb } as CSSProperties}>
+    <div ref={rootRef} data-gl={glOn ? 'on' : 'off'} className="group relative mx-auto w-full max-w-[420px]" style={{ '--bub-rgb': initialRgb } as CSSProperties}>
       <div
         ref={figRef}
         role="img"
@@ -575,13 +823,20 @@ export default function LivingBubble({ score, indicators, history, categories, l
         onPointerCancel={endDrag}
         onPointerLeave={onPointerLeave}
       >
-        <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="h-full w-full overflow-visible">
+        {/* the halo lives on its own layer so the WebGL bubbles are not tinted by it */}
+        <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
           <defs>
             <radialGradient id={`${uid}-glow`}>
               <stop offset="0%" style={{ stopColor: 'rgba(var(--bub-rgb),0.30)' }} />
               <stop offset="55%" style={{ stopColor: 'rgba(var(--bub-rgb),0.10)' }} />
               <stop offset="100%" style={{ stopColor: 'rgba(var(--bub-rgb),0)' }} />
             </radialGradient>
+          </defs>
+          <circle ref={glowRef} cx={C} cy={C} r={110} fill={`url(#${uid}-glow)`} />
+        </svg>
+        <canvas ref={backCv} aria-hidden="true" className="pointer-events-none absolute" style={{ ...canvasBox, zIndex: 0 }} />
+        <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="relative z-[1] h-full w-full overflow-visible">
+          <defs>
             <radialGradient id={`${uid}-body`} cx="38%" cy="32%" r="78%">
               <stop offset="0%" stopColor="rgba(255,255,255,0.10)" />
               <stop offset="55%" style={{ stopColor: 'rgba(var(--bub-rgb),0.07)' }} />
@@ -617,23 +872,21 @@ export default function LivingBubble({ score, indicators, history, categories, l
             </radialGradient>
           </defs>
 
-          <circle ref={glowRef} cx={C} cy={C} r={110} fill={`url(#${uid}-glow)`} />
-
           {/* behind the bubble: the indicators currently on the far side of their orbit */}
           <g aria-hidden="true" pointerEvents="none">
             {indicators.map((ind, i) => satVisual(i, 'b'))}
           </g>
 
           <g ref={bodyGRef}>
-          <path ref={bodyRef} d="" fill={`url(#${uid}-body)`} />
+          <path ref={bodyRef} d="" fill={`url(#${uid}-body)`} className="group-data-[gl=on]:hidden" />
           <g ref={cracksRef} style={{ opacity: 0 }} fill="none" strokeLinecap="round" strokeLinejoin="round">
             {CRACKS.map((d) => (
               <path key={d} d={d} stroke="rgba(255,255,255,0.85)" strokeWidth={1.6} />
             ))}
           </g>
-          <path ref={rimRef} d="" fill="none" stroke={`url(#${uid}-sheen)`} strokeWidth={2.5} strokeLinejoin="round" />
-          <ellipse ref={hi1Ref} cx={0} cy={0} rx={30} ry={14} fill="rgba(255,255,255,0.15)" />
-          <ellipse ref={hi2Ref} cx={0} cy={0} rx={5} ry={5} fill="rgba(255,255,255,0.4)" />
+          <path ref={rimRef} d="" fill="none" stroke={`url(#${uid}-sheen)`} strokeWidth={2.5} strokeLinejoin="round" className="group-data-[gl=on]:hidden" />
+          <ellipse ref={hi1Ref} cx={0} cy={0} rx={30} ry={14} fill="rgba(255,255,255,0.15)" className="group-data-[gl=on]:hidden" />
+          <ellipse ref={hi2Ref} cx={0} cy={0} rx={5} ry={5} fill="rgba(255,255,255,0.4)" className="group-data-[gl=on]:hidden" />
           </g>
 
           {/* the score: big number dead centre, the small print underneath */}
@@ -698,7 +951,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
               onPointerLeave={() => setHover(null)}
               onFocus={() => setHover(ind.id)}
               onBlur={() => setHover(null)}
-              onClick={() => popSat(i)}
+              onClick={(e) => popSat(i, e.clientX, e.clientY)}
               onKeyDown={(e: KeyboardEvent<SVGGElement>) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault()
@@ -725,6 +978,7 @@ export default function LivingBubble({ score, indicators, history, categories, l
             ))}
           </g>
         </svg>
+        <canvas ref={frontCv} aria-hidden="true" className="pointer-events-none absolute" style={canvasBox} />
       </div>
 
       <p className="mt-1 min-h-5 text-center font-mono text-xs text-white/40" aria-live="polite">
