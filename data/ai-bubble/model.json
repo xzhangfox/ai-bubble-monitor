@@ -1,6 +1,6 @@
 {
   "asOf": "2026-11-06",
-  "generatedAt": "2026-11-06T18:05:20+00:00",
+  "generatedAt": "2026-11-07T16:53:47+00:00",
   "target": {
     "horizonDays": 63,
     "drop": 0.1,
@@ -32,7 +32,7 @@
         -0.082,
         0.05
       ],
-      "today": 0.427
+      "today": 0.425
     },
     {
       "id": "logistic",
@@ -48,7 +48,7 @@
         -0.769,
         -0.027
       ],
-      "today": 0.362
+      "today": 0.374
     },
     {
       "id": "gbm",
@@ -64,7 +64,7 @@
         -1.23,
         -0.242
       ],
-      "today": 0.669
+      "today": 0.641
     },
     {
       "id": "transformer",
@@ -85,7 +85,7 @@
   ],
   "headline": {
     "model": "composite",
-    "probability": 0.427,
+    "probability": 0.425,
     "baseRate": 0.335,
     "chosenBy": "highest out-of-sample Brier skill",
     "beatsBaseRate": false
@@ -123,38 +123,38 @@
   "drivers": [
     {
       "id": "trendExtension",
-      "rank": 10.9,
+      "rank": 11.1,
       "weight": -2.701,
-      "contribution": 1.166,
-      "effect": 0.212
+      "contribution": 1.163,
+      "effect": 0.217
     },
     {
       "id": "momentum",
-      "rank": 9.9,
+      "rank": 10.2,
       "weight": 0.991,
-      "contribution": -0.436,
+      "contribution": -0.433,
       "effect": -0.105
     },
     {
       "id": "complacency",
-      "rank": 14.1,
+      "rank": 13.2,
       "weight": 1.72,
-      "contribution": -0.386,
-      "effect": -0.093
+      "contribution": -0.402,
+      "effect": -0.098
     },
     {
       "id": "creditAppetite",
-      "rank": 15.9,
+      "rank": 17.1,
       "weight": 0.468,
-      "contribution": -0.168,
-      "effect": -0.04
+      "contribution": -0.163,
+      "effect": -0.039
     },
     {
       "id": "concentration",
-      "rank": 11.1,
+      "rank": 11.2,
       "weight": 0.415,
-      "contribution": -0.163,
-      "effect": -0.038
+      "contribution": -0.162,
+      "effect": -0.039
     },
     {
       "id": "forwardPurchases",
@@ -165,33 +165,33 @@
     },
     {
       "id": "volumeSurge",
-      "rank": 53.8,
+      "rank": 58.8,
       "weight": 1.238,
-      "contribution": 0.048,
-      "effect": 0.011
+      "contribution": 0.11,
+      "effect": 0.025
     },
     {
       "id": "monetaryStimulus",
-      "rank": 2.0,
+      "rank": 1.8,
       "weight": -0.039,
-      "contribution": 0.013,
+      "contribution": 0.014,
       "effect": 0.003
     }
   ],
   "analogs": {
     "days": [
       {
-        "date": "2022-08-29",
-        "composite": 25.1,
-        "similarity": 0.954,
-        "forwardReturn": -0.071,
-        "maxDrawdown": -0.2003,
+        "date": "2022-08-26",
+        "composite": 26.4,
+        "similarity": 0.952,
+        "forwardReturn": -0.0683,
+        "maxDrawdown": -0.2134,
         "fell": true
       },
       {
         "date": "2022-06-27",
         "composite": 26.3,
-        "similarity": 0.924,
+        "similarity": 0.934,
         "forwardReturn": -0.1615,
         "maxDrawdown": -0.1615,
         "fell": true
@@ -199,7 +199,7 @@
       {
         "date": "2025-03-31",
         "composite": 33.6,
-        "similarity": 0.9,
+        "similarity": 0.904,
         "forwardReturn": 0.3971,
         "maxDrawdown": -0.1171,
         "fell": true
@@ -207,18 +207,18 @@
       {
         "date": "2018-09-06",
         "composite": 31.9,
-        "similarity": 0.887,
+        "similarity": 0.898,
         "forwardReturn": -0.1653,
         "maxDrawdown": -0.21,
         "fell": true
       },
       {
-        "date": "2018-05-25",
-        "composite": 24.9,
-        "similarity": 0.883,
-        "forwardReturn": 0.0629,
-        "maxDrawdown": -0.0092,
-        "fell": false
+        "date": "2018-11-12",
+        "composite": 27.6,
+        "similarity": 0.88,
+        "forwardReturn": 0.0138,
+        "maxDrawdown": -0.1559,
+        "fell": true
       }
     ],
     "nearest": 50,
@@ -1797,7 +1797,7 @@
     },
     {
       "date": "2026-11-06",
-      "p": 0.427,
+      "p": 0.425,
       "fell": null
     }
   ],
