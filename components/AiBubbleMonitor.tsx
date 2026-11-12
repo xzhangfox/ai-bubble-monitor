@@ -546,10 +546,13 @@ export default function AiBubbleMonitor({
             <p className="text-white/25 text-xs font-mono">{s.footerNote}</p>
             {latest.generatedAt && (
               <p className="text-white/20 text-xs font-mono">
-                {new Date(latest.generatedAt).toLocaleString(lang === 'zh' ? 'zh-CN' : 'en-US', {
-                  dateStyle: 'medium',
-                  timeStyle: 'short',
-                })}
+                <time dateTime={latest.generatedAt}>
+                  {new Date(latest.generatedAt).toLocaleString(lang === 'zh' ? 'zh-CN' : 'en-US', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short',
+                    timeZone: 'UTC',
+                  })} UTC
+                </time>
               </p>
             )}
           </footer>
