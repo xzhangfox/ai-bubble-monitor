@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/build-documentation.mjs --check",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "fetch-data": "node scripts/fetch-ai-bubble-data.mjs"
+    "fetch-data": "node scripts/fetch-ai-bubble-data.mjs",
+    "docs:build": "node scripts/build-documentation.mjs",
+    "docs:check": "node scripts/build-documentation.mjs --check"
   },
   "dependencies": {
     "framer-motion": "^11.0.0",

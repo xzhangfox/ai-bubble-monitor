@@ -4,6 +4,14 @@ A daily, rules-based read on whether AI-linked markets show the classic signs of
 
 Live: https://ai-bubble-monitor-delta.vercel.app
 
+## Documentation / 说明文档
+
+Open **Documentation / 说明文档** in the dashboard header for data sources, plain-language indicator tables, model comparisons, the evaluation method, limitations and the current published backtest. The reader follows the dashboard language. On a first visit the dashboard follows the browser language; a manual English/Chinese choice is remembered. Tables become readable cards on small screens.
+
+Repository copies: [English](docs/methodology.en.md) · [中文](docs/methodology.zh.md).
+
+Both the reader and Markdown use `content/documentation.en.json` and `content/documentation.zh.json`. Edit those files, then run `npm run docs:build`. `npm run docs:check` (also run before a production build) prevents the repository copies from drifting. Performance figures in the reader come directly from the current `model.json`; they are not hard-coded into the prose.
+
 ## What runs each day
 
 `.github/workflows/ai-bubble-data.yml`, after the US close:

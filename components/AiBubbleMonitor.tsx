@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useRef, useState, type MouseEvent } from 'react'
+import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import FadeIn from './FadeIn'
 import IndicatorIcon from './IndicatorIcon'
@@ -11,6 +12,10 @@ import Briefing, { type BriefingData } from './Briefing'
 import ModelView, { type ModelData } from './ModelView'
 import ForwardPurchases, { type CapexData, type CommitmentsData } from './ForwardPurchases'
 import { getScoreColor } from '@/lib/scoreColor'
+import { useLanguage } from './useLanguage'
+
+const loadDocumentation = () => import('./Documentation')
+const Documentation = dynamic(loadDocumentation, { ssr: false })
 
 export interface Indicator {
   id: string
@@ -46,7 +51,9 @@ export interface HistoryData {
 
 const STRINGS = {
   en: {
-    label: 'LIVE MARKET DATA — UPDATED DAILY',
+    label: 'MARKET RESEARCH · UPDATED DAILY',
+    documentation: 'Documentation',
+    switchLanguage: 'Switch language',
     title: 'AI Bubble Monitor',
     subtitle:
       'A daily, rules-based read on whether AI-linked markets are showing the classic warning signs of a speculative bubble — built from Ray Dalio’s bubble framework, Robert Shiller’s valuation work, and Hyman Minsky’s financial instability hypothesis.',
@@ -92,7 +99,9 @@ const STRINGS = {
     } as Record<string, string>,
   },
   zh: {
-    label: '实时市场数据 — 每日更新',
+    label: '市场研究 · 每个交易日更新',
+    documentation: '说明文档',
+    switchLanguage: '切换语言',
     title: 'AI 泡沫监测仪',
     subtitle:
       '一套每日更新、基于规则的指标体系，用来判断与 AI 相关的市场是否出现典型的投机泡沫信号 —— 构建依据为达里欧（Ray Dalio）的泡沫识别框架、席勒（Robert Shiller）的估值研究，以及明斯基（Hyman Minsky）的金融不稳定性假说。',
@@ -371,7 +380,8 @@ export default function AiBubbleMonitor({
   commitments: CommitmentsData
   briefing: BriefingData
 }) {
-  const [lang, setLang] = useState<'en' | 'zh'>('en')
+  const { lang, toggleLanguage } = useLanguage()
+  const [showDocumentation, setShowDocumentation] = useState(false)
   const s = STRINGS[lang]
   const [hasData] = useState(latest.compositeScore !== null)
 
@@ -392,18 +402,33 @@ export default function AiBubbleMonitor({
     <main className="relative bg-bg min-h-screen">
       <div className="max-w-5xl mx-auto px-6 pt-16 md:pt-24 pb-24">
         <FadeIn>
-          <div className="flex items-center justify-between mb-6">
-            <div className="section-divider !mb-0 flex-1">
+          <div className="flex flex-wrap items-center justify-between gap-y-3 mb-6">
+            <div className="section-divider !mb-0 basis-full sm:basis-auto flex-1">
               <span className="section-label">{s.label}</span>
             </div>
-            <button
-              onClick={() => setLang((l) => (l === 'en' ? 'zh' : 'en'))}
-              aria-label="Switch language"
-              className="ml-4 px-3 py-1.5 text-xs font-mono tracking-widest border border-gold/30 text-gold/80 rounded-md hover:bg-gold/10 hover:border-gold/60 hover:text-gold transition-all duration-200 active:scale-95 flex-shrink-0"
-            >
-              {s.langToggle}
-            </button>
-            <ShareAppButton label={s.shareApp} copiedLabel={s.linkCopied} text={s.shareText} />
+            <div className="ml-auto flex items-center sm:ml-4">
+              <button
+                type="button"
+                onClick={() => setShowDocumentation(true)}
+                onPointerEnter={() => { void loadDocumentation().catch(() => {}) }}
+                onFocus={() => { void loadDocumentation().catch(() => {}) }}
+                aria-haspopup="dialog"
+                aria-expanded={showDocumentation}
+                aria-controls="documentation-dialog"
+                className="mr-2 flex items-center gap-1.5 rounded-md border border-gold/30 px-2.5 py-1.5 text-xs text-gold/80 hover:bg-gold/10 hover:text-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
+              >
+                <svg aria-hidden="true" viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15" /></svg>
+                {s.documentation}
+              </button>
+              <button
+                onClick={toggleLanguage}
+                aria-label={s.switchLanguage}
+                className="px-3 py-1.5 text-xs font-mono tracking-widest border border-gold/30 text-gold/80 rounded-md hover:bg-gold/10 hover:border-gold/60 hover:text-gold transition-all duration-200 active:scale-95 flex-shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
+              >
+                {s.langToggle}
+              </button>
+              <ShareAppButton label={s.shareApp} copiedLabel={s.linkCopied} text={s.shareText} />
+            </div>
           </div>
         </FadeIn>
 
@@ -530,6 +555,7 @@ export default function AiBubbleMonitor({
           </footer>
         </FadeIn>
       </div>
+      {showDocumentation && <Documentation lang={lang} model={model} onClose={() => setShowDocumentation(false)} onToggleLanguage={toggleLanguage} />}
     </main>
   )
 }
