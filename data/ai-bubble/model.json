@@ -1,6 +1,6 @@
 {
-  "asOf": "2026-11-19",
-  "generatedAt": "2026-11-19T19:34:23+00:00",
+  "asOf": "2026-11-20",
+  "generatedAt": "2026-11-20T19:12:09+00:00",
   "target": {
     "horizonDays": 63,
     "drop": 0.1,
@@ -8,8 +8,8 @@
   },
   "backtest": {
     "start": "2020-08-25",
-    "end": "2026-08-21",
-    "days": 1505,
+    "end": "2026-08-24",
+    "days": 1506,
     "folds": 24,
     "retrainEveryDays": 63,
     "gapDays": 63,
@@ -21,18 +21,18 @@
     {
       "id": "composite",
       "name": "Composite score",
-      "auc": 0.45,
+      "auc": 0.451,
       "aucCi": [
         0.298,
         0.624
       ],
-      "brier": 0.2354,
+      "brier": 0.2355,
       "brierSkill": -0.01,
       "brierSkillCi": [
         -0.074,
-        0.065
+        0.064
       ],
-      "today": 0.434
+      "today": 0.445
     },
     {
       "id": "logistic",
@@ -40,53 +40,53 @@
       "auc": 0.424,
       "aucCi": [
         0.3,
-        0.588
+        0.585
       ],
-      "brier": 0.3252,
-      "brierSkill": -0.396,
+      "brier": 0.3251,
+      "brierSkill": -0.394,
       "brierSkillCi": [
-        -0.821,
-        -0.009
+        -0.82,
+        -0.013
       ],
-      "today": 0.519
+      "today": 0.515
     },
     {
       "id": "gbm",
       "name": "Gradient-boosted trees",
       "auc": 0.43,
       "aucCi": [
-        0.308,
-        0.566
+        0.31,
+        0.568
       ],
-      "brier": 0.3724,
-      "brierSkill": -0.598,
+      "brier": 0.3723,
+      "brierSkill": -0.597,
       "brierSkillCi": [
-        -1.128,
-        -0.184
+        -1.126,
+        -0.185
       ],
-      "today": 0.829
+      "today": 0.733
     },
     {
       "id": "transformer",
       "name": "Transformer (60-day sequence)",
       "auc": 0.466,
       "aucCi": [
-        0.309,
+        0.31,
         0.618
       ],
-      "brier": 0.2607,
-      "brierSkill": -0.119,
+      "brier": 0.2608,
+      "brierSkill": -0.118,
       "brierSkillCi": [
-        -0.493,
-        0.096
+        -0.492,
+        0.095
       ],
-      "today": 0.394
+      "today": 0.421
     }
   ],
   "headline": {
     "model": "composite",
-    "probability": 0.434,
-    "baseRate": 0.327,
+    "probability": 0.445,
+    "baseRate": 0.328,
     "chosenBy": "highest out-of-sample Brier skill",
     "beatsBaseRate": false
   },
@@ -108,9 +108,9 @@
     {
       "from": 0.35,
       "to": 0.5,
-      "days": 395,
+      "days": 396,
       "predicted": 0.399,
-      "observed": 0.291
+      "observed": 0.293
     },
     {
       "from": 0.5,
@@ -123,45 +123,45 @@
   "drivers": [
     {
       "id": "trendExtension",
-      "rank": 4.2,
-      "weight": -2.674,
-      "contribution": 1.347,
-      "effect": 0.3
+      "rank": 0.9,
+      "weight": -2.679,
+      "contribution": 1.44,
+      "effect": 0.314
     },
     {
       "id": "volumeSurge",
-      "rank": 93.8,
-      "weight": 1.328,
-      "contribution": 0.586,
-      "effect": 0.144
+      "rank": 96.1,
+      "weight": 1.326,
+      "contribution": 0.616,
+      "effect": 0.15
     },
     {
       "id": "complacency",
-      "rank": 9.0,
-      "weight": 1.833,
-      "contribution": -0.508,
-      "effect": -0.123
+      "rank": 4.5,
+      "weight": 1.845,
+      "contribution": -0.595,
+      "effect": -0.143
     },
     {
       "id": "momentum",
-      "rank": 7.4,
-      "weight": 0.815,
-      "contribution": -0.384,
-      "effect": -0.094
+      "rank": 4.9,
+      "weight": 0.812,
+      "contribution": -0.403,
+      "effect": -0.099
     },
     {
       "id": "creditAppetite",
-      "rank": 20.9,
-      "weight": 0.436,
-      "contribution": -0.137,
-      "effect": -0.034
+      "rank": 13.4,
+      "weight": 0.435,
+      "contribution": -0.169,
+      "effect": -0.042
     },
     {
       "id": "concentration",
-      "rank": 4.7,
-      "weight": 0.271,
-      "contribution": -0.125,
-      "effect": -0.031
+      "rank": 3.6,
+      "weight": 0.27,
+      "contribution": -0.127,
+      "effect": -0.032
     },
     {
       "id": "forwardPurchases",
@@ -172,57 +172,57 @@
     },
     {
       "id": "monetaryStimulus",
-      "rank": 1.0,
-      "weight": -0.019,
-      "contribution": 0.007,
+      "rank": 1.8,
+      "weight": -0.018,
+      "contribution": 0.006,
       "effect": 0.002
     }
   ],
   "analogs": {
     "days": [
       {
-        "date": "2018-11-05",
-        "composite": 29.3,
-        "similarity": 0.971,
-        "forwardReturn": -0.0199,
-        "maxDrawdown": -0.1666,
+        "date": "2018-10-30",
+        "composite": 27.2,
+        "similarity": 0.962,
+        "forwardReturn": 0.0046,
+        "maxDrawdown": -0.1425,
         "fell": true
       },
       {
         "date": "2022-05-18",
         "composite": 30.9,
-        "similarity": 0.958,
+        "similarity": 0.954,
         "forwardReturn": 0.1081,
         "maxDrawdown": -0.072,
         "fell": false
       },
       {
-        "date": "2025-04-22",
-        "composite": 31.4,
-        "similarity": 0.894,
-        "forwardReturn": 0.6332,
-        "maxDrawdown": 0.0372,
+        "date": "2025-04-21",
+        "composite": 30.7,
+        "similarity": 0.89,
+        "forwardReturn": 0.6419,
+        "maxDrawdown": 0.0229,
         "fell": false
-      },
-      {
-        "date": "2018-09-06",
-        "composite": 31.6,
-        "similarity": 0.882,
-        "forwardReturn": -0.1469,
-        "maxDrawdown": -0.1915,
-        "fell": true
       },
       {
         "date": "2022-09-02",
         "composite": 26.0,
-        "similarity": 0.881,
+        "similarity": 0.873,
         "forwardReturn": 0.0215,
         "maxDrawdown": -0.1483,
         "fell": true
+      },
+      {
+        "date": "2019-01-28",
+        "composite": 33.3,
+        "similarity": 0.837,
+        "forwardReturn": 0.2152,
+        "maxDrawdown": -0.0192,
+        "fell": false
       }
     ],
     "nearest": 50,
-    "nearestFell": 0.6
+    "nearestFell": 0.66
   },
   "chart": [
     {
@@ -1732,8 +1732,8 @@
     },
     {
       "date": "2026-08-24",
-      "p": 0.389,
-      "fell": null
+      "p": 0.397,
+      "fell": 1
     },
     {
       "date": "2026-08-31",
@@ -1747,7 +1747,7 @@
     },
     {
       "date": "2026-09-15",
-      "p": 0.389,
+      "p": 0.39,
       "fell": null
     },
     {
@@ -1757,12 +1757,12 @@
     },
     {
       "date": "2026-09-29",
-      "p": 0.345,
+      "p": 0.346,
       "fell": null
     },
     {
       "date": "2026-10-06",
-      "p": 0.334,
+      "p": 0.335,
       "fell": null
     },
     {
@@ -1782,22 +1782,22 @@
     },
     {
       "date": "2026-11-03",
-      "p": 0.433,
+      "p": 0.434,
       "fell": null
     },
     {
       "date": "2026-11-10",
-      "p": 0.423,
+      "p": 0.424,
       "fell": null
     },
     {
       "date": "2026-11-17",
-      "p": 0.426,
+      "p": 0.427,
       "fell": null
     },
     {
-      "date": "2026-11-19",
-      "p": 0.434,
+      "date": "2026-11-20",
+      "p": 0.445,
       "fell": null
     }
   ],
@@ -1806,7 +1806,7 @@
       "horizonDays": 126,
       "drop": 0.15,
       "start": "2020-11-23",
-      "end": "2026-05-21",
+      "end": "2026-05-22",
       "baseRate": 0.289,
       "episodes": 5,
       "models": [
@@ -1816,12 +1816,12 @@
           "auc": 0.399,
           "aucCi": [
             0.238,
-            0.62
+            0.619
           ],
-          "brier": 0.2265,
+          "brier": 0.2267,
           "brierSkill": 0.019,
           "brierSkillCi": [
-            -0.094,
+            -0.095,
             0.155
           ]
         },
@@ -1831,13 +1831,13 @@
           "auc": 0.208,
           "aucCi": [
             0.093,
-            0.403
+            0.402
           ],
-          "brier": 0.4677,
-          "brierSkill": -1.026,
+          "brier": 0.4676,
+          "brierSkill": -1.024,
           "brierSkillCi": [
-            -2.25,
-            -0.252
+            -2.244,
+            -0.253
           ]
         }
       ]
@@ -1846,7 +1846,7 @@
       "horizonDays": 252,
       "drop": 0.2,
       "start": "2021-05-26",
-      "end": "2025-11-18",
+      "end": "2025-11-19",
       "baseRate": 0.35,
       "episodes": 5,
       "models": [
@@ -1855,13 +1855,13 @@
           "name": "Composite score",
           "auc": 0.169,
           "aucCi": [
-            0.052,
-            0.365
+            0.051,
+            0.368
           ],
-          "brier": 0.2753,
+          "brier": 0.2756,
           "brierSkill": -0.081,
           "brierSkillCi": [
-            -0.117,
+            -0.116,
             0.018
           ]
         },
@@ -1873,11 +1873,11 @@
             0.023,
             0.328
           ],
-          "brier": 0.5567,
-          "brierSkill": -1.186,
+          "brier": 0.5566,
+          "brierSkill": -1.184,
           "brierSkillCi": [
-            -3.996,
-            -0.295
+            -3.971,
+            -0.293
           ]
         }
       ]
