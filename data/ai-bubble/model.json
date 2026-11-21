@@ -1,6 +1,6 @@
 {
   "asOf": "2026-11-20",
-  "generatedAt": "2026-11-20T19:12:09+00:00",
+  "generatedAt": "2026-11-21T18:02:57+00:00",
   "target": {
     "horizonDays": 63,
     "drop": 0.1,
@@ -32,7 +32,7 @@
         -0.074,
         0.064
       ],
-      "today": 0.445
+      "today": 0.448
     },
     {
       "id": "logistic",
@@ -48,7 +48,7 @@
         -0.82,
         -0.013
       ],
-      "today": 0.515
+      "today": 0.513
     },
     {
       "id": "gbm",
@@ -64,7 +64,7 @@
         -1.126,
         -0.185
       ],
-      "today": 0.733
+      "today": 0.561
     },
     {
       "id": "transformer",
@@ -75,7 +75,7 @@
         0.618
       ],
       "brier": 0.2608,
-      "brierSkill": -0.118,
+      "brierSkill": -0.119,
       "brierSkillCi": [
         -0.492,
         0.095
@@ -85,7 +85,7 @@
   ],
   "headline": {
     "model": "composite",
-    "probability": 0.445,
+    "probability": 0.448,
     "baseRate": 0.328,
     "chosenBy": "highest out-of-sample Brier skill",
     "beatsBaseRate": false
@@ -123,44 +123,44 @@
   "drivers": [
     {
       "id": "trendExtension",
-      "rank": 0.9,
+      "rank": 0.0,
       "weight": -2.679,
-      "contribution": 1.44,
-      "effect": 0.314
+      "contribution": 1.463,
+      "effect": 0.317
     },
     {
       "id": "volumeSurge",
-      "rank": 96.1,
+      "rank": 97.8,
       "weight": 1.326,
-      "contribution": 0.616,
-      "effect": 0.15
+      "contribution": 0.639,
+      "effect": 0.156
     },
     {
       "id": "complacency",
-      "rank": 4.5,
+      "rank": 2.3,
       "weight": 1.845,
-      "contribution": -0.595,
-      "effect": -0.143
+      "contribution": -0.637,
+      "effect": -0.153
     },
     {
       "id": "momentum",
-      "rank": 4.9,
+      "rank": 4.3,
       "weight": 0.812,
-      "contribution": -0.403,
-      "effect": -0.099
+      "contribution": -0.408,
+      "effect": -0.1
     },
     {
       "id": "creditAppetite",
-      "rank": 13.4,
+      "rank": 11.9,
       "weight": 0.435,
-      "contribution": -0.169,
-      "effect": -0.042
+      "contribution": -0.175,
+      "effect": -0.044
     },
     {
       "id": "concentration",
-      "rank": 3.6,
+      "rank": 2.7,
       "weight": 0.27,
-      "contribution": -0.127,
+      "contribution": -0.129,
       "effect": -0.032
     },
     {
@@ -172,7 +172,7 @@
     },
     {
       "id": "monetaryStimulus",
-      "rank": 1.8,
+      "rank": 1.9,
       "weight": -0.018,
       "contribution": 0.006,
       "effect": 0.002
@@ -183,7 +183,7 @@
       {
         "date": "2018-10-30",
         "composite": 27.2,
-        "similarity": 0.962,
+        "similarity": 0.961,
         "forwardReturn": 0.0046,
         "maxDrawdown": -0.1425,
         "fell": true
@@ -191,7 +191,7 @@
       {
         "date": "2022-05-18",
         "composite": 30.9,
-        "similarity": 0.954,
+        "similarity": 0.946,
         "forwardReturn": 0.1081,
         "maxDrawdown": -0.072,
         "fell": false
@@ -199,7 +199,7 @@
       {
         "date": "2025-04-21",
         "composite": 30.7,
-        "similarity": 0.89,
+        "similarity": 0.885,
         "forwardReturn": 0.6419,
         "maxDrawdown": 0.0229,
         "fell": false
@@ -207,22 +207,22 @@
       {
         "date": "2022-09-02",
         "composite": 26.0,
-        "similarity": 0.873,
+        "similarity": 0.864,
         "forwardReturn": 0.0215,
         "maxDrawdown": -0.1483,
         "fell": true
       },
       {
-        "date": "2019-01-28",
-        "composite": 33.3,
-        "similarity": 0.837,
-        "forwardReturn": 0.2152,
-        "maxDrawdown": -0.0192,
+        "date": "2019-01-29",
+        "composite": 32.2,
+        "similarity": 0.834,
+        "forwardReturn": 0.2314,
+        "maxDrawdown": 0.0332,
         "fell": false
       }
     ],
     "nearest": 50,
-    "nearestFell": 0.66
+    "nearestFell": 0.64
   },
   "chart": [
     {
@@ -1797,7 +1797,7 @@
     },
     {
       "date": "2026-11-20",
-      "p": 0.445,
+      "p": 0.448,
       "fell": null
     }
   ],

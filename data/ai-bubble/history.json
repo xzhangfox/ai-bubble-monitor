@@ -15312,21 +15312,21 @@
         "complacency": 8,
         "creditAppetite": 18.3,
         "monetaryStimulus": 1,
-        "volumeSurge": 94.5,
+        "volumeSurge": 94.6,
         "forwardPurchases": 100
       }
     },
     {
       "date": "2026-11-20",
-      "compositeScore": 28.1,
+      "compositeScore": 27.6,
       "indicatorScores": {
-        "momentum": 4.9,
-        "trendExtension": 0.9,
-        "concentration": 3.6,
-        "complacency": 4.5,
-        "creditAppetite": 13.3,
-        "monetaryStimulus": 1.8,
-        "volumeSurge": 96.1,
+        "momentum": 4.3,
+        "trendExtension": 0,
+        "concentration": 2.7,
+        "complacency": 2.3,
+        "creditAppetite": 11.9,
+        "monetaryStimulus": 1.9,
+        "volumeSurge": 97.8,
         "forwardPurchases": 100
       }
     }
